@@ -1,0 +1,70 @@
+%\pdfoutput=1
+
+\documentclass{article}
+\usepackage{authblk}
+\usepackage{todonotes}
+\usepackage[margin=1in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+%\usepackage{natbib}
+\usepackage{float}
+\usepackage{algorithm,algpseudocode}
+\usepackage{rotating}
+%\usepackage{algorithmic}
+\usepackage{amsfonts,amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage[shortcuts]{extdash}
+\newcommand{\SREC}{S\=/REC}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\def\R{{\mathbb{R}}}
+%\newtheorem{theorem}{Theorem}[section]
+\newtheoremstyle{exampstyle}
+  {10pt} % Space above
+  {10pt} % Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {.} % Punctuation after theorem head
+  {.5em} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+\theoremstyle{exampstyle} \newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+%\title{Compressed Sensing on GANs using Iterative Projections}
+\title{Reconstruction from Modulo Measurements}
+\date{}
+\def\sgn{\mathrm{sgn}}
+\def\cosamp{\mathrm{CoSaMP}}
+\author{Viraj Shah}
+\author{Chinmay Hegde}
+\affil{ECpE Department, Iowa State University}
+
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\eps}{\epsilon}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\s}{0.18}
+\usepackage{hyperref}
+\begin{document}
+\vspace{-25em}
+\maketitle
+
+\input{./experiment_results}
+\input{./appendix}
+%\clearpage
+%\input{../common/ack}
+%\bibliographystyle{plain}
+%\bibliography{./vsbib}
+%\input{../common/appendix_a}
+%\input{../common/appendix_b}
+
+\end{document}

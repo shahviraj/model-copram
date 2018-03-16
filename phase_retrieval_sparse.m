@@ -13,7 +13,8 @@ clear all;
 
 %% signal model
 n = 1000; %signal length
-kspan = 3:3:30; %sparsity vector
+%kspan = 3:3:30; %sparsity vector
+kspan=20;
 kl = length(kspan);
 b = 1; %block length (non-essential for evaluating standard sparse models; trivially b=1)
 
@@ -35,6 +36,7 @@ for k_iter = 1:kl
 
             %% generate signal and measurements  
             [z,z_ind] =  generate_signal(n,s,b);
+            sort(z_ind,'ascend')
             [y_abs,y_ph,A] = measure_signal(m,z);
             
             %add noise to measurements in CoPRAM / SPARTA
