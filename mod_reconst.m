@@ -1,9 +1,9 @@
 clear all;
 %Initialize hyper-parameters
 
-n = 10000; %length of the input signal
-%m = 500; %number of measurements
-s = 20; % sparsity
+n = 1000; %length of the input signal
+m = 5000; %number of measurements
+s = 3; % sparsity
 b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 R = 4; %period of the modulo function
 iter = 5; %maximum iterations for AltMin based algorithms
@@ -16,10 +16,10 @@ m_span = 100:100:500;
 %sig_span = 0.04;
 err_x = ones(length(m_span), length(sig_span),num_trials, 2);
 for j = 1:length(m_span)
-    m = m_span(j);
+    %m = m_span(j);
     %Generate the ground truth signal
     [z,z_ind] =  generate_signal(n,s,b);
-    
+    z_ind
     %Generate the measurements: y=mod(Ax,R)
     [y_mod, y_p, A] = modulo_measure_signal(m,z,R);
     for l = 1:num_trials

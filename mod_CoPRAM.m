@@ -13,71 +13,72 @@ function [x,err_hist,p] =  mod_CoPRAM(y_mod,A,s,max_iter,R,tol1,tol2,z,noise)
 
 % %% initialize parameters
  [m,n] = size(A);
-% %If ground truth is unknown
-% if nargin < 9
-%     z = zeros(n,1);
-% end
-% p = zeros(m,1); %phase vector
-% error_hist(1,1) = 1; %stores error in measurement model
-% error_hist(1,2) = 1; %stores relative error b/w iterations
-% Marg = zeros(1,n); %marginals
-% MShat = zeros(s); %truncated correlation matrix
-% AShat = zeros(m,s); %truncated sensing matrix
-% supp = zeros(1,n); %indicator for initial support Shat
-% y_mod2 = y_mod.^2; %quadratic measurements
-% phi_sq = sum(y_mod2)/m;
-% phi = sqrt(phi_sq); %signal power
-% 
-% %% s-Truncated sensing vectors
-% 
-% %signal marginals
-% Marg = ((y_mod2)'*(A.^2))'/m; % n x 1
-% [Mg MgS] = sort(Marg,'descend');
-% S0 = MgS(1:s); %pick top s-marginals
-% Shat = sort(S0); %store indices in sorted order
-% %supp(Shat) = 1; figure; plot(supp); %support indicator
-% AShat = A(:,Shat); % m x s %sensing sub-matrix
-% 
-% %% Truncated measurements
-% %TAF = 'on'; %consider only truncated measurements m' < m ; gives marginally better performance 
-% TAF = 'off'; %consider all measurements = m ; aligns with code presented in paper
-% 
-% switch TAF
-%     case 'on'
-%         card_Marg = ceil(m/6);
-%         %large measurements - amplitude flow
-%         for i=1:m
-%             M_eval(i) = y_mod(i)/norm(AShat(i,:));
-%         end 
-%         [~,MmS] = sort(M_eval,'descend');
-%         Io = MmS(1:card_Marg); %indices between 1 to m
-%     case 'off'
-%         card_Marg = m;
-%         Io = 1:card_Marg;
-% end
-% 
-% %% initialize x
-% %compute top singular vector according to thresholded sensing vectors and large measurements
-% for i = 1:card_Marg
-%     ii = Io(i);
-%     MShat = MShat + (y_mod2(ii))*AShat(ii,:)'*AShat(ii,:); % (s x s)
-% end
-% 
-% svd_opt = 'svd'; %more accurate, but slower for larger dimensions
-% %svd_opt = 'power'; %approximate, faster for larger dimensions
-% 
-% switch svd_opt
-%     case 'svd'
-%         [u,sigma,v] = svd(MShat);
-%         v1 = u(:,1); %top singular vector of MShat, normalized - s x 1
-%     case 'power'
-%         v1 = svd_power(MShat);
-% end
-% 
-% v = zeros(n,1);
-% v(Shat,1) = v1;
-% x_init = phi*v; %ensures that the energy/norm of the initial estimate is close to actual
-% x = x_init;
+%If ground truth is unknown
+if nargin < 9
+    z = zeros(n,1);
+end
+p = zeros(m,1); %phase vector
+error_hist(1,1) = 1; %stores error in measurement model
+error_hist(1,2) = 1; %stores relative error b/w iterations
+Marg = zeros(1,n); %marginals
+MShat = zeros(s); %truncated correlation matrix
+AShat = zeros(m,s); %truncated sensing matrix
+supp = zeros(1,n); %indicator for initial support Shat
+y_mod2 = y_mod.^2; %quadratic measurements
+phi_sq = sum(y_mod2)/m;
+phi = sqrt(phi_sq); %signal power
+
+%% s-Truncated sensing vectors
+
+%signal marginals
+Marg = ((y_mod2)'*(A.^2))'/m; % n x 1
+[Mg MgS] = sort(Marg,'descend');
+S0 = MgS(1:s); %pick top s-marginals
+Shat = sort(S0); %store indices in sorted order
+Shat
+%supp(Shat) = 1; figure; plot(supp); %support indicator
+AShat = A(:,Shat); % m x s %sensing sub-matrix
+
+%% Truncated measurements
+%TAF = 'on'; %consider only truncated measurements m' < m ; gives marginally better performance 
+TAF = 'off'; %consider all measurements = m ; aligns with code presented in paper
+
+switch TAF
+    case 'on'
+        card_Marg = ceil(m/6);
+        %large measurements - amplitude flow
+        for i=1:m
+            M_eval(i) = y_mod(i)/norm(AShat(i,:));
+        end 
+        [~,MmS] = sort(M_eval,'descend');
+        Io = MmS(1:card_Marg); %indices between 1 to m
+    case 'off'
+        card_Marg = m;
+        Io = 1:card_Marg;
+end
+
+%% initialize x
+%compute top singular vector according to thresholded sensing vectors and large measurements
+for i = 1:card_Marg
+    ii = Io(i);
+    MShat = MShat + (y_mod2(ii))*AShat(ii,:)'*AShat(ii,:); % (s x s)
+end
+
+svd_opt = 'svd'; %more accurate, but slower for larger dimensions
+%svd_opt = 'power'; %approximate, faster for larger dimensions
+
+switch svd_opt
+    case 'svd'
+        [u,sigma,v] = svd(MShat);
+        v1 = u(:,1); %top singular vector of MShat, normalized - s x 1
+    case 'power'
+        v1 = svd_power(MShat);
+end
+
+v = zeros(n,1);
+v(Shat,1) = v1;
+x_init = phi*v; %ensures that the energy/norm of the initial estimate is close to actual
+x = x_init;
 % 
 % %initialize x with noisy version of z
 x = z+noise;

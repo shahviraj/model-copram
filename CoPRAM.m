@@ -34,7 +34,7 @@ phi = sqrt(phi_sq); %signal power
 Marg = ((y_abs2)'*(A.^2))'/m; % n x 1
 [Mg MgS] = sort(Marg,'descend');
 S0 = MgS(1:s); %pick top s-marginals
-Shat = sort(S0); %store indices in sorted order
+Shat = sort(S0) %store indices in sorted order
 %supp(Shat) = 1; figure; plot(supp); %support indicator
 AShat = A(:,Shat); % m x s %sensing sub-matrix
 

@@ -14,12 +14,14 @@ clear all;
 %% signal model
 n = 1000; %signal length
 %kspan = 3:3:30; %sparsity vector
-kspan=20;
+kspan=3;
 kl = length(kspan);
 b = 1; %block length (non-essential for evaluating standard sparse models; trivially b=1)
 
 %% measurement params
-mspan = 100:100:1000; %no. of measurements
+%mspan = 500:100:1000; %no. of measurements
+
+mspan = 5000;
 ml = length(mspan);
 
 %% recovery validity
