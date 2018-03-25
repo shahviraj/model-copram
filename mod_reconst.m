@@ -11,11 +11,11 @@ pr.max_iter = 30;
 pr.del = 1.0; %amplification factor
 
 %Tuned parameters
-pr.mspan=100:100:500;
+pr.mspan=200:200:2000;
 pr.s_span = 5:5:10; % sparsity
 pr.R = 1; %period of the modulo function
 pr.del_p=0.05; % ps = del*m (sparsity pertaining to error in p)
-pr.method = 'robust-cosamp';
+pr.method = 'cosamp';
 
 
 err = zeros(length(pr.mspan),length(pr.s_span));
@@ -61,9 +61,9 @@ for j = 1:length(pr.mspan)
             err_hist(t+1,2) = norm(x-z)/norm(z);
             recovery_prob = nnz(~(p-y_p));
             fprintf('\n%d\t\t%2.8f\t\t%2.4f\t\t%2f\n',t,err_hist(t+1,1),err_hist(t+1,2),recovery_prob)
-            if (err_hist(t+1,1) < pr.tol1) | (abs(err_hist(t,2)-err_hist(t+1,2))<pr.tol2)
-                break;
-            end
+%             if (err_hist(t+1,1) < pr.tol1) | (abs(err_hist(t,2)-err_hist(t+1,2))<pr.tol2)
+%                 break;
+%             end
         end
         % Relative reconstruction error
         reconst_err(j,k) = norm(x-z)/norm(z);
