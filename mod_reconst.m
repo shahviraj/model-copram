@@ -1,57 +1,80 @@
 clear all;
-%Initialize hyper-parameters
+clc;
+rng ('shuffle')
+pr = struct;
+%Fixed parameters
+pr.n = 1000; %length of the input signal
+pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
+pr.tol1 = 1e-5; %error tolerance for measurements
+pr.tol2 = 1e-7;
+pr.max_iter = 30;
+pr.del = 1.0; %amplification factor
 
-n = 1000; %length of the input signal
-m = 5000; %number of measurements
-s = 3; % sparsity
-b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
-R = 4; %period of the modulo function
-iter = 5; %maximum iterations for AltMin based algorithms
-iter_gd = 30; %maximum iterations for WF/AF based algorithms (typically take higher no. to convg)
-tol1 = 1e-3; %error tolerance for measurements
-tol2 = 1e-5;
-num_trials=10;
-sig_span = 0.0:0.0005:0.005;
-m_span = 100:100:500;
-%sig_span = 0.04;
-err_x = ones(length(m_span), length(sig_span),num_trials, 2);
-for j = 1:length(m_span)
-    %m = m_span(j);
-    %Generate the ground truth signal
-    [z,z_ind] =  generate_signal(n,s,b);
-    z_ind
-    %Generate the measurements: y=mod(Ax,R)
-    [y_mod, y_p, A] = modulo_measure_signal(m,z,R);
-    for l = 1:num_trials
-        for k = 1:length(sig_span)
-            noise = sig_span(k)*randn(n,1);
-            err_x(j,k,l,1) = norm(noise)/norm(z);
-        % %Use mod_CoPRAM for reconstruction
-            [x1,err_hist1,C1] = mod_CoPRAM(y_mod,A,s,iter,R,tol1,tol2,z,noise);
+%Tuned parameters
+pr.mspan=100:100:500;
+pr.s_span = 5:5:10; % sparsity
+pr.R = 1; %period of the modulo function
+pr.del_p=0.05; % ps = del*m (sparsity pertaining to error in p)
+pr.method = 'robust-cosamp';
 
-            err_x(j,k,l,2) = norm(x1-z)/norm(z);
+
+err = zeros(length(pr.mspan),length(pr.s_span));
+supp_recvr=zeros(length(pr.mspan),length(pr.s_span));
+init_err=zeros(length(pr.mspan),length(pr.s_span));
+reconst_err=zeros(length(pr.mspan),length(pr.s_span));
+
+for j = 1:length(pr.mspan)
+    m = pr.mspan(j);
+    
+    for k = 1:length(pr.s_span)
+        s = pr.s_span(k);
+        %Generate the ground truth signal
+        [z,z_ind] =  generate_signal(pr.n,s,pr.b);
+
+        %Generate the measurements: y=mod(Ax,R)
+        [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R);
+
+        %Calculate the initial estimate
+        x_0 = initial_estimate(A,y_mod,s,pr.R,pr.del,1);
+        
+        %relative error in initial estimate
+        init_err(j,k) = norm(z-x_0)/norm(z);
+        
+        %Alt-Min
+        x= x_0;
+        ps = pr.del_p*m;
+
+        fprintf('\n#iter\t\t|y-Ax|\t\t|x-z|\trecovery_prob\n')
+        for t=1:pr.max_iter 
+
+            p = (-sign(A*x)+1)/2;
+
+            switch pr.method
+                case 'cosamp'
+                    x = cosamp((y_mod-pr.R*p)/sqrt(m), A/sqrt(m),s,100,x); %Its = 100
+                case 'robust-cosamp'
+                    [x,delta_p] = mod_cosamp(y_mod,p,A,x,pr.R,s,ps);
+            end
+
+            %err_hist(t+1,1) = norm(y_mod-mod(A*x,R))/norm(y_mod);
+            err_hist(t+1,1) = norm((y_mod-y_p*pr.R)-(A*x))/norm(y_mod-y_p*pr.R);
+            err_hist(t+1,2) = norm(x-z)/norm(z);
+            recovery_prob = nnz(~(p-y_p));
+            fprintf('\n%d\t\t%2.8f\t\t%2.4f\t\t%2f\n',t,err_hist(t+1,1),err_hist(t+1,2),recovery_prob)
+            if (err_hist(t+1,1) < pr.tol1) | (abs(err_hist(t,2)-err_hist(t+1,2))<pr.tol2)
+                break;
+            end
         end
+        % Relative reconstruction error
+        reconst_err(j,k) = norm(x-z)/norm(z);
     end
+    
 end
-%Check errors in measurement of p
-% recovery_prob = nnz(~(C1-y_p));
-% disp('recovered the p correctly for, ')
-% disp(recovery_prob)
-sum_err_x = sum(err_x,3)/num_trials;
-figure;
-plot(sum_err_x(1,:,1),sum_err_x(1,:,2));
-%legend('m=100');
-hold on;
-plot(sum_err_x(2,:,1),sum_err_x(2,:,2));
-%legend('m=200');
-hold on;
-plot(sum_err_x(3,:,1),sum_err_x(3,:,2));
-%legend('m=300');
-hold on;
-plot(sum_err_x(4,:,1),sum_err_x(4,:,2));
-%legend('m=400');
-hold on;
-plot(sum_err_x(5,:,1),sum_err_x(5,:,2));
-%legend('m=500');
-legend('m=100','m=200','m=300','m=400','m=500');
-title('Mod: Variation of rel. reconstruction err in x with std. dev. of noise added for initialization, m=500');
+
+
+construct_plot(reconst_err,pr,['rconst_','r_',num2str(pr.R),'_s_',...
+    num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
+    '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);
+% construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
+%     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
+%     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);

@@ -1,4 +1,4 @@
-function construct_plot(Y1,X1,Z1,savename, method)
+function construct_plot(Y1,pr,savename, method)
 
 % Create figure
 figure;
@@ -9,7 +9,7 @@ hold(axes1,'on');
 
 % Create plot
 for i = 1:size(Y1,2)
-    plot(X1,Y1(:,i),'DisplayName',['s=',num2str(Z1(i))],'LineWidth',1.5);
+    plot(pr.mspan,Y1(:,i),'DisplayName',['s=',num2str(pr.s_span(i))],'LineWidth',1.5);
 end
 % Create xlabel
 xlabel({'\textbf{Number of measurements} $\mathbf{(m)}$'},...
@@ -19,10 +19,10 @@ xlabel({'\textbf{Number of measurements} $\mathbf{(m)}$'},...
 % Create title
 switch method
     case 'cosamp'
-title('\textbf{Relative reconstruction error vs number of measurements; for CoSaMP with} $\mathbf{R=1, n=1000}$',...
+title(['\textbf{Relative reconstruction error vs number of measurements; for CoSaMP with} $\mathbf{R=',num2str(pr.R), ',n=',num2str(pr.n),'}$'],...
     'Interpreter','latex');
     case 'robust-cosamp'
-    title('\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{R=1, n=1000}$',...
+    title(['\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{R=',num2str(pr.R),',n=',num2str(pr.n),'}$'],...
     'Interpreter','latex');
 end
 
