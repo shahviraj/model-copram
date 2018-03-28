@@ -20,17 +20,24 @@ We consider the problem of recovery of a signal from its modulo measurements obt
 
 We can write the modified equation for the modulo operation under consideration as:
 $$
-\mathbf{y} = \mod(\mathbf{x^*},R) = \mathbf{x^*}+\left( \frac{1-\sgn(\mathbf{x^*})}{2}\right)R,
+f(t) = \mod(t,R) = t+\left( \frac{1-\sgn(t)}{2}\right)R,
 $$
-where $\sgn(x)$ is a signum function.
+where $\sgn(t)$ is a signum function.
 
-We define the bin-index $p^*_i$ as,
+For the measurement model of the given problem, 
+We define the corrected linear measurements as: 
+
+$$
+y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle.
+$$
+
+We also define the bin-index $p^*_i$ as,
 $$
 p^*_i = \frac{1-\sgn(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle)}{2}.
 $$
 Thus,
 $$
-y_i = \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle + p^*_iR.
+y_i = \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle + p^*_iR = y_{c,i}+p^*_iR.
 $$
 
 It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the correct compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP.
@@ -56,9 +63,12 @@ $$
 $$
 \mathbf{{x}^{t+1}} = \argmin_{\mathbf{x} \in \mathcal{M}_s}\norm{\mathbf{Ax} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
-$$
+
+\begin{equation}
 \implies \mathbf{{x}^{t+1}} = \cosamp(\frac{1}{\sqrt{m}}\mathbf{A},\frac{1}{\sqrt{m}}\mathbf{y^t_c},s,\mathbf{x_t}).
-$$
+\label{eq:cosamp}
+\end{equation}
+
 
  However, it should be noted that even the small error $\mathbf{d} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{y^t_c}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the CoSaMP is not robust enough to cope up with such large errors in $\mathbf{y^t_c}$. To tackle this issue, we augmented the sparse recovery problem using the fact that the nature of error $\mathbf{d^t_p}$ is sparse; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$. We take the sparsity of $\mathbf{d^t}$ to be $s_p = 0.1\times m$, suggesting that at most the $10\%$ of the total elements are classified with wrong bin-indices.
  
@@ -69,9 +79,13 @@ $$
 $$
 \begin{equation}
 \implies \mathbf{{x^{t+1}}} = \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},s+s_p,[\mathbf{x^t~~p^t}]^T).
-\label{step2}
+\label{eq:robcosamp}
 \end{equation}
-We repeat the steps as in Eq.~\ref{step1} and Eq.~\ref{step2} alternatively for $\mathrm{N}$ iterations. 
+We call the step in Eq.~\ref{eq:robcosamp} a Robust CoSaMP. 
+
+We repeat the steps of bin index calculation (as in Eq.~\ref{step1}) and sparse recovery (as in Eq.~\ref{eq:cosamp} or Eq.~\ref{eq:robcosamp}) alternatively for $\mathrm{N}$ iterations. While the sparse recovery with robust CoSaMP (Eq.~\ref{eq:robcosamp}) improves the reconstruction performance for large values of $R$ by making the sparse recovery step less susceptible to the errors, CoSaMP can also used in its original form (as in Eq.~\ref{eq:cosamp}) for lower values of $R$.
+
+Thus, we can have two variants of the MoRAM algorithm: (i)MoRAM with CoSaMP, and (ii) MoRAM with robust CoSaMP. 
 
 %$$
 %\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x^*} \\ \mathbf{d} \end{bmatrix} - \mathbf{y}}_2^2.
@@ -99,8 +113,9 @@ We repeat the steps as in Eq.~\ref{step1} and Eq.~\ref{step2} alternatively for 
 
 
 \subsection{Experiments}
-We test our algorithm on a synthetic signal generated randomly with $n=1000$ and $s=20$. 
 
+\subsubsection{Analyzing sensitivity towards the initial estimate}
+For this experiment, we use a synthetic signal generated randomly with $n=1000$ and $s=20$. 
 Our aim is to analyze the sensitivity of our algorithm towards the initial estimate $\mathbf{x^0}$. %Currently, in the absence of a suitable initialization method, 
 For that, we compute the initial estimate $\mathbf{x^0}$ by adding a Gaussian noise to the original signal. In Fig.~\ref{fig:pl}, we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with the relative error in initial estimate ($\frac{\norm{\mathbf{x^*-x^0}}}{\norm{\mathbf{x^*}}}$). We plot the similar curves for different values of number of measurements $m$.
 \begin{figure}[t]
@@ -122,3 +137,30 @@ For that, we compute the initial estimate $\mathbf{x^0}$ by adding a Gaussian no
 %	\label{fig:alg}
 %\end{figure}
 %\end{section}
+
+\subsubsection{Performance of our algorithm for signal reconstruction}
+We perform experiments on a synthetic signal generated randomly with $n=1000$ and $s=5$. We compute the initial estimate $\mathbf{x^0}$ using first order estimator method described in section~\ref{sec}. we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with number of measurements $m$ for both the variants of sparse recovery algorithm as described in section~\ref{sec}.
+
+It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:graph} is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$. To analyze such variations, we fix the $R =1$ in our experiments, while varying the signal strength to vary the magnitudes of $y_{c,i}$. We measure the signal strength by the norm of the original signal ($\norm{\mathbf{{x}^*}}=1$).
+
+Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in section~\ref{}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
+
+In the following table, we provide experimental results for each of the combination above:
+\begin{center}
+	\begin{table}
+		\centering
+		\begin{tabular}{cccc}\toprule
+			\multicolumn{4}{c}{\small{\textbf{Fixed:} $R=1, n=1000, s=5$}} \\ \midrule
+			\multicolumn{2}{c}{\textbf{CoSaMP}}&\multicolumn{2}{c}{\textbf{robust CoSaMP}}
+			\\\cmidrule(r){1-2}\cmidrule(r){3-4}  
+			\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=4$}&\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=4$}\\\midrule
+			345 & 356
+			& 235 & 252\\
+			 465& 456
+			& 345 & 342
+			\\ \bottomrule
+		\end{tabular}
+		\caption{The Results}\label{Tab2}
+	\end{table} 	
+\end{center}
+   

@@ -11,8 +11,11 @@ pr.max_iter = 30;
 pr.del = 1.0; %amplification factor
 
 %Tuned parameters
-pr.mspan=200:200:2000;
-pr.s_span = 5:5:10; % sparsity
+pr.mspan1 = [100:100:1000];
+pr.mspan2 = [1000:1000:10000];
+pr.mspan=[pr.mspan1,pr.mspan2];
+%pr.mspan=5000:1000:8000;
+pr.s_span = 5:5:5; % sparsity
 pr.R = 1; %period of the modulo function
 pr.del_p=0.05; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'cosamp';
@@ -72,7 +75,7 @@ for j = 1:length(pr.mspan)
 end
 
 
-construct_plot(reconst_err,pr,['rconst_','r_',num2str(pr.R),'_s_',...
+construct_subplots(reconst_err,pr,['rconst_','r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);
 % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
