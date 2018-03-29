@@ -38,9 +38,9 @@ legend1 = legend(axes1,'show');
 set(legend1,'FontSize',20,'FontName','MS Sans Serif');
 grid on;
 grid minor;
-ylim([0,1]);
+ylim([0,2]);
 %yticks(0:0.1:1.5)
-
+pbaspect([1 1 1]);
 hold(axes1,'off')
 
 axes2 = subplot(1,2,2);
@@ -82,15 +82,15 @@ grid on;
 grid minor;
 ylim([0,1]);
 %yticks(0:0.1:1.5)
-
+pbaspect([1 1 1]);
 hold(axes2,'off');
 switch method
     case 'cosamp'
- p = mtit(['\textbf{Relative reconstruction error vs number of measurements; for CoSaMP with} $\mathbf{||x^*||=',num2str(pr.del),'}$'],...
-    'Interpreter','latex','FontSize',20);
+ p = mtit(['\textbf{Relative reconstruction error vs number of measurements; for CoSaMP with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
+    'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
     case 'robust-cosamp'
-  p =  mtit(['\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{||x^*||=',num2str(pr.del),'}$'],...
-    'Interpreter','latex');
+  p =  mtit(['\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
+    'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
 end
 
 savefig(['./results/mod_recovery_results/',savename,'_double.fig'])

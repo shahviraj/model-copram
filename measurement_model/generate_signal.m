@@ -1,4 +1,4 @@
-function [z,z_ind] = generate_signal(n,K,b)
+function [z,z_ind] = generate_signal(n,K,b,amp)
 %edited 2/15/2017
 rng ('shuffle')
 N_bl = floor(n/b);
@@ -12,7 +12,8 @@ save_str = ['block_sparse_sig_',num2str(b),'_',num2str(K),'_',num2str(n),'.mat']
         end
         z = zeros(n,1);
         z(z_ind) = randn(K*b,1); %generate K*b sparse signal (n x 1)
-        z = z/norm(z);   %need not be normalized     
+        z = z/norm(z);   %need not be normalized
+        z=amp*z;
         %save(save_str,'z','z_ind','b','K','n');
     %end
     

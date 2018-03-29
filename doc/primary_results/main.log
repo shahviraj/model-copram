@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.15)  28 MAR 2018 03:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.15)  29 MAR 2018 04:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1282,51 +1282,67 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 96.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
-<./fig/graph.pdf, id=53, pagebox=cropbox, 1120.185pt x 650.43pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 50.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 85.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 85.
+ [2] [3]
+<./fig/graph.pdf, id=79, pagebox=cropbox, 1120.185pt x 650.43pt>
 File: ./fig/graph.pdf Graphic file (type pdf)
 <use ./fig/graph.pdf>
-Package pdftex.def Info: ./fig/graph.pdf  used on input line 124. on input line
- 124.
+Package pdftex.def Info: ./fig/graph.pdf  used on input line 161. on input line
+ 161.
 Package pdftex.def Info: Requested size: 469.75502pt x 272.76189pt on input lin
-e 124.
- [2]
-
-LaTeX Warning: Reference `sec' on page 3 undefined on input line 142.
-
-
-LaTeX Warning: Reference `sec' on page 3 undefined on input line 142.
-
-
-LaTeX Warning: Reference `' on page 3 undefined on input line 146.
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
-) (./appendix.tex) [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
+e 161.
  [4 <./fig/graph.pdf>]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 190.
+<./fig/plot-1-1.pdf, id=101, pagebox=cropbox, 1120.185pt x 527.9725pt>
+File: ./fig/plot-1-1.pdf Graphic file (type pdf)
+<use ./fig/plot-1-1.pdf>
+Package pdftex.def Info: ./fig/plot-1-1.pdf  used on input line 205. on input l
+ine 205.
+Package pdftex.def Info: Requested size: 469.75502pt x 221.40857pt on input lin
+e 205.
+<./fig/plot-1-2.pdf, id=102, pagebox=cropbox, 1120.185pt x 527.9725pt>
+File: ./fig/plot-1-2.pdf Graphic file (type pdf)
+<use ./fig/plot-1-2.pdf>
+Package pdftex.def Info: ./fig/plot-1-2.pdf  used on input line 214. on input l
+ine 214.
+Package pdftex.def Info: Requested size: 469.75502pt x 221.40857pt on input lin
+e 214.
+<./fig/plot-1-3.pdf, id=103, pagebox=cropbox, 1120.185pt x 527.9725pt>
+File: ./fig/plot-1-3.pdf Graphic file (type pdf)
+<use ./fig/plot-1-3.pdf>
+Package pdftex.def Info: ./fig/plot-1-3.pdf  used on input line 223. on input l
+ine 223.
+Package pdftex.def Info: Requested size: 469.75502pt x 221.40857pt on input lin
+e 223.
+File: ./fig/plot-1-1.pdf Graphic file (type pdf)
+<use ./fig/plot-1-1.pdf>
+Package pdftex.def Info: ./fig/plot-1-1.pdf  used on input line 232. on input l
+ine 232.
+Package pdftex.def Info: Requested size: 469.75502pt x 221.40857pt on input lin
+e 232.
+) (./appendix.tex [5 <./fig/plot-1-1.pdf>]) [6 <./fig/plot-1-2.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
+
+[7 <./fig/plot-1-3.pdf>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 73.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 73.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4CD358F864A87F2A110CE0182C465641;393.
-
-
-LaTeX Warning: There were undefined references.
-
+(rerunfilecheck)             Checksum: A80119A7F86F11C6E67F55EA69C4107D;529.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 73.
  ) 
 Here is how much of TeX's memory you used:
- 29468 strings out of 492990
- 691318 string characters out of 6132620
- 854948 words of memory out of 5000000
- 32494 multiletter control sequences out of 15000+600000
+ 29501 strings out of 492990
+ 691943 string characters out of 6132620
+ 853210 words of memory out of 5000000
+ 32514 multiletter control sequences out of 15000+600000
  26683 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,11n,96p,949b,706s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1353,10 +1369,10 @@ public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2017/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8
 a.pfb>
-Output written on main.pdf (4 pages, 277396 bytes).
+Output written on main.pdf (7 pages, 544429 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
- 17 named destinations out of 1000 (max. 500000)
- 58 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 664 PDF objects out of 1000 (max. 8388607)
+ 622 compressed objects within 7 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 89 words of extra memory for PDF output out of 10000 (max. 10000000)
 

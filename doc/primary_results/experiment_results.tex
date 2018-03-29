@@ -45,9 +45,64 @@ It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calcula
 
 \section{Reconstruction Algorithm}
 
-In this section, we describe our AltMin based approach to recover $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A}, s, R$. We call our algorithm MoRAM - Modulo Reconstruction using Alternative Minimization.
+In this section, we describe our AltMin based approach to recover $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A}, s, R$. We call our algorithm MoRAM - Modulo Reconstruction using Alternative Minimization. Our approach comprises of two steps: (i) estimate initialization step, and (ii) Descent step through alternative minimization.
 
-We assume that we have access to an initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we  calculate the estimates $\mathbf{p}$ and $\mathbf{x}$ in alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of our Alternative Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
+\subsection{Initialization}
+\label{sec:init}
+Similar to many non-convex techniques, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. The basic idea is to calculate the significant indices (or the support of $\mathbf{{x}^*}$, $S=support(\mathbf{{x}^*})$) using the suitable biased estimators, and then calculate the initial estimate using a first order biased estimator $M$ only for those significant indices contained in the support of $\mathbf{{x}^*}$. This initialization procedure is quite simple, and requires the tuning of only one parameter, the sparsity ($s$).
+
+For support estimation, we use measurements $y_{i}$ to construct a biased estimator $L$, for which the marginal $L_{jj}$ corresponding to the $j^{th}$ element is given by:
+$$
+L_{jj} = \frac{1}{m}\sum_{i=1}^{m}y_{i}^2 a_{ij}^2,~~~\textnormal{for}~~~~j \in {1,...,n}.
+$$
+Note that the expectation $\mathbb{E}[\mathbf{L}]$ is given by,
+$$
+\mathbb{E}[L_{jj}] = 4x_{j}^{*2}+2R^2(1-c_1)-2R\norm{\mathbf{{x}^*}}c_2~~~~~\textnormal{where,}~c_1,c_2 \in \mathbb{R}
+$$
+indicating that a clear separation exists for values of expectation for $j \in S$ and $j \in S^c$, because $x_j$ is zero for $j \in S^c$ and non-zero otherwise. Therefore, we can form the approximation of the support, $\widehat{S}$ by collecting the indices of the higher magnitude elements of $\mathbb{E}[L]$. With the support known, we can throw away the columns of $\mathbf{A}$ corresponding to $j \in S^c$ for the next steps. This would make the computation faster.
+
+Next step is to obtain the initial estimate using the first order estimator $\mathbf{M}$, defined as:
+$$
+M_{jj} = \frac{1}{m}\sum_{i=1}^{m}y_{i}a_{ij},~~~\textnormal{for}~~~~j \in S.
+$$
+To calculate $\mathbf{{x}^0}$, we use the fact that
+$$
+\mathbb{E}[\mathbf{M}] = \left( 1 - \sqrt{\frac{2}{\pi}}\frac{R}{2} \right) \mathbf{{x}^*}.
+$$
+Given enough number of samples, the sample mean of the above estimator lie very close to the expectation value. Thus, we can calculate the initial estimate $\mathbf{{x}^0}$ as:
+\begin{equation}
+	\mathbf{{x}^0_j} = 
+	\begin{cases}
+	\frac{1}{m}\sum_{i=1, j \in S}^{m}y_{i}a_{ij}~~~,& \text{if } j \in S\\
+	0,              & j \in S^c.
+	\end{cases}
+	\label{eq:init}
+\end{equation}
+However, it should be noted that the quality of the initial estimate is a direct function of the number of measurements $(m)$. 
+
+
+\begin{algorithm}[H]
+	\caption{\textsc{MoRAM}}
+	\label{alg:DMF}
+	\begin{algorithmic}
+		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$
+		\State\textbf{Output:}  $\widehat{x}$
+		\State $m,n \leftarrow \mathrm{size}(\mathbf{A})$ 
+		\State $s_p \leftarrow 0.1\cdot m$
+		\State \textbf{Initialization}
+		\State $\mathbf{x^0} \leftarrow \textrm{Oracle}(\mathbf{y, A})$ 
+		\State \textbf{Alternative Minimization}
+		\For {$l =0:\mathrm{N}$}
+		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
+		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{[\mathbf{x~d}]^T \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y}}_2^2 = \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},s+s_p,[\mathbf{x^t~~p^t}]^T)$
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Alternative Minimization}
+\label{sec:altmin}
+
+Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we  calculate the estimates $\mathbf{p}$ and $\mathbf{x}$ in alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of our Alternative Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
 \begin{equation}
 \mathbf{{p}^{t}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}.
 \label{step1}
@@ -92,24 +147,6 @@ Thus, we can have two variants of the MoRAM algorithm: (i)MoRAM with CoSaMP, and
 %$$
 
 %
-\begin{algorithm}[t]
-	\caption{\textsc{MoRAM}}
-	\label{alg:DMF}
-	\begin{algorithmic}
-		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$
-		\State\textbf{Output:}  $\widehat{x}$
-		\State $m,n \leftarrow \mathrm{size}(\mathbf{A})$ 
-		\State $s_p \leftarrow 0.1\cdot m$
-		\State \textbf{Initialization}
-		\State $\mathbf{x^0} \leftarrow \textrm{Oracle}(\mathbf{y, A})$ 
-		\State \textbf{Alternative Minimization}
-		\For {$l =0:\mathrm{N}$}
-		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
-		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{[\mathbf{x~d}]^T \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y}}_2^2 = \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},s+s_p,[\mathbf{x^t~~p^t}]^T)$
-		\EndFor
-	\end{algorithmic}
-\end{algorithm}
-
 
 
 \subsection{Experiments}
@@ -139,13 +176,13 @@ For that, we compute the initial estimate $\mathbf{x^0}$ by adding a Gaussian no
 %\end{section}
 
 \subsubsection{Performance of our algorithm for signal reconstruction}
-We perform experiments on a synthetic signal generated randomly with $n=1000$ and $s=5$. We compute the initial estimate $\mathbf{x^0}$ using first order estimator method described in section~\ref{sec}. we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with number of measurements $m$ for both the variants of sparse recovery algorithm as described in section~\ref{sec}.
+We perform experiments on a synthetic signal generated randomly with $n=1000$ and $s=5$. We compute the initial estimate $\mathbf{x^0}$ using first order estimator method described in~\ref{sec:init}. we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with number of measurements $m$ for both the variants of sparse recovery algorithm as described in~\ref{sec:altmin}.
 
 It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:graph} is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$. To analyze such variations, we fix the $R =1$ in our experiments, while varying the signal strength to vary the magnitudes of $y_{c,i}$. We measure the signal strength by the norm of the original signal ($\norm{\mathbf{{x}^*}}=1$).
 
-Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in section~\ref{}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
+Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
 
-In the following table, we provide experimental results for each of the combination above:
+In the Table~\ref{Tab2}, we provide experimental results for each of the combination above.
 \begin{center}
 	\begin{table}
 		\centering
@@ -153,14 +190,47 @@ In the following table, we provide experimental results for each of the combinat
 			\multicolumn{4}{c}{\small{\textbf{Fixed:} $R=1, n=1000, s=5$}} \\ \midrule
 			\multicolumn{2}{c}{\textbf{CoSaMP}}&\multicolumn{2}{c}{\textbf{robust CoSaMP}}
 			\\\cmidrule(r){1-2}\cmidrule(r){3-4}  
-			\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=4$}&\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=4$}\\\midrule
-			345 & 356
-			& 235 & 252\\
-			 465& 456
-			& 345 & 342
-			\\ \bottomrule
+			\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=0.5$}&\small{$\norm{\mathbf{{x}^*}}=1$}&\small{$\norm{\mathbf{{x}^*}}=4$}\\\midrule
+			\hyperref[fig:plot-1-1]{Figure~\ref{fig:plot-1-1}} & \hyperref[fig:plot-1-2]{Figure~\ref{fig:plot-1-2}}
+			& \hyperref[fig:plot-1-3]{Figure~\ref{fig:plot-1-3}}  & \hyperref[fig:plot-1-4]{Figure~\ref{fig:plot-1-4}} \\
+			 \bottomrule
 		\end{tabular}
 		\caption{The Results}\label{Tab2}
 	\end{table} 	
 \end{center}
-   
+ 
+\begin{figure}[t]
+	\begin{center}
+		%\vspace{-0em}
+		\includegraphics[width=\linewidth]{./fig/plot-1-1.pdf}
+	\end{center}
+	\caption{}
+	\label{fig:plot-1-1}
+\end{figure}
+
+\begin{figure}[t]
+	\begin{center}
+		%\vspace{-0em}
+		\includegraphics[width=\linewidth]{./fig/plot-1-2.pdf}
+	\end{center}
+	\caption{}
+	\label{fig:plot-1-2}
+\end{figure}
+%
+\begin{figure}[t]
+	\begin{center}
+		%\vspace{-0em}
+		\includegraphics[width=\linewidth]{./fig/plot-1-3.pdf}
+	\end{center}
+	\caption{}
+	\label{fig:plot-1-3}
+\end{figure}
+%
+\begin{figure}[H]
+	\begin{center}
+		%\vspace{-0em}
+		\includegraphics[width=\linewidth]{./fig/plot-1-1.pdf}
+	\end{center}
+	\caption{}
+	\label{fig:plot-1-4}
+\end{figure}

@@ -7,18 +7,19 @@ pr.n = 1000; %length of the input signal
 pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
-pr.max_iter = 30;
-pr.del = 1.0; %amplification factor
+pr.max_iter = 1;
+pr.R = 1; %period of the modulo function
+pr.del = 5; %truncation factor for supp estimation
 
 %Tuned parameters
 pr.mspan1 = [100:100:1000];
-pr.mspan2 = [1000:1000:10000];
+pr.mspan2 = [1000:1000:8000];
 pr.mspan=[pr.mspan1,pr.mspan2];
-%pr.mspan=5000:1000:8000;
+%pr.mspan=4000:4000:4000;
 pr.s_span = 5:5:5; % sparsity
-pr.R = 1; %period of the modulo function
-pr.del_p=0.05; % ps = del*m (sparsity pertaining to error in p)
-pr.method = 'cosamp';
+pr.amp = 0.5; %amplification factor 
+pr.del_p = 0.35; % ps = del*m (sparsity pertaining to error in p)
+pr.method = 'robust-cosamp';
 
 
 err = zeros(length(pr.mspan),length(pr.s_span));
@@ -32,20 +33,20 @@ for j = 1:length(pr.mspan)
     for k = 1:length(pr.s_span)
         s = pr.s_span(k);
         %Generate the ground truth signal
-        [z,z_ind] =  generate_signal(pr.n,s,pr.b);
+        [z,z_ind] =  generate_signal(pr.n,s,pr.b, pr.amp);
 
         %Generate the measurements: y=mod(Ax,R)
         [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R);
 
         %Calculate the initial estimate
-        x_0 = initial_estimate(A,y_mod,s,pr.R,pr.del,1);
+        x_0 = initial_estimate(A,y_mod,s,pr.R,pr.del,pr.amp);
         
         %relative error in initial estimate
         init_err(j,k) = norm(z-x_0)/norm(z);
         
         %Alt-Min
         x= x_0;
-        ps = pr.del_p*m;
+        ps = floor(pr.del_p*m);
 
         fprintf('\n#iter\t\t|y-Ax|\t\t|x-z|\trecovery_prob\n')
         for t=1:pr.max_iter 
@@ -75,7 +76,7 @@ for j = 1:length(pr.mspan)
 end
 
 
-construct_subplots(reconst_err,pr,['rconst_','r_',num2str(pr.R),'_s_',...
+construct_subplots(reconst_err,pr,['rconst_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);
 % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
