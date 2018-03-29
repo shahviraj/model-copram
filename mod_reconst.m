@@ -15,7 +15,7 @@ pr.del = 5; %truncation factor for supp estimation
 pr.mspan1 = [100:100:1000];
 pr.mspan2 = [1000:1000:8000];
 pr.mspan=[pr.mspan1,pr.mspan2];
-%pr.mspan=4000:4000:4000;
+%pr.mspan=8000:8000:8000;
 pr.s_span = 5:5:5; % sparsity
 pr.amp = 0.5; %amplification factor 
 pr.del_p = 0.35; % ps = del*m (sparsity pertaining to error in p)
