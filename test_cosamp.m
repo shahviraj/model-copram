@@ -3,11 +3,11 @@
 clear all;
 %Initialize hyper-parameters
 
-n = 500; %length of the input signal
-m = 200; %number of measurements
-s = 40; % sparsity
+n = 1000; %length of the input signal
+m = 500; %number of measurements
+s = 10; % sparsity
 b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
-R = 2; %period of the modulo function
+R = 4; %period of the modulo function
 iter = 30; %maximum iterations for AltMin based algorithms
 iter_gd = 30; %maximum iterations for WF/AF based algorithms (typically take higher no. to convg)
 tol1 = 1e-3; %error tolerance for measurements
@@ -15,7 +15,7 @@ tol2 = 1e-6;
 
 %Generate the ground truth signal
 
-[z,z_ind] =  generate_signal(n,s,b);
+[z,z_ind] =  generate_signal(n,s,b,1);
 
 %Generate the measurements: y=mod(Ax,R)
 [y_mod, y_p, A] = modulo_measure_signal(m,z,R);
@@ -28,8 +28,8 @@ err_init = 0.0*sig_span;
 
 for k = 1:length(sig_span)
     noise = sig_span(k)*randn(n,1);
-    [y_mod, y_p, A] = modulo_measure_signal(m,z+noise,R);
-    %x_init = z + noise;
+    [y_mod, y_p, A] = modulo_measure_signal(m,z,R);
+    x_init = z + noise;
     
     x = cosamp((y_mod-R*y_p)/sqrt(m), A/sqrt(m),s,10,x_init);
     
@@ -41,7 +41,7 @@ end
 figure;
 %plot(sig_span, err_init);
 plot(sig_span, err_sig);
-
+title('Mod: Variation of relative error in y with perturbed initialization');
 
 %Test the robust-ness of cosamp for perterbed y_p
 

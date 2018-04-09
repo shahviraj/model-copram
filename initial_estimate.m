@@ -1,4 +1,4 @@
-function x_0 = initial_estimate(A,y_mod,s,R,del, normz)
+function x_0 = initial_estimate(A,y_mod,s,R,del,normz)
 
     [m,n] = size(A);
     Marg = zeros(1,n); %marginals
@@ -20,7 +20,7 @@ function x_0 = initial_estimate(A,y_mod,s,R,del, normz)
   
     for i = 1:card_Marg
         ii = Io(i);
-        MShat = MShat + (y_mod(ii))*AShat(ii,:)'; % (s x s)
+        MShat = MShat + (y_mod(ii))*AShat(ii,:)'; % (s x 1)
     end
     
     MShat = MShat/card_Marg;

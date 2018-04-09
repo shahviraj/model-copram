@@ -1,10 +1,10 @@
 %% Variation of rho (range of A*x) with 'm'
 n = 1000;
-s = 20;
+s = 1000;
 b = 1;
-mspan= 500:1000:10000;
+mspan= 100:100:500;
 n_trials=50;
-[z,z_ind] =  generate_signal(n,s,b);
+[z,z_ind] =  generate_signal(n,s,b,1);
 rho= zeros(length(mspan),n_trials);
 normy= zeros(length(mspan),n_trials);
 for j=1:n_trials

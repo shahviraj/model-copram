@@ -27,3 +27,11 @@ octave-workspace
 # Signals and results
 *.mat
 *.jpg
+
+#Latex log files
+*.log
+*.aux
+*.blg
+*.out
+*.synctex.gz
+
