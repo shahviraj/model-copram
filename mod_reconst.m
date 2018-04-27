@@ -7,19 +7,19 @@ pr.n = 1000; %length of the input signal
 pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
-pr.max_iter = 30;
-pr.R = 4; %period of the modulo function
+pr.max_iter = 2;
+pr.R = 2; %period of the modulo function
 pr.del = 1; %truncation factor for supp estimation
 
 %Tuned parameters
-pr.mspan1 = [100:100:500];
-pr.mspan2 = [600:100:1000];
+pr.mspan1 = [1000:1000:1000];
+pr.mspan2 = [1000:1000:10000];
 pr.mspan=[pr.mspan1,pr.mspan2];
 %pr.mspan=8000:8000:8000;
 pr.s_span = 5:5:5; % sparsity
-pr.amp = 0.5; %amplification factor 
-pr.del_p = 0.35; % ps = del*m (sparsity pertaining to error in p)
-pr.method = 'cosamp';
+pr.amp = 1; %amplification factor 
+pr.del_p = 0.2; % ps = del*m (sparsity pertaining to error in p)
+pr.method = 'robust-cosamp';
 pr.init_method = 'rcm';
 pr.svd_opt = 'svd';
 
@@ -47,33 +47,40 @@ for j = 1:length(pr.mspan)
             case 'raf'
                 x_0 = raf_init();
             case 'rcm' %Re-Calculated Measurements
-                x_0 = rcm_init(A,y_mod,s,pr);
+                [x_0,p_refined,idx] = rcm_init(A,y_mod,s,pr);
         end
         
         %relative error in initial estimate
         init_err(j,k) = norm(z-x_0)/norm(z);
-        
+        disp('Initialization error')
+        norm(z-x_0)/norm(z)
         %Alt-Min
         x= x_0;
         ps = floor(pr.del_p*m);
-
+        p = p_refined;
+        y = A*x;
+        
+        p(idx) = (-sign(y(idx))+1)/2;
+            
+        disp('error in y after  correction')
+        norm((y_mod-y_p*pr.R)-(y_mod-p*pr.R))/norm(y_mod-y_p*pr.R)
+            
+            
         fprintf('\n#iter\t\t|y-Ax|\t\t|x-z|\trecovery_prob\n')
+        
         for t=1:pr.max_iter 
-
-            p = (-sign(A*x)+1)/2;
-
             switch pr.method
                 case 'cosamp'
                     x = cosamp((y_mod-pr.R*p)/sqrt(m), A/sqrt(m),s,100,x); %Its = 100
                 case 'robust-cosamp'
                     [x,delta_p] = mod_cosamp(y_mod,p,A,x,pr.R,s,ps);
             end
-
+            p = (-sign(A*x)+1)/2;
             %err_hist(t+1,1) = norm(y_mod-mod(A*x,R))/norm(y_mod);
             err_hist(t+1,1) = norm((y_mod-y_p*pr.R)-(A*x))/norm(y_mod-y_p*pr.R);
             err_hist(t+1,2) = norm(x-z)/norm(z);
             recovery_prob = nnz(~(p-y_p));
-            fprintf('\n%d\t\t%2.8f\t\t%2.4f\t\t%2f\n',t,err_hist(t+1,1),err_hist(t+1,2),recovery_prob)
+            fprintf('\n%d\t\t%2.8f\t\t%2.4f\t\t%2.0f\n',t,err_hist(t+1,1),err_hist(t+1,2),recovery_prob)
             if (err_hist(t+1,1) < pr.tol1) | (abs(err_hist(t,2)-err_hist(t+1,2))<pr.tol2)
                 break;
             end
