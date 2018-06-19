@@ -86,6 +86,12 @@ for t=1:max_iter
     p = sign(A*x);
     x = cosamp(p.*y_abs/sqrt(m), A/sqrt(m), s,10,x); %Its = 10
     
+%     y_eff = p.*y_abs/sqrt(m);
+%     A_eff = A/sqrt(m);
+%     disp('error in CoSaMP output')
+%     norm(y_eff-(A_eff*x)/norm(y_eff))
+    
+    
     err_hist(t+1,1) = norm(y_abs-abs(A*x))/norm(y_abs);
     err_hist(t+1,2) = norm(x-z)/norm(z);
     fprintf('\n%d\t\t%2.8f\t\t%2.4f\n',t,err_hist(t+1,1),err_hist(t+1,2))

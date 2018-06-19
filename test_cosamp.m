@@ -22,7 +22,7 @@ tol2 = 1e-6;
 
 
 %Test the robust-ness of cosamp for perturbed initialization
-sig_span = 0.01:0.02:0.2;
+sig_span = 0.0;%:0.0:0.0;
 err_sig = 0.0*sig_span;
 err_init = 0.0*sig_span;
 
@@ -31,7 +31,7 @@ for k = 1:length(sig_span)
     [y_mod, y_p, A] = modulo_measure_signal(m,z,R);
     x_init = z + noise;
     
-    x = cosamp((y_mod-R*y_p)/sqrt(m), A/sqrt(m),s,10,x_init);
+    x = cosamp((y_mod-R*y_p)/sqrt(m), A/sqrt(m),s,10);
     
     
     %err_init(k) = norm(z-x_init)/norm(z);
@@ -43,27 +43,27 @@ figure;
 plot(sig_span, err_sig);
 title('Mod: Variation of relative error in y with perturbed initialization');
 
-%Test the robust-ness of cosamp for perterbed y_p
-
-perterb_prob = 1:3:30;
-err_y_per = 0.0*perterb_prob;
-err_x_per = 0.0*perterb_prob;
-for i = 1:length(perterb_prob)
-    perterb_idx = randperm(s,perterb_prob(i));
-    y_perter = y_p;
-    y_perter(perterb_idx)= 1 -y_perter(perterb_idx);
-    
-    x = cosamp((y_mod-R*y_perter)/sqrt(m), A/sqrt(m),s,10);
-    
-    err_y_per(i) = norm((y_mod-y_p*R)-(y_mod-y_perter*R))/norm((y_mod-y_p*R));
-    err_x_per(i) = norm(x-z)/norm(z);
-    
-end
-figure;
-plot(perterb_prob,err_y_per);
-title('Mod: Variation of relative reconstruction error in x with number of perturbations in p');
-figure;
-plot(perterb_prob, err_x_per);
-title('Mod: Variation of relative error in y with number of perturbations in p');
-    
-    
+% %Test the robust-ness of cosamp for perterbed y_p
+% 
+% perterb_prob = 1:3:30;
+% err_y_per = 0.0*perterb_prob;
+% err_x_per = 0.0*perterb_prob;
+% for i = 1:length(perterb_prob)
+%     perterb_idx = randperm(s,perterb_prob(i));
+%     y_perter = y_p;
+%     y_perter(perterb_idx)= 1 -y_perter(perterb_idx);
+%     
+%     x = cosamp((y_mod-R*y_perter)/sqrt(m), A/sqrt(m),s,10);
+%     
+%     err_y_per(i) = norm((y_mod-y_p*R)-(y_mod-y_perter*R))/norm((y_mod-y_p*R));
+%     err_x_per(i) = norm(x-z)/norm(z);
+%     
+% end
+% figure;
+% plot(perterb_prob,err_y_per);
+% title('Mod: Variation of relative reconstruction error in x with number of perturbations in p');
+% figure;
+% plot(perterb_prob, err_x_per);
+% title('Mod: Variation of relative error in y with number of perturbations in p');
+%     
+%     

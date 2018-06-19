@@ -14,7 +14,7 @@ clear all;
 %% signal model
 n = 1000; %signal length
 %kspan = 3:3:30; %sparsity vector
-kspan=3;
+kspan=5;
 kl = length(kspan);
 b = 1; %block length (non-essential for evaluating standard sparse models; trivially b=1)
 
