@@ -1,4 +1,19 @@
-function construct_subplots(Y1,pr,savename, method)
+function construct_subplots(err_data,pr,savename,plot_method,save_data)
+
+% prepare the data for plotting according to the plot_method:
+switch plot_method
+    case 'mean-error'
+       Y1 = squeeze(mean(err_data,3));
+    case 'median-error'
+       Y1 = squeeze(median(err_data,3));
+    case 'max-error'
+        Y1 = squeeze(max(err_data,3));
+    case 'confidence'
+        binary_err = (err_data < 0.0001);
+        Y1 = squeeze(sum(binary_err,3))/pr.num_trials;
+end
+
+
 
 % Create figure
 figure;
@@ -84,14 +99,23 @@ ylim([0,1]);
 %yticks(0:0.1:1.5)
 pbaspect([1 1 1]);
 hold(axes2,'off');
-switch method
-    case 'cosamp'
- p = mtit(['\textbf{Relative reconstruction error vs number of measurements; for CoSaMP with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
+
+p = mtit(['\textbf{Relative reconstruction }','\textbf{',pr.plot_method,' vs no. of measurements; for }','\textbf{',pr.method,' with} $\mathbf{||x^*||=',num2str(pr.amp),' ,R=',num2str(pr.R),',n=',num2str(pr.n),'}$'],...
     'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
-    case 'robust-cosamp'
-  p =  mtit(['\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
-    'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
+% switch pr.method
+%     case 'cosamp'
+%  p = mtit(['\textbf{Relative reconstruction error vs number of measurements; for}','\textbf{',pr.method,' with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
+%     'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
+%     case 'robust-cosamp'
+%  p =  mtit(['\textbf{Relative reconstruction error vs number of measurements; for robust CoSaMP with} $\mathbf{||x^*||=',num2str(pr.amp),'}$'],...
+%     'Interpreter','latex','FontSize',22,'xoff',0.0,'yoff',-0.1);
+% end
+savepath = ['./results/mod_recovery_results/',savename,num2str(datenum(datetime('now')))];
+if save_data == 1
+    
+    save([savepath,'.mat'],'err_data');
 end
 
-savefig(['./results/mod_recovery_results/',savename,'_double.fig'])
+savefig([savepath,'_',pr.plot_method,'_double.fig']);
+
 
