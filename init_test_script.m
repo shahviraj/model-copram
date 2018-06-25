@@ -1,19 +1,19 @@
 clear all;
 clc;
-rng ('shuffle')
+%rng ('shuffle')
 pr = struct;
 %Fixed parameters
 pr.n = 1000; %length of the input signal
 pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
-pr.R = 1; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.del = 1; %truncation factor for supp estimation
 pr.l_pos = 1;
 pr.l_neg = -3;
 %Tuned parameters
-pr.mspan=1000:1000:10000;
+pr.mspan=100:100:1000;
 %pr.mspan=8000:8000:8000;
-pr.s_span = 25:25:25; % sparsity
-pr.amp =0.25; %amplification factor 
+pr.s_span = 3:3:3; % sparsity
+pr.amp =1; %amplification factor 
 pr.method = 'cosamp';
 pr.init_method = 'rcm';
 pr.svd_opt = 'svd';
@@ -60,9 +60,9 @@ for j = 1:length(pr.mspan)
 end
 
 
-plot(pr.mspan,init_err(:,1),'-b');
-hold on;
-plot(pr.mspan,init_err_mo(:,1),'-r');
+% plot(pr.mspan,init_err(:,1),'-b');
+% hold on;
+% plot(pr.mspan,init_err_mo(:,1),'-r');
 
 legend_cell = cell(2,1);
 legend_cell{1} = 'RCM';

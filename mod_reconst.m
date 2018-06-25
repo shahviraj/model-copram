@@ -1,6 +1,7 @@
 clear all;
 clc;
-rng ('shuffle')
+tic;
+%rng ('shuffle')
 pr = struct;
 %Fixed parameters
 pr.n = 1000; %length of the input signal
@@ -8,12 +9,12 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 2; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.del = 1; %truncation factor for supp estimation
-
+pr.spgl_opts = spgSetParms('verbosity',0);
 %Tuned parameters
-pr.mspan1 = [100:100:1000];
-pr.mspan2 = [1000:400:5000];
+pr.mspan1 = [100:100:500];
+pr.mspan2 = [600:100:1000];
 pr.mspan=[pr.mspan1,pr.mspan2];
 %pr.mspan=1000:1000:1000;
 pr.num_trials = 10;
@@ -21,13 +22,13 @@ pr.s_span = 3:3:12; % sparsity
 pr.amp = 1; %amplification factor 
 pr.del_p = 0.005; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'justice-pursuit';
-pr.init_method = 'rcm';
+pr.init_method = 'moram';
 pr.svd_opt = 'svd';
 pr.plot_method = 'mean-error';
 
 err = zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
 supp_recvr=zeros(length(pr.mspan),length(pr.s_span));
-init_err=zeros(length(pr.mspan),length(pr.s_span));
+init_err=zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
 reconst_err=zeros(length(pr.mspan),length(pr.s_span));
 
 for j = 1:length(pr.mspan)
@@ -55,7 +56,7 @@ for j = 1:length(pr.mspan)
             end
 
             %relative error in initial estimate
-            init_err(j,k) = norm(z-x_0)/norm(z);
+            init_err(j,k,l) = norm(z-x_0)/norm(z);
             disp('Initialization error')
             norm(z-x_0)/norm(z)
             %Alt-Min
@@ -84,10 +85,13 @@ for j = 1:length(pr.mspan)
                         norm(y_eff-(A_eff*x))/norm(y_eff)
 
                     case 'justice-pursuit'
-                        [x,delta_p] = mod_l1_bp(y_mod,p,A,x,pr.R);
-
+                        %[x,delta_p] = mod_l1_bp(y_mod,p,A,x,pr.R); % l1 -magic implementation -- slow
+                        
+                        [x,delta_p] = mod_spgl1_bp(y_mod,p,A,x,pr.R, pr.spgl_opts); % SPGL1 implementation -- faster
+                        
                     case 'basis-pursuit'
-                        x = l1eq_pd(x,A/sqrt(m), [], (y_mod-pr.R*p)/sqrt(m));
+                        x = l1eq_pd(x,A/sqrt(m), [], (y_mod-pr.R*p)/sqrt(m)); % l1-magic implementation -- slow
+                        
 
                     case 'robust-cosamp'
                         [x,delta_p] = mod_cosamp(y_mod,p,A,x,pr.R,s,ps);
@@ -109,7 +113,7 @@ for j = 1:length(pr.mspan)
     end
     
 end
-
+toc
 % p_err = y_p - p;
 % p_err_idx = find(p_err~=0);
 % y_true = A*z;
@@ -125,7 +129,7 @@ end
 construct_subplots(reconst_err,pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
-
+% 
 % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
 %     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 %     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);
