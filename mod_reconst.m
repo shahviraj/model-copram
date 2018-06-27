@@ -9,7 +9,8 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 4; %period of the modulo function
+pr.R = 2; %period of the modulo function
+pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
 %Tuned parameters
@@ -22,7 +23,7 @@ pr.s_span = 3:3:12; % sparsity
 pr.amp = 1; %amplification factor 
 pr.del_p = 0.005; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'justice-pursuit';
-pr.init_method = 'moram';
+pr.init_method = 'true-rcm';
 pr.svd_opt = 'svd';
 pr.plot_method = 'mean-error';
 
@@ -48,11 +49,13 @@ for j = 1:length(pr.mspan)
                 case 'copram'
                     x_0 = copram_init(y_mod,A,s);
                 case 'moram'
-                    x_0 = initial_estimate(A,y_mod,s,pr.R,pr.del,pr.amp);
+                    x_0 = moram_init(A,y_mod,s,pr.R,pr.del,pr.amp);
     %             case 'raf'
     %                 x_0 = raf_init();
                 case 'rcm' %Re-Calculated Measurements
                     [x_0,p_refined,idx] = rcm_init(A,y_mod,s,pr);
+                case 'true-rcm'
+                    [x_0,p_refined] = true_rcm_init(A,y_mod,s,pr);
             end
 
             %relative error in initial estimate

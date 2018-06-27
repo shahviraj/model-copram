@@ -1,6 +1,6 @@
 function [z,z_ind] = generate_signal(n,K,b,amp)
 %edited 2/15/2017
-rng ('shuffle')
+%rng ('shuffle')
 N_bl = floor(n/b);
 save_str = ['block_sparse_sig_',num2str(b),'_',num2str(K),'_',num2str(n),'.mat'];
 %cd('signal_model')
