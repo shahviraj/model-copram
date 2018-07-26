@@ -1,0 +1,80 @@
+\newpage
+
+\section{Mathematical Analysis}
+
+\subsection{Analysis of the Initialization}
+We perform the initialization in two steps:
+(i) Measurement correction step, (ii) Estimation step.
+
+\subsubsection{Measurement correction step}: In this step, based on the absolute value of the modulo measurements, we identify the measurements for which we can undo the effect of the modulo operation by guessing the correct value of $\mathbf{p}$. We define the set $T$ as set of indices of all such measurements.
+
+We determine the measurements to be corrected based on the method described in section~{\todo{add section}}. 
+In this analysis, our goal is to find out the total number of measurements ($N=|T|$), that can be corrected through the \todo{histogram analysis -  change the term}. Only these $N$ measurements would be used in the estimation step.
+Each element of $A$ id i.i.d. standard normal, thus, $\mu_{A_{ij}} = 0$ and $\sigma_{A_{ij}}=1$.
+$$
+y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle = \sum_{j=1}^{n}A_{ij}x^*_{j}.
+$$
+
+So, 
+$$
+y_{c,i} \sim \mathcal{N}\left(\mu= \sum_{j=1}^{n}x^{*}\mu_{A_{ij}}, \sigma =\sum_{j=1}^{n}x^{*2}_{j}\sigma^2_{A_{ij}}\right)
+$$
+$$
+\implies y_{c,i} \sim \mathcal{N}\left(\mu= 0, \sigma =\sum_{j=1}^{n}x^{*2}_{j} = \norm{\mathbf{{x}^*}}^2 = 1 \right)
+$$
+
+Here, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
+
+Now to calculate $N$, we consider the following result:
+We can calculate $N$ using the fact that the measurements follow the standard normal distribution, and the total number of measurements are $m$.
+Number of measurements lying in the interval $[\alpha,\beta]$ = $mP(\alpha \leq y_{c,i}\geq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
+Where, $Q(\cdot)$ is Q-function, defined as, $Q(t) = 1-\Phi(t)$ with $\Phi(\cdot)$ being CDF of standard normal distribution. \\
+We also note that $Q(-t) = 1 - Q(t)$. \\
+Q-function is not an elementary function. However, it can be bounded by following functions where $\phi(\cdot)$ is standard normal density function:
+$$
+\left(\frac{t}{1+t^2}\right)\phi(t) < Q(t) < \frac{\phi(t)}{t}.
+$$
+
+case (i) $R > \rho$: in this case, \\
+$N$ = number of measurements lying in the interval $[-R + \rho,0]$ + number of measurements lying in the interval $[0, R-\rho]$.
+\begin{equation}
+N = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right)
+~~ = m\left(Q(-(R-\rho))- Q(R-\rho)\right) 
+~~ = m\left(1-2Q(R-\rho)\right)
+\end{equation}
+
+Using the above bounds,
+$$
+N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)
+$$
+
+case (ii) $R < \rho$: in this case, \\
+$N$ = number of measurements lying in the interval $[-\rho,-R]$ + number of measurements lying in the interval $[R,\rho]$.
+\begin{equation}
+N = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right)
+~~ = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) 
+~~ = 2m\left(Q(R)-Q(\rho)\right)
+\end{equation}
+
+Using the above bounds,
+$$
+N \geq 2m \left(\frac{R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)
+$$
+
+
+\subsubsection{Estimation step}
+
+We calculate the initial estimate using the measurements in set $T$ as following,
+$$
+\mathbf{{x}^0} = M = \frac{1}{|T|}\sum_{i\in T}y_{i}a_{i}.
+$$
+
+We use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $T$.
+$$
+\mathbf{{x}^0} = M = \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i} =  \frac{1}{N}A^T\mb{y_T}.
+$$
+Substituing $\mb{y_T}=A_T\mb{x^*}$,
+$$
+\mathbf{{x}^0} = M = \frac{1}{N}A_T^\t A_T\mb{x^*}.
+$$
+\subsection{Analysis of the Convergence}

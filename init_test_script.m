@@ -61,7 +61,7 @@ for j = 1:length(pr.mspan)
     
 end
 
-
+figure;
 plot(pr.mspan,init_err(:,1),'-b');
 % hold on;
 % plot(pr.mspan,init_err_mo(:,1),'-r');

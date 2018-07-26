@@ -2,10 +2,10 @@ function [x_0,p_refined] = true_rcm_init(A,y_mod,s,pr)
     [m,n] = size(A);
     
     
-    t0 = 0;
-    tl = max(0.0, (pr.R-pr.rho));
-    tu = max(pr.R,pr.rho);
-    tr = pr.R;
+%     t0 = 0;
+%     tl = max(0.0, (pr.R-pr.rho));
+%     tu = max(pr.R,pr.rho);
+%     tr = pr.R;
     
     % Re-Calculated Measurements
     

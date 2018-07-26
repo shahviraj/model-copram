@@ -9,15 +9,15 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 2; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
 %Tuned parameters
-pr.mspan1 = [100:100:500];
-pr.mspan2 = [600:100:1000];
-pr.mspan=[pr.mspan1,pr.mspan2];
-%pr.mspan=1000:1000:1000;
+%pr.mspan1 = [100:100:2000];
+%pr.mspan2 = [600:100:1000];
+%pr.mspan=[pr.mspan1,pr.mspan2];
+pr.mspan=100:100:2000;
 pr.num_trials = 10;
 pr.s_span = 3:3:12; % sparsity
 pr.amp = 1; %amplification factor 
@@ -132,7 +132,7 @@ toc
 construct_subplots(reconst_err,pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
-% 
+
 % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
 %     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 %     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);
