@@ -94,10 +94,9 @@ Let $\epsilon \in (0,1), t\geq 1$,
 We invoke the Corrolary 5.50 of \cite{} \todo{cite vershynin},
 \theorem{Let $\epsilon\in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm \todo{add algo ref}. If the total number of corrected measurements satisfy, $N \geq C(\frac{t}{\epsilon})^2n$, then  with probability at least $1 - 2\exp\left(-t^2n\right)$ we have,
 $$
-\norm{\mb{x^0} - \mb{x^*}}_2 \leq \epsilon \norm{\mb{x^*}}_2
+\norm{\mb{x^0} - \mb{x^*}}_2 \leq \epsilon \norm{\mb{x^*}}_2.
 $$
-
- }
+}
 
 \begin{align*}
 \norm{\Sigma_N - \Sigma} &\leq \epsilon \\
@@ -107,4 +106,80 @@ $$
 \implies \norm{\left(\frac{1}{N} A_T^\t A_T\mb{x^*} - \mb{x^*}\right)}_2 &\leq \epsilon \norm{\mb{x^*}_2} \\
 \implies \norm{\mb{x^0} - \mb{x^*}}_2 &\leq \epsilon \norm{\mb{x^*}}_2 \\
 \end{align*}
+
+
 \subsection{Analysis of the Convergence}
+We perform the Alternative Minimization Algorithm as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. 
+The first step is to obtain the initial estimate for bin-index vector, $\mb{p^0}$ using $\mb{x^0}$.
+$$
+\mathbf{{p}^{0}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2}.
+$$
+If we try to undo the effect of modulo operation by adding back $R$ for the affected measurements based on the bin-index vector $\mb{p^0}$, it would introduce the error equaling $R$ corresponding to the incorrect bin-index values in $\mb{p^0}$.
+$$
+\mathbf{y^0_c} = \langle \mathbf{A}\mathbf{x^{0}} \rangle = \mathbf{y} - \mathbf{p^0}R,
+$$
+
+If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector $\mb{p^*}$, then the fraction of noisy measurements in $\mb{y^0_c}$ with respect to total number of measurements $m$ is small enough to treat $\mb{y^0_c}$ as sparsely corrupted measurements. Unlike the general cases of noise, in this case the corruption cannot be modeled as a probability distribution. However, if we model this corruption as a sparse noise, then we can employ Justice Pursuit for a guaranteed recovery of the true signal given (i) sparsity of the noise is a fraction of total number of measurements; (ii) sufficiently large number of measurements are available. In the following theorem, we claim the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $Cm$, with $C$ being a fraction. 
+
+\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta_1$. Let $\epsilon \in (0,1)$. Given the number of measurements $m \geq ***$, following is true with probability exceeding $1 - (****)$:
+	
+	$$
+	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \delta_1 + \epsilon;
+	$$
+where $d_H$ is Hamming distance between binary vectors defined as:
+
+$$
+d_H(\mb{a,b}) =: \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i \textnormal{~~for $n-$ dimensional binary vectors~} \mb{a,b}.
+$$ 
+}
+\textit{Proof.} For proof, we first introduce the concept of binary $\epsilon$-stable embedding as appears in \todo{cite jacques}.
+\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
+$$
+d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
+$$
+for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
+}
+ 
+In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ \todo{add definition of Bm} as:
+$$
+F(\mb{x})=: \sgn(\mb{Ax});
+$$
+with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
+
+Given $m > ****$, using Theorem 3 from \todo{cite jacques} we conclude that $F$ is a B$\epsilon$SE for $s$-sparse vectors.
+Thus for sparse vectors $\mb{x^*, x^0}$:
+$$
+d_H(F\mb{(x^*)},F\mb{(x^0)}) \leq d_S(\mb{x^*,x^0}) + \epsilon
+$$
+
+$$
+\implies d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \delta_1 + \epsilon.
+\qed
+$$
+
+
+\todo{conversion from angle to l2 distance}
+
+\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta_1\norm{\mb{x^*}}_2$, for $0 < \delta_1 < 1$, if we have number of (Gaussian) measurements $m > ****$ , then the iterates of Algorithm \ref{alg:MoRAM} satisfy:
+$$
+\norm{\mb{x^{t+1} - x^*}}_2 \leq \rho_0 \norm{\mb{x^t}-\mb{x^*}}_2,
+$$
+with probability greater than $1-****$, for $0<\rho_0<1$.
+}
+
+\textit{Proof.} We compute the corruption in $\mb{y_c^0}$ as,
+
+$$
+\eta = \mb{y_c^0 - y_c} = \mathbf{y} - \mathbf{p^0}R - \mathbf{y} + \mathbf{p^*}R = (\mb{p^*-p^0})R = \Delta\mb{p}R.
+$$
+
+Expanding further,
+\begin{align*}
+\eta  & = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2} -  \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^*} \rangle)}{2} \\
+& = \frac{\sgn({\mb{Ax^*}})- \sgn({\mb{Ax^0}})}{2} \\
+& = \frac{F\mb{(x^*)} - F\mb{(x^0)}}{2} \\
+& = d_H(F\mb{(x^*)}, F\mb{(x^0)}) \\
+& \leq \delta_1 + \epsilon = C_1m.
+\end{align*}
+
+Justice Pursuit formulation is used to recover the signal in th

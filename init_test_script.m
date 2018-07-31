@@ -13,7 +13,7 @@ pr.l_neg = -3;
 %Tuned parameters
 pr.mspan=100:100:1000;
 %pr.mspan=8000:8000:8000;
-pr.s_span = 3:3:3; % sparsity
+pr.s_span = 9:9:9; % sparsity
 pr.amp =1; %amplification factor 
 pr.method = 'cosamp';
 pr.init_method = 'true-rcm';
@@ -52,6 +52,8 @@ for j = 1:length(pr.mspan)
                 x_0 = rcm_init(A,y_mod,s,pr);
             case 'true-rcm'
                 x_0 = true_rcm_init(A,y_mod,s,pr);
+                %Making the x_0 sparse by Hard thresholding
+                x_0 = make_sparse(x_0,s);
         end
         
         %relative error in initial estimate
