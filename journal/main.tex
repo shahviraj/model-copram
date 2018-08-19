@@ -1,7 +1,7 @@
 %\pdfoutput=1
 
 \documentclass[conference]{IEEEtran}
-\usepackage{authblk}
+%\usepackage{authblk}
 \usepackage{todonotes}
 \usepackage[margin=1in]{geometry}
 \usepackage[parfill]{parskip}
@@ -42,14 +42,14 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}
 %\title{Compressed Sensing on GANs using Iterative Projections}
-\title{Reconstruction from Modulo Measurements}
-\date{}
+
+
 \def\sgn{\mathrm{sgn}}
 \def\t{\intercal}
 \def\cosamp{\mathrm{CoSaMP}}
-\author{Viraj Shah}
-\author{Chinmay Hegde}
-\affil{ECpE Department, Iowa State University}
+%\author{Viraj Shah}
+%\author{Chinmay Hegde}
+%\affil{ECpE Department, Iowa State University}
 
 \newcommand{\norm}[1]{\|#1\|}
 \newcommand{\eps}{\epsilon}
@@ -59,10 +59,22 @@
 \usepackage[utf8]{inputenc}
 \usepackage{booktabs}
 \usetikzlibrary{calc}
-
 \hyphenation{op-tical net-works semi-conduc-tor}
 \begin{document}
-\vspace{-25em}
+\title{Reconstruction from Modulo Measurements}
+
+\author{\IEEEauthorblockN{Viraj Shah}
+\IEEEauthorblockA{Department of Electrical and\\Computer Engineering\\
+Iowa State University\\
+Ames, Iowa 50011\\
+Email: viraj@iastate.edu}
+\and
+\IEEEauthorblockN{Chinmay Hegde}
+\IEEEauthorblockA{Department of Electrical and\\Computer Engineering\\
+Iowa State University\\
+Ames, Iowa 50011\\
+Email: chinmay@iastate.edu}}
+
 \maketitle
 \input{./model}
 \input{./math_analysis}

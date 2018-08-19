@@ -3,7 +3,7 @@ We consider the problem of recovery of a signal from its modulo measurements obt
 
 \begin{figure}[h]
 	\begin{center}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
 \draw[<->] (-4,0) -- (4,0) node[right] {$t$};
 \draw[->] (0,-1) -- (0,4) node[above] {$f(t)$};
 \draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
@@ -96,7 +96,7 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 
 \begin{figure}[h]
 	\begin{center}
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
 		\def\normaltwo{\x,{3*1/exp(((\x)^2)/2)}}
 		\def\y{4.4}
 		
@@ -129,7 +129,7 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 \end{figure}
 \begin{figure}[h]
 	\begin{center}
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
 		\def\normaltwo{\x,{3*1/exp(((\x)^2)/2)}}
 		\def\normalone{\x,{3*1/exp(((\x-4)^2)/2)}}
 		\def\normalsum{\x,{3*1/exp(((\x-4)^2)/2)+3*1/exp(((\x)^2)/2)}}
@@ -173,7 +173,7 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 
 \begin{figure}[!h]
 	\begin{center}
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
 		\def\normaltwo{\x,{3*1/exp(((\x)^2)/2)}}
 		\def\normalone{\x,{3*1/exp(((\x-2)^2)/2)}}
 		\def\normalsum{\x,{3*1/exp(((\x-2)^2)/2)+3*1/exp(((\x)^2)/2)}}
@@ -228,7 +228,10 @@ We divide the number line in the following 5 intervals, and assign the bin-value
 \label{eq:rcm}
 \end{equation}
 Thus, we can identify the correct bin values for part of the measurements just by observing their magnitude. We define set $T$ as the set of measurements for which we can identify the bin-values correctly. We introduce $N=:|T|$.
-$$N = m - \textnormal{number of measurements lying in the region of uncertainity}$$
+\begin{align*}
+N & =  m - \textnormal{number of measurements lying} \\
+     &~~~\textnormal{in the region of uncertainity}
+\end{align*}
 Value of $N$ largely depends on the difference between $\rho$ and $R$.
 
 Once we identify the correct bin-values for part of the measurements, we can re-calculate corrected measurements as,
@@ -236,7 +239,6 @@ $$
 \mathbf{y_{c} = y + p^{rcm}R}.
 $$
 We use these corrected measurements $\mathbf{y_{rcm}}$ to calculate the initial estimate $\mathbf{{x}^0}$ using the estimation step described in the upcoming section.
-
 \subsubsection{Calculating the initial estimate from the corrected measurements}
 In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected measurements using first order unbiased estimator. For that, we use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $T$:
 \begin{equation}
@@ -244,7 +246,6 @@ In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected mea
 \label{eq:init}
 \end{equation}
 where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest absolute entries of a vector and sets the other entries to zero.
-
 \subsection{Alternative Minimization}
 \label{sec:altmin}
 \begin{algorithm}[H]
@@ -257,11 +258,11 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 		\State \textbf{Initialization}
 		\State $\mathbf{x^0} \leftarrow \textrm{RCM}(\mathbf{y, A})$ 
 		\State \textbf{Alternative Minimization}
-		\For {$l =0:\mathrm{max_iter}$}
+		\For {$l =0:\mathrm{maxiter}$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
-		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^T}\norm{u}_1 ~~ s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}.$ 
-		\State $\implies \mathbf{{x}^{t+1}}\leftarrow JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},[\mathbf{x^t~~p^t}]^T)$.
+		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^T}\norm{u}_1  s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}$ 
+		\State $\implies \mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},[\mathbf{x^t~~p^t}]^T)}$.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
@@ -298,7 +299,7 @@ $$
 \mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^T \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
 \begin{equation}
-\implies \mathbf{{x^{t+1}}} = \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^T).
+= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^T).
 \label{eq:robcosamp}
 \end{equation}
 We call the step in Eq.~\ref{eq:robcosamp} a Robust CoSaMP. 

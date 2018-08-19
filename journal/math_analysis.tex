@@ -37,26 +37,26 @@ $$
 
 case (i) $R > \rho$: in this case, \\
 $N$ = number of measurements lying in the interval $[-R + \rho,0]$ + number of measurements lying in the interval $[0, R-\rho]$.
-\begin{equation}
-N = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right)
-~~ = m\left(Q(-(R-\rho))- Q(R-\rho)\right) 
-~~ = m\left(1-2Q(R-\rho)\right)
-\end{equation}
+\begin{align}
+N &  = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right) \nonumber \\
+& = m\left(Q(-(R-\rho))- Q(R-\rho)\right) \nonumber \\
+& = m\left(1-2Q(R-\rho)\right)
+\end{align}
 
-Using the above bounds,
+Using the bounds above,
 $$
 N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)
 $$
 
 case (ii) $R < \rho$: in this case, \\
 $N$ = number of measurements lying in the interval $[-\rho,-R]$ + number of measurements lying in the interval $[R,\rho]$.
-\begin{equation}
-N = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right)
-~~ = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) 
-~~ = 2m\left(Q(R)-Q(\rho)\right)
-\end{equation}
+\begin{align}
+N & = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right) \nonumber \\
+& = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) \nonumber \\
+& = 2m\left(Q(R)-Q(\rho)\right)
+\end{align}
 
-Using the above bounds,
+Using the bounds above,
 $$
 N \geq 2m \left(\frac{R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)
 $$
@@ -121,9 +121,11 @@ Here, let us fix the $s-$sparse vector $\mb{x^*}$ in unit norm ball. We can eval
 with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$.
 
 Taking an union bound over all $n \choose s$ such $s-$sparse vectors,
-$$
-\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \epsilon \norm{\mb{x^*}}_2\right) \geq 1 - 2{n \choose s}\exp\left(-t^2s\right) = 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
-$$
+\begin{align*}
+\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \epsilon \norm{\mb{x^*}}_2\right) & \geq 1 - 2{n \choose s}\exp\left(-t^2s\right) \\ 
+& \geq 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
+\end{align*}
+
 
 The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. We consider,
 \begin{align*}
@@ -154,12 +156,12 @@ In the following theorem, we claim the guaranteed recovery of the true signal as
 	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta_1}{2} + \epsilon;
 	$$
 where $d_H$ is Hamming distance between binary vectors defined as:
-
 $$
-d_H(\mb{a,b}) := \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i \textnormal{~~for $n-$ dimensional binary vectors~} \mb{a,b}.
+d_H(\mb{a,b}) := \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i,
 $$
+for $n-$ dimensional binary vectors $\mb{a,b}$.
 \label{lemma1} 
-}
+} \\
 \textit{Proof.} For proof, we first introduce the concept of binary $\epsilon$-stable embedding as appears in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{0,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
 \definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
 $$
