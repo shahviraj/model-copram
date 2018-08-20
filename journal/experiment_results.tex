@@ -1,11 +1,18 @@
 \section{Numerical experiments}
 \label{sec:exp}
-We perform experiments on a synthetic signal generated randomly with $n=1000$ and $s={3,6,9,12}$. We compute the initial estimate $\mathbf{x^0}$ using first order estimator method described in~\ref{sec:init}. we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with number of measurements $m$ for both the variants of sparse recovery algorithm as described in~\ref{sec:altmin}.
+In this section, we present the results of simulations of signal reconstruction using our algorithm. All numerical experiments were conducted using MATLAB R2017a on a linux system with an Intel CPU and 64GB RAM. Our experiments explores the performance of the MoRAM algorithm on both synthetic data as well as real images.
 
-It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:graph} is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$. To analyze such variations, we fix the $R =1$ in our experiments, while varying the signal strength to vary the magnitudes of $y_{c,i}$. We measure the signal strength by the norm of the original signal ($\norm{\mathbf{{x}^*}}=1$).
+We perform experiments on a synthetic sparse signal $\mb{x^*} \in \R^n$ generated randomly with $n=1000$. The sparsity level of the signal is chosen in steps of $3$ starting from $3$ with a maximum value of $12$. The non-zero elements of the test signal $\mb{x^*}$ are generated using zero-mean Gaussian distribution $\mathcal{N}(0, 1)$ and normalized such that $\norm{\mb{x^*}} =1$. The elements of the Gaussian measurement matrix $\mb{A} \in \R^{m\times n}, a_{ij}$ are also generated using the standard normal distribution $\mathcal{N}(0, 1)$. The number of measurements $m$ is varied from $m = 100$ to $m=1000$ in steps of $100$.  
 
-Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
+It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:graph} is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$. To analyze such variations, we fix the signal strength by setting $\norm{\mb{x^*}} =1$ in our experiments, while varying the value of modulo parameter $R$ as ${1,2,4}$.
 
+Using $\mb{A, x^*}$ and $\R$, We first obtain the compressed modulo measurements $\mb{y}$ by passing the signal through forward model described by Eq.~\ref{eq:modmeas2}. We compute the initial estimate $\mathbf{x^0}$ using the algorithm~\ref{alg:RCM}. For reconstruction, algorithm~\ref{alg:MoRAM} is employed. we plot the variation of the relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^N}}}{\norm{\mathbf{x^*}}}$) with number of measurements $m$ for our AltMin based sparse recovery algorithm MoRAM.
+
+For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo trials, and calculate mean of the relative reconstruction error over these trials. Figs.~\ref{fig:plot-r-1},~\ref{fig:plot-r-2} and~\ref{fig:plot-r-4} illustrate the performance of our algorithm for increasing values of $R$ respectively. It is evident that for each combination of $R$ and $s$, our algorithm converges with probability $1$ to give the exact recovery of the true signal (zero relative error) provided enough number of measurements. In all such cases, the minimum number of measurements required for exact recovery are well below the ambient dimension $(n)$ of the underlying signal. 
+
+%Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
+\subsection{Experiments on real image}
+For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the given image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ image of Lovett Hall (fig.~\ref{fig:lovettorg}), and  we use  the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 0.09n$. We reconstruct the image with MoRAM using $m = 16384$ compressed modulo measurements. 
 
 \begin{center}
 	\begin{table}[h]
@@ -27,28 +34,37 @@ In the Table~\ref{Tab3}, we provide experimental results for each of the combina
 \begin{figure}[h!]
 	\begin{center}
 		%\vspace{-0em}
-		\includegraphics[width=\linewidth]{./fig/plot-1-1_sparse.pdf}
+		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_1_s_3_12_m_100_1000_justice-pursuit.pdf}
 	\end{center}
-	\caption{}
-	\label{fig:plot-2-1}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=1,n=1000$.}}
+	\label{fig:plot-r-1}
 \end{figure}
 
 
 \begin{figure}[h]
 	\begin{center}
 		%\vspace{-0em}
-		\includegraphics[width=\linewidth]{./fig/plot-1-2_sparse.pdf}
+		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_2_s_3_12_m_100_1000_justice-pursuit.pdf}
 	\end{center}
-	\caption{}
-	\label{fig:plot-2-2}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=2,n=1000$.}}
+	\label{fig:plot-r-2}
 \end{figure}
 
 
 \begin{figure}[h]
 	\begin{center}
 		%\vspace{-0em}
-		\includegraphics[width=\linewidth]{./fig/plot-1-3_sparse.pdf}
+		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_4_s_3_12_m_100_1000_justice-pursuit.pdf}
 	\end{center}
-	\caption{}
-	\label{fig:plot-2-3}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=4,n=1000$.}}
+	\label{fig:plot-r-4}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		%\vspace{-0em}
+		\includegraphics[width=0.9\linewidth]{./fig/original_lovett.png}
+	\end{center}
+	\caption{{Original Lovett Hall image}}
+	\label{fig:lovettorg}
 \end{figure}
