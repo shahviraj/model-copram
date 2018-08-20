@@ -1,5 +1,3 @@
-\newpage
-
 \section{Mathematical Analysis}
 
 \subsection{Analysis of the Initialization}
@@ -9,7 +7,7 @@ We perform the initialization in two steps:
 \subsubsection{Measurement correction step}\label{meascorr}: In this step, based on the absolute value of the modulo measurements, we identify the measurements for which we can undo the effect of the modulo operation by guessing the correct value of $\mathbf{p}$. We define the set $T$ as set of indices of all such measurements.
 
 We determine the measurements to be corrected based on the method described in section~\ref{sec:init}. 
-In this analysis, our goal is to find out the total number of measurements ($N=|T|$), that can be corrected through the thresholding the measurements. Only these $N$ measurements would be used in the estimation step.
+In this analysis, our goal is to find out the total number of measurements ($N=\card(T)$), that can be corrected through the thresholding the measurements. Only these $N$ measurements would be used in the estimation step.
 Each element of $\mb{A}$ id i.i.d. standard normal, thus, $\mu_{\mb{A}_{ij}} = 0$ and $\sigma_{\mb{A}_{ij}}=1$.
 $$
 y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle = \sum_{j=1}^{n}\mb{A}_{ij}x^*_{j}.
@@ -66,7 +64,7 @@ $$
 
 We calculate the initial estimate using the measurements in set $T$ as following,
 $$
-\mathbf{{x}^0} = H_s(M) = H_s\left(\frac{1}{|T|}\sum_{i\in T}y_{i}a_{i}\right).
+\mathbf{{x}^0} = H_s(M) = H_s\left(\frac{1}{\card(T)}\sum_{i\in T}y_{i}a_{i}\right).
 $$
 $$
 \implies \mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
@@ -126,7 +124,6 @@ Taking an union bound over all $n \choose s$ such $s-$sparse vectors,
 & \geq 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
 \end{align*}
 
-
 The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. We consider,
 \begin{align*}
 \norm{\mb{{x}^0} - \mb{x^*}}_2 &=  \norm{\mb{\tilde{x}^0} -\tilde{x}^0 +\tilde{x}^0 - \mb{x^*}}_2 \\
@@ -149,6 +146,20 @@ $$
 $$
 
 In the following theorem, we claim the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $C_1m$, with $C_1$ being a fraction.
+For the next lemma, we first introduce the concept of binary $\epsilon$-stable embedding as appeared in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{0,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
+\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
+	$$
+	d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
+	$$
+	for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
+}
+
+In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
+$$
+F(\mb{x}):= \sgn(\mb{Ax});
+$$
+with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
+
 
 \lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta_1\norm{\mb{x^*}}$. Let $\eta \in [0,1], \kappa > 0, \epsilon \in (0,1)$. \\ Given the number of measurements $m \geq \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
 	
@@ -162,20 +173,7 @@ $$
 for $n-$ dimensional binary vectors $\mb{a,b}$.
 \label{lemma1} 
 } \\
-\textit{Proof.} For proof, we first introduce the concept of binary $\epsilon$-stable embedding as appears in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{0,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
-\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
-$$
-d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
-$$
-for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
-}
- 
-In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
-$$
-F(\mb{x}):= \sgn(\mb{Ax});
-$$
-with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
-
+\textit{Proof.} 
 Given $m \geq \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, using Theorem 3 from~\cite{Jacques2013} we conclude that $F(\cdot)$ is a B$\epsilon$SE for $s$-sparse vectors.
 Thus for sparse vectors $\mb{x^*, x^0}$:
 \begin{align}
@@ -233,10 +231,10 @@ If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector
 We compute $\norm{\mb{d}}_0$ as,
 
 $$
-\norm{\mb{d}}_0 =  \norm{(\mb{p^*-p^0})R}_0.
+\norm{\mb{d}}_0 =  \norm{(\mb{p^*-p^0})R}_0;
 $$
 
-Expanding further,
+expanding further,
 \begin{align*}
 \norm{\mb{d}}_0  & = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2} -  \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^*} \rangle)}{2} \\
 & = \frac{\sgn({\mb{Ax^*}})- \sgn({\mb{Ax^0}})}{2} \\
@@ -271,13 +269,16 @@ N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
 \end{align}
 
 Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required for the case $R < \rho$ as,
+
 \begin{align}
-m \geq \max\left[C\left(\frac{t}{\epsilon}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \right]
+m \geq \max & \Bigg[ C\left(\frac{t}{\epsilon}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \nonumber \\ 
+& \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg]
 \label{eq:ineq4}
 \end{align}
- 
+
 Similarly for the case when $R<\rho$ we get,
 \begin{align}
-m \geq \max\left[C\left(\frac{t}{\epsilon}\right)^2s \left(\frac{2R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)^{-1}, \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \right]
+m \geq \max &  \Bigg[C\left(\frac{t}{\epsilon}\right)^2s \left(\frac{2R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)^{-1}, \nonumber \\ 
+& \frac{2}{\kappa^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\kappa}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
 \label{eq:ineq5}
 \end{align}

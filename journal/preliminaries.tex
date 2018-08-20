@@ -1,0 +1,40 @@
+\section{Preliminaries}
+\label{sec:prelim}
+\subsection{Notation}
+\label{subsec:nota}
+In this section, we introduce the notation used throughout in the paper. We denote matrices using bold capital-case letters ($\mb{A,B}$), column vectors using bold-small case letters ($\mb{x,y,z}$ etc.) and scalars using non-bold letters ($R,C,m$ etc.). We use $\mb{x}^\t,\mb{A}^\t$ to denote the transpose of the vector $\mb{x}$ and matrix $\mb{A}$ respectively. The cardinality of set $S$ is expressed using the operator $\card(S)$.
+
+We define the signum function as $\sgn(x) := \frac{x}{|x|}$ for every $x \in \R, x \neq 0$, with the convention that $\sgn(0)=1$.
+An $i^{th}$ element of the vector $\mb{x} \in \R^n$ is denoted by $x_{i}$. Similarly, $i^{th}$ row of the matrix $\mb{A} \in \R^{m \times n}$ is denoted by $\mb{a_i}$, while the element of $\mb{A}$ in $i^{th}$ row and $j^{th}$ column is denoted as $a_{ij}$. The projection of vector $\mb{x} \in \R^n$ onto a set of coordinates $S$ is represented as $\mb{x}_S \in \R^n,~\mb{x}_{S_j} = \mb{x}_j$ for $j \in S$, and $0$ elsewhere. 
+
+%Projection of matrix $\mb{M} \in \R^{m\times n}$ onto $S$ is $\mb{M}_S \in \R^{m\times n},~\mb{M}_{S_{ij}} = \mb{M}_{ij}$ for $i, j \in S$, and $0$ elsewhere.
+
+\subsection{Mathematical model}
+\label{subsec:model}
+As described in section~\ref{subsec:model}, for simplicity, we consider a modified version of modulo operation that is defined as, 
+$$
+f(t) :=\mod(t,R) = t+\left( \frac{1-\sgn(t)}{2}\right)R.
+$$
+One can easily notice that the modulo operation in this case is nothing but an addition of scalar $R$ if the input is negative, while the non-negative inputs remain unaffected by it. If we divide the number line in these two bins, then the coefficient of $R$ in above equation can be seen as a bin-index, a binary variable which takes value $0$ when $\sgn(t)=1$, or $1$ when $\sgn(t)=-1$.
+
+Inserting the definition of modulo operation in measurement model of Eq.~\ref{eq:modmeas1} gives,
+\begin{equation}
+y_i= \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle+\left( \frac{1-\sgn(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle)}{2}\right)R,~~i = \{1,..,m\}.
+\label{eq:modmeas2}
+\end{equation} 
+Note that in Eq.~\ref{eq:modmeas2}, the coefficient of $R$ is a binary column vector represented as a bin-index vector $\mb{p} \in \R^m$. Each element of the true bin-index vector $\mb{p}^*$ is given as,
+$$
+p^*_i = \frac{1-\sgn(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle)}{2},~~i = \{1,..,m\}.
+$$
+
+
+If we ignore the presence of modulo operation in above formulation, then it reduces to a standard compressive sensing problem. In that case, the compressed measurements $y_{c_i}$ would just be equal to $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$.    %Variety of algorithms are available in literature that can recover the true signal exactly from its compressed measurements. Theoretical recovery guarantees for algorithms such as $\cosamp$ and basis-pursuit are also well-studied. 
+
+While we have access only to the compressed modulo measurements $\mb{y}$, it is useful to write $\mb{y}$ in terms of true compressed measurements $\mb{y}_c$. 
+
+Thus,
+$$
+y_i = \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle + p^*_iR = y_{c_i}+p^*_iR.
+$$
+
+It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the true compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP or basis-pursuit.
