@@ -35,10 +35,31 @@ where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued par
 \end{figure}
 
 \subsection{Our contributions}
+The key contribution of our approach is to identify and draw parallels between the problems of phase retrieval and modulo recovery, which allowed us to bring in the ideas from the classical phase retrieval solutions into relatively new setup of modulo recovery problems.
 \subsection{Techniques}
-The proposed MoRAM algorithm is conceptually simple yet novel step in the direction of solving the problem of modulo recovery. Our work takes a fresh approach for solving the modulo recovery problem by borrowing the ideas from the well studied field of phase retrieval and compressive sensing - which has been done for the first time to the best of our knowledge.
+The proposed MoRAM algorithm is conceptually simple yet novel step in the direction of solving the problem of modulo recovery. Our work takes a fresh approach for solving the modulo recovery problem by borrowing the ideas from the well studied field of phase retrieval and compressive sensing - which has been done for the first time to the best of our knowledge. The commonality that we identified in these two different class of problems is the need of undoing the effect of a piecewise linear function in both the cases. While we deal with the modified version of modulo function with two periods in the case of modulo recovery, phase retrieval deals with undoing the effect of absolute value function which is piece wise linear too. 
+At the same time, difference between the behavior of both the functions is also evident, which restricts us from using the phase retrieval solutions as it is for solving modulo recovery problem. Fig.~\ref{fig:compare} compares the behavior of both the modulo ($f(t)$) and absolute value ($g(t)$) functions. Both the functions are identical in the positive half, but differs significantly in the negative half. For negative inputs, 
 
-
+\begin{figure}[h]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
+		\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
+		\draw[->] (0,-1) -- (0,4);
+		\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+		\draw (1.5,-0.5) node(below) {$p_i = 0$};
+		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
+		\draw[scale=0.5,cyan,ultra thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$f(t)$};
+		\draw[scale=0.5,dotted,red,ultra thick] (1.5,5.5)--(2.5,5.5) node[right,black]{$g(t)$};
+		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R),~g(t)=\mathrm{abs}(t)$};
+		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
+		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
+		\draw[scale=0.5,domain=0:7,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{\x});
+		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{-\x});
+		\end{tikzpicture}
+	\end{center}
+	\caption{\emph{Comparision between modulo function ($f(t) = \mod(t,R)$); and absolute value function ($g(t) = \mathrm{abs}(t)$)}}
+	\label{fig:compare}
+\end{figure}
 
 \subsection{Paper organization}
 The reminder of the paper is organized as follows. In section~\ref{sec:prior}, we briefly discuss the prior work. Sections~\ref{sec:prelim} contains notation and mathematical model used for our analysis. In section~\ref{sec:algo}, we introduce the MoRAM algorithm, and provide a theoretical analysis of its performance. We demonstrate the performance of our algorithm by providing series of numerical experiments in section~\ref{sec:exp}. Section~\ref{sec:disc} provides concluding remarks.
