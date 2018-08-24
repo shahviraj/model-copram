@@ -12,24 +12,24 @@ For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo tria
 
 %Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
 \subsection{Experiments on real image}
-For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the given image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ image of Lovett Hall (fig.~\ref{fig:lovettorg}), and  we use  the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 0.09n$. We reconstruct the image with MoRAM using $m = 16384$ compressed modulo measurements. 
-
-\begin{center}
-	\begin{table}[h]
-		\centering
-		\begin{tabular}{ccc}\toprule
-			\multicolumn{3}{c}{\small{\textbf{Fixed:} $n=1000,\norm{\mathbf{{x}^*}}=1$}} \\ \midrule
-			\multicolumn{3}{c}{\textbf{Justice Pursuit}}
-			\\\cmidrule(r){1-3}%\cmidrule(r){3-4}  
-			\small{$R =1$}&\small{$R=2$}&\small{$R=4$} \\\midrule
-			\hyperref[fig:plot-2-1]{Figure~\ref{fig:plot-2-1}} & \hyperref[fig:plot-2-2]{Figure~\ref{fig:plot-2-2}}
-			& \hyperref[fig:plot-2-3]{Figure~\ref{fig:plot-2-3}} \\
-			\bottomrule
-		\end{tabular}
-		\caption{The Results}\label{Tab3}
-	\end{table} 	
-\end{center}
-In the Table~\ref{Tab3}, we provide experimental results for each of the combination above.
+For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovettorg}), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 1000$. We reconstruct the image with MoRAM using $m = 6000$ compressed modulo measurements. The algorithm produces perfect recovery with PSNR of the reconstructed image being $77.0335$. Both the original image and the reconstruction is presented in fig.~\ref{fig:lovett}.
+%
+%\begin{center}
+%	\begin{table}[h]
+%		\centering
+%		\begin{tabular}{ccc}\toprule
+%			\multicolumn{3}{c}{\small{\textbf{Fixed:} $n=1000,\norm{\mathbf{{x}^*}}=1$}} \\ \midrule
+%			\multicolumn{3}{c}{\textbf{Justice Pursuit}}
+%			\\\cmidrule(r){1-3}%\cmidrule(r){3-4}  
+%			\small{$R =1$}&\small{$R=2$}&\small{$R=4$} \\\midrule
+%			\hyperref[fig:plot-2-1]{Figure~\ref{fig:plot-2-1}} & \hyperref[fig:plot-2-2]{Figure~\ref{fig:plot-2-2}}
+%			& \hyperref[fig:plot-2-3]{Figure~\ref{fig:plot-2-3}} \\
+%			\bottomrule
+%		\end{tabular}
+%		\caption{The Results}\label{Tab3}
+%	\end{table} 	
+%\end{center}
+%In the Table~\ref{Tab3}, we provide experimental results for each of the combination above.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -63,8 +63,18 @@ In the Table~\ref{Tab3}, we provide experimental results for each of the combina
 \begin{figure}[h]
 	\begin{center}
 		%\vspace{-0em}
-		\includegraphics[width=0.9\linewidth]{./fig/original_lovett.png}
+		\includegraphics[width=0.425\linewidth]{./fig/original_lovett.png}
+		\includegraphics[width=0.45\linewidth,trim={0 4.2cm 0 0},clip]{./fig/reconst_lovett.pdf}
 	\end{center}
-	\caption{{Original Lovett Hall image}}
-	\label{fig:lovettorg}
+	\caption{{(a) Original Lovett Hall image ($n=1000$); (b) Sparse reconstruction ($s=1000$) for $R=1$, using $m=6000$ measurements}}
+	\label{fig:lovett}
 \end{figure}
+
+%\begin{figure}[h]
+%	\begin{center}
+%		%\vspace{-0em}
+%		\includegraphics[width=0.9\linewidth]{./fig/reconst_lovett.pdf}
+%	\end{center}
+%	\caption{{Reconstruction using MoRAM}}
+%	\label{fig:lovettreconst}
+%\end{figure}

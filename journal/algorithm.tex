@@ -215,7 +215,7 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 		\State \textbf{Initialization}
 		\State $\mathbf{x^0} \leftarrow \textrm{RCM}(\mathbf{y, A})$ 
 		\State \textbf{Alternative Minimization}
-		\For {$l =0:\mathrm{maxiter}$}
+		\For {$l =0:L$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
 		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^T}\norm{u}_1  s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}$ 
