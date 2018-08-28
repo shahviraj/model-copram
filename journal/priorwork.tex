@@ -1,11 +1,11 @@
 \section{Prior work}
 \label{sec:prior}
 
-Phase retrieval: As stated earlier, in this paper we borrow ideas from the solutions of phase retrieval problem to solve modulo recovery problem. Being a classical problem with variety of applications, phase retrieval problem has been studied significantly in past few years. Approaches to solve this problem can be broadly classified into two categories: convex and non-convex. 
+\subsubsection*{Phase retrieval} As stated earlier, in this paper we borrow ideas from the solutions of phase retrieval problem to solve modulo recovery problem. Being a classical problem with variety of applications, phase retrieval problem has been studied significantly in past few years. Approaches to solve this problem can be broadly classified into two categories: convex and non-convex. 
 Convex approach usually consist of solving a constraint optimization problem after lifting the true signal $\mb{x^*}$ in higher dimensional space to linearize the problem. PhaseLift algorithm \cite{candes2013phaselift} and its variations \cite{gross2017improved}, \cite{candes2015phase} come under this category. Typical non-convex approaches involve finding a good initialization followed by iterative minimization of a loss function.
 
 
-The modulo inversion subproblem is also known in the literature
+\subsubsection*{Modulo recovery} The modulo recovery problem is also known in the literature
 as phase unwrapping. The algorithm proposed in \cite{bioucas2007phase} is specialized to images, and employs graph cuts for phase unwrapping from a single modulo measurement per pixel. However, the inherent assumption there is that the input image has very few sharp discontinuities, and this makes it unsuitable for practical situations with textured images. Our main motivation for this paper is the work of \cite{ICCP15_Zhao} on HDR imaging using a modulo camera sensor. For image reconstruction using multiple measurements, it proposes the method called the multi-shot UHDR recovery algorithm.
 
 
