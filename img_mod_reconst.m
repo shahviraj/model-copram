@@ -54,7 +54,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 1; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
@@ -63,7 +63,7 @@ pr.spgl_opts = spgSetParms('verbosity',0);
 %pr.mspan2 = [600:100:1000];
 %pr.mspan=[pr.mspan1,pr.mspan2];
 %pr.mspan=100:100:1000;
-pr.mspan = 6000;
+pr.mspan = 8000;
 pr.num_trials = 1;
 pr.s_span = 1000:1000:1000; % sparsity
 pr.amp = 1; %amplification factor 
@@ -180,7 +180,6 @@ im2 = waverec2(z, c_ind, wavname);
 im3 = waverec2(x,c_ind, wavname);
 figure, imshow([im1 im2 im3]), axis image;
 title('Actual v/s Sparse v/s Reconstructed');
-
 
 
 

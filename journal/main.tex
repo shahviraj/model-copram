@@ -1,58 +1,57 @@
 %\pdfoutput=1
 
 \documentclass[10pt,journal]{IEEEtran}
+
+\input{./macro}
 %\usepackage{authblk}
-\usepackage{todonotes}
-\usepackage[margin=1in]{geometry}
-\usepackage[parfill]{parskip}
-\usepackage{times}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{tikz}
-\usepackage{pgfplots}
+%\usepackage[margin=1in]{geometry}
+%\usepackage[parfill]{parskip}
+%\usepackage{times}
+%\usepackage{graphicx}
+
+
 %\usepackage{natbib}
-\usepackage{float}
-\usepackage{algorithm,algpseudocode}
-\usepackage{rotating}
-%\usepackage{algorithmic}
-\usepackage{amsfonts,amsmath,amsthm,amssymb}
+%\usepackage{float}
+\usepackage{algpseudocode}
+%\usepackage{rotating}
+
+\usepackage{amsfonts}
 \usepackage{mathtools}
 \usepackage{hyperref}
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
-\usepackage[shortcuts]{extdash}
+%\usepackage[shortcuts]{extdash}
 \newcommand{\SREC}{S\=/REC}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \def\R{{\mathbb{R}}}
 %\newtheorem{theorem}{Theorem}[section]
 \newcommand{\mb}[1]{\mathbf{#1}}
-\newtheoremstyle{exampstyle}
-  {10pt} % Space above
-  {10pt} % Space below
-  {} % Body font
-  {} % Indent amount
-  {\bfseries} % Theorem head font
-  {.} % Punctuation after theorem head
-  {.5em} % Space after theorem head
-  {} % Theorem head spec (can be left empty, meaning `normal')
-\theoremstyle{exampstyle} \newtheorem{theorem}{Theorem}[section]
-
-\newtheorem{corollary}{Corollary}[theorem]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{definition}{Definition}
+%\newtheoremstyle{exampstyle}
+%  {10pt} % Space above
+%  {10pt} % Space below
+%  {} % Body font
+%  {} % Indent amount
+%  {\bfseries} % Theorem head font
+%  {.} % Punctuation after theorem head
+%  {.5em} % Space after theorem head
+%  {} % Theorem head spec (can be left empty, meaning `normal')
+%\theoremstyle{exampstyle} \newtheorem{theorem}{Theorem}[section]
+%
+%\newtheorem{corollary}{Corollary}[theorem]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{definition}{Definition}
 %\title{Compressed Sensing on GANs using Iterative Projections}
 
 \def\sgn{\mathrm{sgn}}
 \def\card{\mathrm{card}}
-%\def\t{\intercal}
+\def\t{\intercal}
 \def\t{\top}
 \def\cosamp{\mathrm{CoSaMP}}
 %\author{Viraj Shah}
 %\author{Chinmay Hegde}
 %\affil{ECpE Department, Iowa State University}
 
-\newcommand{\norm}[1]{\|#1\|}
+%\newcommand{\norm}[1]{\|#1\|}
 \newcommand{\eps}{\epsilon}
 \newcommand{\wh}[1]{\widehat{#1}}
 \newcommand{\s}{0.18}
@@ -64,17 +63,14 @@
 \begin{document}
 \title{Reconstruction from Modulo Measurements}
 
-\author{\IEEEauthorblockN{Viraj Shah}
-\IEEEauthorblockA{Department of Electrical and\\Computer Engineering\\
-Iowa State University\\
-Ames, Iowa 50011\\
-Email: viraj@iastate.edu}
-\and
-\IEEEauthorblockN{Chinmay Hegde}
-\IEEEauthorblockA{Department of Electrical and\\Computer Engineering\\
-Iowa State University\\
-Ames, Iowa 50011\\
-Email: chinmay@iastate.edu}}
+\author{
+	Viraj Shah and Chinmay Hegde \\
+	%  Electrical and Computer Engineering Department, 
+	%Iowa State University
+	\thanks{The authors are with the ECE Department at Iowa State University. Email: \{viraj,chinmay@iastate.edu\}.  %This paper was supported by grant CCF- from the National Science Foundation.
+	}
+	%  \texttt{viraj,chinmay@iastate.edu} \\
+}
 
 \maketitle
 \input{./introduction}

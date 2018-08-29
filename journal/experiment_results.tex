@@ -12,7 +12,7 @@ For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo tria
 
 %Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
 \subsection{Experiments on real image}
-For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 1000$. We reconstruct the image with MoRAM using $m = 6000$ compressed modulo measurements. The algorithm produces perfect recovery with PSNR of the reconstructed image being $77.0335$. Both the original image and the reconstruction is presented in fig.~\ref{fig:lovett}.
+For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 1000$. We reconstruct the image with MoRAM using $m = 6000$ compressed modulo measurements. The algorithm produces perfect recovery with PSNR of the reconstructed image being $75.0445$, $ 76.5470$ and $84.8164$ for $R=1,2~\& 4$ respectively. Both the original image and the reconstruction is presented in fig.~\ref{fig:lovett}.
 %
 %\begin{center}
 %	\begin{table}[h]
@@ -30,15 +30,20 @@ For our final experiment, we evaluated the performance of our algorithm on a rea
 %	\end{table} 	
 %\end{center}
 %In the Table~\ref{Tab3}, we provide experimental results for each of the combination above.
-\begin{figure}[t]
+\begin{figure*}[t!]
 	\begin{center}
 		%\vspace{-0em}
-		\includegraphics[width=0.425\linewidth]{./fig/original_lovett.png}
-		\includegraphics[width=0.45\linewidth,trim={0 4.2cm 0 0},clip]{./fig/reconst_lovett.pdf}
+		\begin{tabular}{cccc}
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r2.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
+		(a) & (b) & (c) & (d)
+	\end{tabular}
 	\end{center}
-	\caption{{(a) Original Lovett Hall image ($n=1000$); (b) Sparse reconstruction ($s=1000$) for $R=1$, using $m=6000$ measurements}}
+	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=1000$) using $m=8000$ measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
 	\label{fig:lovett}
-\end{figure}
+\end{figure*}
 
 \begin{figure}[h]
 	\begin{center}
