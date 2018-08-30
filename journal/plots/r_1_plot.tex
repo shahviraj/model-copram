@@ -1,0 +1,83 @@
+\begin{tikzpicture}
+\begin{axis}
+[width=0.4\textwidth,
+xlabel= Number of samples $m$, 
+ylabel= Reconstruction error $\frac{\norm{\mb{x^*-x}}_2}{\norm{\mb{x^*}}_2}$,
+grid style = dashed,
+grid=both,
+legend style=
+{
+at={(1,1), %for arxiv version
+%at={(1.65,0.8),  %for NIPS version
+anchor=top},
+cells={align=center}, 
+%legend columns=-1,
+} 
+]
+
+\addplot[color=blue,mark=square*] plot coordinates {
+	(100,     0.222952795500352)
+	(200,    8.25E-05)
+	(300,    6.48E-05)
+	(400,    6.37E-05)
+	(500,   7.91E-05)
+ 	(600, 6.45E-05)
+	(700, 5.51E-05)
+	(800, 4.77E-05)
+	(900, 6.78E-05)
+	(1000, 5.76E-05)
+};
+\addlegendentry{$s=3$};
+
+
+\addplot plot coordinates {
+(100,	0.391717206388554)
+(200,	0.189009904901885)
+(300,	8.75E-05)
+(400,	6.63E-05)
+(500,	7.39E-05)
+(600,	6.96E-05)
+(700,	5.79E-05)
+(800,    6.41E-05)
+(900,	8.06E-05)
+(1000,	6.78E-05)
+};
+
+\addlegendentry{$s=6$};
+
+
+\addplot[color=green,mark=*] plot coordinates {
+(100,0.596874049564358)
+(200,0.0893297570309944)
+(300,0.0000961819292563893)
+(400,0.0000965366166880477)
+(500,0.0000950192717929039)
+(600,0.0000992956375702069)
+(700,0.0000835965044892149)
+(800,0.0000675354618845817)
+(900,0.0000811820156888768)
+(1000,0.000064977150825922)
+};
+\addlegendentry{$s=9$};
+
+\addplot[color=orange,mark=*] plot coordinates {
+(100,0.667881390121055)
+(200,0.316701449929789)
+(300,0.0432277244535189)
+(400,0.000108785027973407)
+(500,0.0000962070190416804)
+(600,0.0000899199807562489)
+(700,0.000102447155819804)
+(800,0.0000922462885218879)
+(900,0.0000888147784526045)
+(1000,0.0000753141220088111)
+
+};
+\addlegendentry{$s=12$};
+
+
+
+%\legend{CoPRAM\\Block CoPRAM\\ThWF\\SPARTA\\}
+
+\end{axis}
+\end{tikzpicture}
