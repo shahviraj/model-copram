@@ -68,8 +68,9 @@
 	Electrical and Computer Engineering Department \\
 	Iowa State University \\
 	Ames, IA, USA 50010
-	\thanks{Email: \{viraj,chinmay@iastate.edu\}. This work was supported by grants CCF-1566281 and CAREER CCF-1750920 from the National Science Foundation, and a faculty fellowship from the Black and Veatch Foundation, and a GPU grant from the NVIDIA Corporation.
-	}
+	\thanks{Email: \{viraj,chinmay@iastate.edu\}. This work was supported by grants CCF-1566281 and CAREER CCF-1750920 from the National Science Foundation, and a faculty fellowship from the Black and Veatch Foundation, and a GPU grant from the NVIDIA Corporation.	
+	We thank Praneeth Narayanamurthy (pkurpadn@iastate.edu) for suggestions that improved the manuscript.
+}
 	%  \texttt{viraj,chinmay@iastate.edu} \\
 }
 
@@ -77,7 +78,7 @@
 \maketitle
 
 \begin{abstract}
-	We consider the problem of recovering a signal from its compressed modulo measurements.
+	We consider the problem of reconstructing a signal $\mb{x^*} \in \R^n$ from its compressed modulo measurements $\mb{y}=\mod(\mb{Ax^*})$. Our work is based on the novel imaging sensor called modulo sensor that extends the dynamic range of the imaging system by wrapping the data in a periodical manner to produce modulo samples. Reconstructing the image from these modulo measurements is an ill-posed nonlinear inverse problem and we put sparsity assumptions on the signal to solve it efficiently. Our work takes a fresh approach by employing ideas inspired from the well studied field of compressed phase retrieval. We identify the commonalities between these two different classes of problems, and pose the modulo recovery problem in a form that is similar to compressed phase retrieval problem. We propose a novel recovery algorithm that we call Modulo Recovery with Alternating Minimization (MoRAM). Our algorithm is combination of classical alternating minimization approach with justice pursuit based formulation for sparse signal recovery from grossly corrupted measurements. We prove that given enough number of measurements, our algorithm perfectly recovers the underlying sparse signal. We also provide extensive experiments on both synthetic and real data to support our claims. 
 \end{abstract}
 \input{./introduction}
 \input{./priorwork}
