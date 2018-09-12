@@ -1,5 +1,5 @@
 \section{Mathematical Analysis}
-We provide mathematical analysis for both initialization using Recalculated measurements and convergence based on justice pursuit formulation. 
+\label{sec:mathanalysis}
 \subsection{Analysis of the initialization}
 We perform the initialization in two steps:
 (i) Measurement correction step, (ii) Estimation step.
@@ -23,19 +23,20 @@ $$
 
 Here, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
 
-We can calculate $N$ using the fact that the compressive measurements $y_c$ follow the standard normal distribution, and the total number of measurements are $m$.
+We can calculate $N$ using the fact that the compressive measurements $y_c$ follow the standard normal distribution, and the total number of measurements are $m$. We define $\mathcal{M}_{\alpha,\beta}$ as set of all measurements lying in the interval $[\alpha,\beta]$. Thus,
 
-Number of measurements lying in the interval $[\alpha,\beta]$ = $mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
+ $\card{\mathcal{M}_{\alpha,\beta}}=mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
 Where, $Q(\cdot)$ is Q-function, defined as, $Q(t) = 1-\Phi(t)$ with $\Phi(\cdot)$ being CDF of standard normal distribution. \\
-We also note that $Q(-t) = 1 - Q(t)$. \\
+We also note that,
+ $$Q(-t) = 1 - Q(t)$$.
 Q-function is not an elementary function (with its closed form expression being non-existent). However, it can be bounded by following functions where $\phi(\cdot)$ is standard normal density function:
 $$
 \left(\frac{t}{1+t^2}\right)\phi(t) < Q(t) < \frac{\phi(t)}{t}.
 $$
-Now, we consider two cases depending on values of $R$:
-case (i). $R > \rho$: In this case, \\
-$N$ = number of measurements lying in the interval $[-R + \rho,0]$ + number of measurements lying in the interval $[0, R-\rho]$.
+Now, we consider two cases depending on values of $R$: \\
+case (i). $R > \rho$: In this case,
 \begin{align}
+N & = \card\left(\mathcal{M}_{-R + \rho,0}\right) + \card\left(\mathcal{M}_{0, R-\rho}\right) \nonumber \\
 N &  = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right) \nonumber \\
 & = m\left(Q(-(R-\rho))- Q(R-\rho)\right) \nonumber \\
 & = m\left(1-2Q(R-\rho)\right).
@@ -45,10 +46,9 @@ Using the bounds above,
 $$
 N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
 $$
-
-case (ii). $R < \rho$: In this case, \\
-$N$ = number of measurements lying in the interval $[-\rho,-R]$ + number of measurements lying in the interval $[R,\rho]$.
+\noindent case (ii). $R < \rho$: In this case,
 \begin{align}
+N & = \card\left(\mathcal{M}_{-\rho,-R}\right) + \card\left(\mathcal{M}_{R,\rho}\right) \nonumber \\
 N & = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right) \nonumber \\
 & = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) \nonumber \\
 & = 2m\left(Q(R)-Q(\rho)\right).
@@ -67,7 +67,7 @@ $$
 \mathbf{{x}^0} = H_s(M) = H_s\left(\frac{1}{\card(T)}\sum_{i\in T}y_{i}a_{i}\right).
 $$
 $$
-\implies \mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
+\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
 $$
 We use the versions of $\mb{y}$ and $\mb{A}$ truncated to the row indices belonging to set $T$, and column indices to set $S$. We denote such submatrices with the subscript $T\times S$. 
 
@@ -92,7 +92,7 @@ We denote this distribution with Gaussian random vector $Z$ in $\R^s$, and arran
 
 Recall that the covariance matrix of $Z$ can be calculated as $\Sigma = \mathbb{E}Z\otimes Z$,
 $$
-\Sigma= \mathbb{E}Z\otimes Z = \mathbb{E} ZZ^\t = diag(\mathbb{E}z_1^2,\mathbb{E}z_2^2,...,\mathbb{E}z_n^2) = I_n.
+\Sigma= \mathbb{E}Z\otimes Z = \mathbb{E} ZZ^\t = \diag{\mathbb{E}z_1^2,\mathbb{E}z_2^2,...,\mathbb{E}z_n^2} = I_n.
 $$
 
 Now, calculating the sample covariance matrix of $Z$ using the samples $Z_i = \mb{A}_{\scriptscriptstyle{T\times S},i}$,
@@ -100,7 +100,7 @@ $$
 \Sigma_N = \frac{1}{N}\sum_{i=1}^{N}Z_i \otimes Z_i = \frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}.
 $$
 
-Given $N \geq C(\frac{t}{\kappa})^2s$, we invoke the Corollary 5.50 of~\cite{vershynin2010introduction} which relates $\Sigma_N$ and $\Sigma$ as following with probability at least $1 - 2\exp\left(-t^2s\right)$:
+Given $N \geq C\left(\frac{t}{\kappa}\right)^2s$, we invoke the Corollary 5.50 of~\cite{vershynin2010introduction} which relates $\Sigma_N$ and $\Sigma$ as following with probability at least $1 - 2\exp\left(-t^2s\right)$:
 
 \begin{align*}
 \norm{\Sigma_N - \Sigma} &\leq \kappa \\
@@ -111,9 +111,9 @@ Here, let us fix the $s-$sparse vector $\mb{x^*}$ in unit norm ball. We can eval
 
 \begin{align*}
 \implies \sup_{\mb{x} \in S} \frac{\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x}}_2}{\norm{\mb{x}}_2} &\leq \kappa \\
-\implies \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
-\implies \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}\mb{x^*} - \mb{x^*}\right)}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
-\implies \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}}_2 \\
+\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
+ \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}\mb{x^*} - \mb{x^*}\right)}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
+ \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}}_2 \\
 \end{align*}
 
 with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$.
@@ -134,8 +134,8 @@ The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x
 with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$.
 Last inequality follows from the fact that $\mb{\tilde{x}^0}$ is closer to $\mb{x^0}$ compared to $\mb{x^*}$, because $\mb{x^0}$ is the best $s-$sparse approximation of $\mb{\tilde{x}^0}$. $\qed$}
 
-\subsection{Analysis of the convergence}
-We perform the Alternative Minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of justice pursuit is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
+\subsection{Analysis of descent}
+We perform the Alternative Minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
 
 The first step is to obtain the initial estimate for bin-index vector, $\mb{p^0}$ using $\mb{x^0}$.
 $$
@@ -214,17 +214,17 @@ $$
 \theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log{n/m}+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $x^*$ with probability at least $1-Kexp(-cm)$, with $C$ and $c$ being numerical constants.
 }
 
-\proof{In the estimation step, algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements. As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
+\proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements. As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
 
 $$
 \mb{y} = \mb{Ax} + \mb{I_nR(p^0-p^*)} = \mb{Ax} + \mb{d}.
 $$  
-Here,
-$$
-\textnormal{the number of noisy measurements in~} \mb{y^0_c} = \norm{\mb{d}}_0
-$$
+Here, the $\sl{l}0$-norm of $\mb{d}$ gives us the number of noisy measurements in $\mb{y^0_c}$.
+%$$
+%\textnormal{the number of noisy measurements in~} \mb{y^0_c} = \norm{\mb{d}}_0
+%$$
 
-If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector $\mb{p^*}$, then $\norm{\mb{d}}_0$ is small enough with respect to total number of measurements $m$; thus, $\mb{\mb{d}}$ can be treated as sparse corruption. If we model this corruption as a sparse noise, then we can employ justice pursuit for a guaranteed recovery of the true signal given (i) sparsity of the noise is a fraction of total number of measurements; (ii) sufficiently large number of measurements are available.  
+If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector $\mb{p^*}$, then $\norm{\mb{d}}_0$ is small enough with respect to total number of measurements $m$; thus, $\mb{\mb{d}}$ can be treated as sparse corruption. If we model this corruption as a sparse noise, then we can employ JP for a guaranteed recovery of the true signal given (i) sparsity of the noise is a fraction of total number of measurements; (ii) sufficiently large number of measurements are available.  
 
 We compute $\norm{\mb{d}}_0$ as,
 
@@ -242,7 +242,7 @@ expanding further,
 & \leq \frac{\delta}{2} + \epsilon = \gamma m.
 \end{align*}
 
-Algorithm \ref{alg:MoRAM} is essentially a justice pursuit formulation based on basis pursuit as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization even if a positive fraction of the measurements are arbitrarily corrupted. We invoke the Theorem 1.1 from \cite{li2013compressed} to combine with the fact that $\norm{\mb{d}}_0 \leq \gamma m =$ positive fraction of the total number of measurements.
+Algorithm \ref{alg:MoRAM} is essentially a JP formulation based on basis pursuit as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization even if a positive fraction of the measurements are arbitrarily corrupted. We invoke the Theorem 1.1 from \cite{li2013compressed} to combine with the fact that $\norm{\mb{d}}_0 \leq \gamma m =$ positive fraction of the total number of measurements.
 $\qed$}
 
 \subsection{Minimum number of measurements required}

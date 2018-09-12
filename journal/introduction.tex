@@ -1,20 +1,75 @@
 \section{Introduction}
 \label{sec:intro}
 \subsection{Motivation}
-The problem of recovering a signal (or image) from its nonlinear observations is widely encountered in the domain of signal processing, signal acquisition and imaging systems. One such example is the classical problem of phase retrieval, which arises in numerous imaging applications including ptychography, diffraction imaging and astronomical imaging \cite{shechtman2015phase, maiden2009improved}. In such imaging systems, due to the limitations of the optical sensors, only the magnitude of the light rays can be measured but not the phase. As each linear observation losses its phase, the effective forward model can be expressed as a composition of nonlinear absolute value function with the linear observation function. Though the phase retrieval problem is challenging ill-posed inverse problem, it is well-studied in the literature and there exists multiple provably efficient algorithmic procedures to solve it in different settings \cite{Netrapalli2013,candes2013phaselift,candes2015phase,wang2016sparse}.
+The problem of recovering a signal (or image) from its nonlinear observations is widely encountered in the domain of signal processing, signal acquisition and imaging systems. One such problem that we are considering in this paper is recovery of a signal from its \textit{modulo} samples. Modulo operation with respect to a positive real valued parameter $R$ returns the reminder after the Euclidean division of the sample by $R$. The typical behavior of modulo function is depicted in Fig.~\ref{fig:orgmodop}.
 
-Another such nonlinear inverse problem that is gaining rapid interest in recent times is the problem of modulo recovery. Recently, the use of a novel imaging sensor that wraps the data in a periodical manner is advocated widely to break away from the hardware limitations of typical imaging systems. Most of the image and signal acquisition systems suffer from the problem of limited dynamic range. It is well known that real signals contain a large range of intensity levels, and not all of them can be accurately captured due to hardware limited dynamic range of conventional acquisition systems. If tuned incorrectly, most intensity levels can lie in the saturation region of the sensors, causing loss of information through clipping of signals. The problem gets amplified in the case of multiplexed imaging systems, where required dynamic range is very high because of the fact that the observed signal intensity is a sum of various weighted versions of the original signal. The obvious solution to this issue is to increase the dynamic range of the sensors, but unfortunately it is not always possible due to expensive hardware. An alternating approach is the deploy a specifically designed sensors named modulo sensors. As the name suggests, such sensor wraps the observed signal intensity value over given dynamic range, which is analogous to familiar modulo operation with respect to parameter $R$. Usage of the modulo sensor to capture the linear measurements adds an additional effect of modulo operation over each observation, making the forward model highly nonlinear. Recovery of the underlying signal from such modulo measurements turns out to be a challenging and significant yet rarely studied problem in the domain of signal and image processing. 
+\begin{figure}[h]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[<->,thick] (-3,0)--(3,0) node[anchor=north]{$t$};
+			\draw (0,0) node[anchor=north]{$0$};
+			\draw (0,1.1) node[anchor=west] {$R$};
+			\draw (1,0) node[anchor=north]{$R$};
+			\draw (2,0) node[anchor=north] {$2R$};
+			\draw (-1,0) node[anchor=north]{$-R$};
+			\draw (-2,0) node[anchor=north] {$-2R$};
+			%\draw [densely dotted,thick] (-2.5,1)--(3,1);
+			\draw[->,thick] (0,0)--(0,2);
+			\draw[] (2,1.5) node[anchor=west] {{$\mod(t,R)$}};
+			\draw[thick] (1.6,1.5) -- (2,1.5);
+			\draw[thick] (-2,0) --(-1,1)-| (-1,0) -- (0,1) -| (0,0) --(1,1)-| (1,0) -- (2,1) -| (2,0);
+			\draw[densely dotted,thick] (2,0)--(2.5,0.5);
+			\draw[densely dotted,thick] (-2,0)|-(-2,1) -- (-2.5,0.5);
+			\end{tikzpicture}
+	\end{center}
+	\caption{\emph{Modulo operation with respect to $R$}}
+	\label{fig:orgmodop}
+\end{figure}
 
-For most of the nonlinear inverse problems that were solved in the literature, such results require overcomplete observations, meaning the number of minimum measurements $m$ require for the signal recovery is higher than the ambient dimension $n$ of the signal itself. For the cases where $m$ and $n$ are large, this requirement puts limitation on computation and storage of the measurements. Thus, in this paper, we focus on solving the problem of modulo recovery with very few number of samples. This can be achieved by assuming that the underlying signal obeys a certain low-dimensional structure. Typically, sparsity in some known basis is used as a structural assumption in many imaging applications as many real signals are known to be sparse in some basis. 
+The problem of reconstructing the signal from its modulo measurements, referred as \textit{modulo recovery problem} in the literature, can be formalized as follows.
+
+Consider a high dimensional signal (or image) $\mb{x}^* \in \R^n$. We are given modulo measurements of $\mb{x^*}$, that is, for $\mb{a_i} \in \R^n$:
+\begin{equation}
+y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\}, \nonumber
+\label{eq:modmeas0}
+\end{equation} 
+The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and the matrix $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$. Here, $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. 
+
+%\begin{figure}[h]
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
+%		\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
+%		\draw[->] (0,-1) -- (0,4) node[above] {$f(t)$};
+%		\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+%		\draw (1.5,-0.5) node(below) {$p_i = 0$};
+%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
+%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
+%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue,thick] plot ({\x},{\x+4});
+%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
+%		\end{tikzpicture}
+%	\end{center}
+%	\caption{\emph{Modified modulo function for the given problem}}
+%	\label{fig:modop}
+%\end{figure}
+
+% One such example is the classical problem of phase retrieval, which arises in numerous imaging applications including ptychography, diffraction imaging and astronomical imaging \cite{shechtman2015phase, maiden2009improved}. In such imaging systems, due to the limitations of the optical sensors, only the magnitude of the light rays can be measured but not the phase. As each linear observation losses its phase, the effective forward model can be expressed as a composition of nonlinear absolute value function with the linear observation function. Though the phase retrieval problem is challenging ill-posed inverse problem, it is well-studied in the literature and there exists multiple provably efficient algorithmic procedures to solve it in different settings \cite{Netrapalli2013,candes2013phaselift,candes2015phase,wang2016sparse}.
+
+Modulo recovery problem is a nonlinear inverse problem, and is gaining rapid interest in recent times. Recently, the use of a novel imaging sensor that wraps the data in a periodical manner is advocated widely to break away from the hardware limitations of typical imaging systems \cite{Bhandari,Zhao2015}. Most of the image and signal acquisition systems suffer from the problem of limited dynamic range. It is well known that real signals contain a large range of intensity levels, and not all of them can be accurately captured due to hardware limited dynamic range of conventional acquisition systems. If tuned incorrectly, most intensity levels can lie in the saturation region of the sensors, causing loss of information through clipping of signals. 
+
+The problem gets amplified in the case of multiplexed imaging systems, where required dynamic range is very high because of the fact that the observed signal intensity is a sum of various weighted versions of the original signal. The obvious solution to this issue is to increase the dynamic range of the sensors, but unfortunately it is not always possible due to expensive hardware. An alternating approach is the deploy a specifically designed sensors named modulo sensors. As the name suggests, such sensor wraps the observed signal intensity value over given dynamic range, which is analogous to familiar modulo operation with respect to parameter $R$. Usage of the modulo sensor to capture the linear measurements adds an additional effect of modulo operation over each observation, making the forward model highly nonlinear. Recovery of the underlying signal from such modulo measurements turns out to be a challenging and significant yet rarely studied problem in the domain of signal and image processing. 
+
+For most of the nonlinear inverse problems that were solved in the literature, such results require overcomplete observations, meaning the number of minimum measurements $m$ require for the signal recovery is higher than the ambient dimension $n$ of the signal itself. For the cases where $m$ and $n$ are large, this requirement puts limitation on computation and storage of the measurements. Thus, in this paper, we focus on solving the problem of modulo recovery with very few number of samples, \textit{i.e.} we set $m<n$. This can be achieved by assuming that the underlying signal obeys a certain low-dimensional structure. Typically, sparsity in some known basis is used as a structural assumption in many imaging applications as many real signals are known to be sparse in some basis. 
 
 \subsection{Setup}
 \label{subsec:setup}
-We formalize the above discussion as follows. Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$ with i.i.d. Gaussian entries. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
+Modulo function is a many-to-one function with an infinite support. Thus, inverting the unbounded version of the modulo operation is highly challenging. Moreover, for most of the real world image acquisition systems, having an unbounded dynamic range is either unnecessary or impractical. Thus, in this paper, we simplify our analysis of modulo recovery problem by reducing the complexity of the modulo function. We consider a modified version of modulo operation that is truncated to only two periods of operation: one on the positive half and one in the negative half as shown in the Fig.~\ref{fig:modop}. We also incorporate sparsity as a signal prior, thus capture the measurements in compressed sense, \textit{i.e.} $m<n$.
+
+Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$ with i.i.d. Gaussian entries and $m<n$. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
 \begin{equation}
 y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\},
 \label{eq:modmeas1}
 \end{equation} 
-where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. We set $m<n$. For simplicity, we assume that the modulo function operates only within two periods, one each on the either side of the origin, as shown in the Fig.~\ref{fig:modop}. The primary assumption in our model is that the natural signal $\mathbf{x^*}$ is $s-$sparse in a chosen basis. 
+where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. The primary assumption in our model is that the natural signal $\mathbf{x^*}$ is $s-$sparse in a chosen basis. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -25,8 +80,8 @@ where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued par
 		\draw (1.5,-0.5) node(below) {$p_i = 0$};
 		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
 		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
-		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
+		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue,thick] plot ({\x},{\x+4});
+		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
 	\caption{\emph{Modified modulo function for the given problem}}
@@ -34,41 +89,60 @@ where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued par
 \end{figure}
 
 \subsection{Our contributions}
-The key contribution of our approach is to identify and draw parallels between the problems of phase retrieval and modulo recovery, which allowed us to bring in the ideas from the classical phase retrieval solutions into relatively new setup of modulo recovery problems.
-\subsection{Challenges and techniques}
-The proposed MoRAM algorithm is conceptually simple yet novel step in the direction of solving the problem of modulo recovery. Our work takes a fresh approach for solving the modulo recovery problem by borrowing the ideas from the well studied field of phase retrieval and compressive sensing - which has been done for the first time to the best of our knowledge. The commonality that we identified in these two different class of problems is the need of undoing the effect of a piecewise linear function on the linear measurements in both the cases. While we deal with the modified version of modulo function with two periods in the case of modulo recovery, phase retrieval deals with absolute value function which is piece wise linear too. 
+In this paper, we propose a Alternating Minimization based recovery algorithm for exact reconstruction of signals from its compressed modulo measurements. We refer our algorithm as MoRAM- Modulo Recovery with Alternating Minimization. We also provide analytical proofs for exact recovery of signal using our algorithm. The key contribution of our approach is to identify and draw parallels between the problems of phase retrieval and modulo recovery, which allowed us to bring in the ideas from the classical phase retrieval solutions into relatively new setup of modulo recovery problems - which has been done for the first time to the best of our knowledge. 
 
-At the same time, difference between the behavior of both the functions is also evident, which restricts us from using the phase retrieval solutions as-it-is for solving modulo recovery problem. Fig.~\ref{fig:compare} compares both the modulo ($f(t)$) and absolute value ($g(t)$) functions. Both the functions are identical to identity function in the positive half, but differs significantly in the negative half. Absolute value function removes the sign from the negative input, thus it can be represented as a multiplicative process (multiplication with $-1$).  The modulo function adds the constant value $R$ in the negative inputs, thus can be represented as additive process (addition of $R$). Value of $p$ denotes whether the $R$ is added in the true measurement or not. It should be noted that the multiplication with $-1$ still preserves the magnitude information of the observations, while the additive process deforms the observation significantly, even more if the value of $R$ is higher. Additionally, the behavior of the modulo function is largely controlled by the value of the parameter $R$, while such parameter is non-existent in the case of absolute value function. 
+The commonality that we identified in these two different class of problems is the need of undoing the effect of a piecewise linear function on the linear measurements in both the cases. While we deal with the modified version of modulo function with two periods in the case of modulo recovery, phase retrieval deals with absolute value function which is piece wise linear too. 
+
+At the same time, difference between the behavior of both the functions is also evident, which restricts us from using the phase retrieval solutions as-is for solving modulo recovery problem. Fig.~\ref{fig:compare} compares both the modulo ($f(t)$) and absolute value ($g(t)$) functions. Both the functions are identical to identity function in the positive half, but differs significantly in the negative half. Absolute value function removes the sign from the negative input, thus it can be represented as a multiplicative process (multiplication with $-1$).  The modulo function adds the constant value $R$ in the negative inputs, thus can be represented as additive process (addition of $R$). Value of $p$ denotes whether the $R$ is added in the true measurement or not. It should be noted that the multiplication with $-1$ still preserves the magnitude information of the observations, while the additive process deforms the observation significantly, even more if the value of $R$ is higher. Additionally, the behavior of the modulo function is largely controlled by the value of the parameter $R$, while such parameter is non-existent in the case of absolute value function. 
 
 Solving the phase retrieval problem is essentially equivalent to retrieving the phase value $ph_t$ corresponding to each measurement $t$. $ph_t$ can take only two values: $1$ if $t \geq 0$, or $-1$ if $t < 0$. On same lines, for modulo recovery case we introduce the term bin-index $p$, which acts similar to phase, and can take values $0$ if $t\geq 0$ or $1$ if $t<0$. It is understood that estimating the bin-index correctly leads to perfect recovery of the signal, and vice versa.
 \begin{figure}[h]
 	\begin{center}
-		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
-		\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
-		\draw[->] (0,-1) -- (0,4);
-		\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
-		\draw (1.5,-0.5) node(below) {$p_i = 0$};
-		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
-		\draw[scale=0.5,cyan,ultra thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$f(t)$};
-		\draw[scale=0.5,dotted,red,ultra thick] (1.5,5.5)--(2.5,5.5) node[right,black]{$g(t)$};
-		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R),~g(t)=\mathrm{abs}(t)$};
-		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
-		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
-		\draw[scale=0.5,domain=0:7,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{\x});
-		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{-\x});
-		\end{tikzpicture}
+		\begin{tabular}{cc}
+			\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.7}]
+			\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
+			\draw[->] (0,-1) -- (0,4);
+			\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+			\draw (1.5,-0.5) node(below) {$p_i = 0$};
+			\draw (-1.5,-0.5) node(below) {$p_i = 1$};
+			\draw[scale=0.5,blue,thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$f(t)$};
+			%\draw[scale=0.5,dotted,red,ultra thick] (1.5,5.5)--(2.5,5.5) node[right,black]{$g(t)$};
+			\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
+			\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, thick] plot ({\x},{\x+4});
+			\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
+			%\draw[scale=0.5,domain=0:7,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{\x});
+			%\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{-\x});
+			\end{tikzpicture} &
+			
+			\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.7}]
+			\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
+			\draw[->] (0,-1) -- (0,4);
+			%\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+			\draw (1.5,-0.5) node(below) {$p_i = 0$};
+			\draw (-1.5,-0.5) node(below) {$p_i = 1$};
+			%\draw[scale=0.5,blue,ultra thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$f(t)$};
+			\draw[scale=0.5,red,thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$g(t)$};
+			\draw (0,-1.5) node(right) {$g(t)=\mathrm{abs}(t)$};
+			%\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
+			%\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
+			\draw[scale=0.5,domain=0:7,smooth,variable=\x,red,thick]  plot ({\x},{\x});
+			\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, thick]  plot ({\x},{-\x});
+			\end{tikzpicture} \\
+			(a) & (b)
+		\end{tabular}
 	\end{center}
-	\caption{\emph{Comparison between modulo function ($f(t) = \mod(t,R)$); and absolute value function ($g(t) = \mathrm{abs}(t)$)}}
+	\caption{\emph{Comparison between (a) absolute value function ($g(t) = \mathrm{abs}(t)$) ; and (b) modulo function ($f(t) = \mod(t,R)$)}}
 	\label{fig:compare}
 \end{figure}
 
 We can measure the effect of such nonlinearity by analyzing the error between true measurements and observed measurements for the negative half of the number-line. In the case of phase retrieval problem, the error $e_a = \mathrm{abs}(t) - t = 2\mathrm{abs}(t),~\forall t <0$. Thus, the error (severity of the corruption) increases linearly with the magnitude of the true measurement. Measurements closer to zero are less affected compared to measurements far from zero. In standard phase retrieval setup, as the true measurements are linear combination of the samples from the Gaussian distribution, resulting distribution of the true measurements follows the Gaussian curve, which makes most of the true measurements concentrate close to zero; lowering the severity of the corruption.
 
 For modulo recovery problem, the error is $e_m = \mod(t)-t = R,~\forall t<0$. Contrary to the case of phase retrieval, here the error is constant irrespective of magnitude of the true measurements. Even the true measurements lying very close to zero would experience the added error of $R$, and thus get severely affected. In the cases where $R$ is large, the magnitude of the additive corruption is way higher than the magnitude of the true measurement. Presence of such noise makes the recovery process very challenging.
+\subsection{Techniques}
 
-Our basic approach towards solving the modulo recovery problem is similar to the state-of-the-art phase retrieval approaches. As is the case with most of the non-convex algorithms, in the first step we identify a good initial guess $\mb{x^0}$ for our signal that lies relatively close to the true vector $\mb{x^*}$. The most commonly used initialization technique for phase retrieval is spectral initialization as described in \cite{Netrapalli2013}, but that doesn't work in our case due to variedly different behavior of modulo nonlinearity. We observe that the initialization is easier to obtain if we have access to rather a small number of true measurements than having a large number of modulo measurements (corrupted by nonlinearity). This leads us to a novel approach of recalculating the correct measurements (RCM) for the initialization. Having access to such corrected measurements, $\mb{x^0}$ can be calculated simply by using the first order estimator. Our method of recalculating the partial number of true measurements from the set of modulo measurements is intuitive yet gives provable guarantee for getting a initial vector significantly closer to the true signal. 
+The proposed MoRAM algorithm is conceptually simple yet novel step in the direction of solving the problem of modulo recovery. Our work takes a fresh approach for solving the modulo recovery problem by borrowing the ideas from the well studied field of phase retrieval and compressive sensing. Our basic approach towards solving the modulo recovery problem is similar to the state-of-the-art phase retrieval approaches. As is the case with most of the non-convex algorithms, in the first step we identify a good initial guess $\mb{x^0}$ for our signal that lies relatively close to the true vector $\mb{x^*}$. The most commonly used initialization technique for phase retrieval is spectral initialization as described in \cite{Netrapalli2013}, but that doesn't work in our case due to variedly different behavior of modulo nonlinearity. We observe that the initialization is easier to obtain if we have access to rather a small number of true measurements than having a large number of modulo measurements (corrupted by nonlinearity). This leads us to a novel approach of recalculating the compressed measurements for the initialization. Having access to such corrected measurements, $\mb{x^0}$ can be calculated simply by using the first order estimator. Our method of recalculating the partial number of true measurements from the set of modulo measurements is intuitive yet gives provable guarantee for getting a initial vector significantly closer to the true signal. 
 
-Our next challenge is to design a suitable algorithmic procedure that starts with the initial estimate and converge to the true signal. Again, we follow similar alternating minimization approach inspired from the phase retrieval solutions (\cite{Netrapalli2013}) that estimates the signal and the phase alternatively. To deal with the additive nature of the corruption, we introduce the Justice Pursuit based Alt-Min approach that leads to rapid convergence. Justice pursuit is formulated specifically for compressive signal recovery in presence of unbounded sparse noise without requiring any parameter tuning. We also provide the theoretical analysis proving the convergence of the proposed algorithm. In particular,  we use the fact that justice pursuit algorithm manages to correct the corruption in bin-index values, provided the number of corrupted bin-indices is a fraction of total number of measurements. 
+Our next challenge is to design a suitable algorithmic procedure that starts with the initial estimate and converge to the true signal. Again, we follow similar alternating minimization approach inspired from the phase retrieval solutions (\cite{Netrapalli2013}) that estimates the signal and the phase alternatively. To deal with the additive nature of the corruption, we introduce the Justice Pursuit based Alt-Min approach that leads to rapid convergence. Justice Pursuit is formulated specifically for compressive signal recovery in presence of unbounded sparse noise without requiring any parameter tuning. We also provide the theoretical analysis proving the convergence of the proposed algorithm. In particular,  we use the fact that justice pursuit algorithm manages to correct the corruption in bin-index values, provided the number of corrupted bin-indices is a fraction of total number of measurements. 
 
 \subsection{Paper organization} 
 The reminder of the paper is organized as follows. In section~\ref{sec:prior}, we briefly discuss the prior work. Sections~\ref{sec:prelim} contains notation and mathematical model used for our analysis. In section~\ref{sec:algo}, we introduce the MoRAM algorithm, and provide a theoretical analysis of its performance. We demonstrate the performance of our algorithm by providing series of numerical experiments in section~\ref{sec:exp}. Section~\ref{sec:disc} provides concluding remarks.

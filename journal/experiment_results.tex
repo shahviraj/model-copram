@@ -34,11 +34,24 @@ For our final experiment, we evaluated the performance of our algorithm on a rea
 	\begin{center}
 		%\vspace{-0em}
 		\begin{tabular}{cccc}
+			Original image & Recovery with $m=4000 $ & Recovery with $m=8000 $ & Reconstruction with $m= $ \\
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
+		(a) & (b) $R=1$,PSNR $=25.06$dB & (c)$R=1$,PSNR $=77.71$dB  & (d) PSNR =  \\
+		
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r2.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
-		(a) & (b) & (c) & (d)
+		(a) & (b) PSNR =  & (c)$R=2$,PSNR $=76.55$dB & (d) PSNR =  \\
+		
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
+		(a) & (b) PSNR =  & (c)$R=4$,PSNR $=77.79.29$dB & (d) PSNR =  \\
 	\end{tabular}
 	\end{center}
 	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=1000$) using $m=8000$ measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
@@ -114,7 +127,7 @@ For our final experiment, we evaluated the performance of our algorithm on a rea
 			\input{plots/r_2_plot.tex}
 			&
 			\input{plots/r_4_plot.tex} \\
-			(a) & (b) & (c)
+			(a) & (b) & (c) \\
 			%\begin{figure}[t]
 			%	\begin{center}
 			%\vspace{-0em}

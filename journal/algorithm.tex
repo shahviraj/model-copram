@@ -1,8 +1,8 @@
 \section{Sparse signal recovery from modulo measurements}
 \label{sec:algo}
-In this section, we describe our AltMin based approach to recover $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A}, s, R$. We call our algorithm MoRAM - Modulo Reconstruction using Alternative Minimization. Our approach comprises of two steps: (i) initialization step, and (ii) Descent step through alternative minimization.
+In this section, we describe our AltMin based approach to recover $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A}, s, R$. We call our algorithm MoRAM - Modulo Reconstruction using Alternating Minimization. Our approach comprises of two steps: (i) initialization step, and (ii) descent step through alternating minimization.
 
-\subsection{Initialization using Re-Calculated Measurements (RCM) method}
+\subsection{Initialization by re-calculating the measurements}
 \label{sec:init}
 Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We have several initialization techniques available, typically used in Phase Retrieval problems; such as spectral initialization. However, the nature of the problem in our case is fundamentally different due to asymmetric and non-linear behavior of the modulo transfer function. To overcome this issue, we propose a method to re-calculate the true measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We aim to undo the effect of modulo operation for the fraction of the total measurements. To understand the method for such re-calculation, we will first try to understand the effect of modulo operation on the linear measurements.
 
@@ -12,9 +12,9 @@ We observe the histograms of the $\mathbf{Ax^*}$(Fig.~\ref{fig:hist1}) and $\mat
 In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after modulo operation for both the cases: $R>\rho$ and $R<\rho$. Comparing these histograms with the histogram of true measurements (Fig.~\ref{fig:hist1}), we can observe how the values of first histogram translates into second or third when the modulo operation is applied. We can draw following conclusions:
 \begin{itemize}
 	\item Only the values lying on the negative side of the x-axis are going to be affected.
-	\item Values lying very close to the origin on the negative side of the x-axis in the first histogram, would now shift by $R$, and would occupy a place very close to $R$ in second histogram. For $R>\rho$, this region is shaded with green color in Fig.~\ref{fig:hist2}. Correct bin-value for the elements in $\mathbf{y}$ with value lying between $\rho$ and $R$ is $p_{rcm,i} = 1$.
-	\item For $R>\rho$, histogram of the positive region very close to the origin would remain unaffected. This region is shaded with orange color in Fig.~\ref{fig:hist2}. Correct bin-value for all the elements in $\mathbf{y}$ with value lying between $0$ and $R-\rho$ is $p_{rcm,i} = 0$.
-	\item Nothing can be concluded for measurements lying in between the above mentioned ranges. This region is shaded with gray color in Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}. Correct bin-value cannot be identified for this region, so we assign all the elements in $\mathbf{y}$ with value lying between $0$ and $(R-\rho)$ as $p_{rcm,i} = 0$. The lower and upper bounds ($t_l$~\&$~t_u$) of this disputed region can be obtained as, 
+	\item Values lying very close to the origin on the negative side of the x-axis in the first histogram, would now shift by $R$, and would occupy a place very close to $R$ in second histogram. For $R>\rho$, this region is shaded with green color in Fig.~\ref{fig:hist2}. Correct bin-value for the elements in $\mathbf{y}$ with value lying between $\rho$ and $R$ is $p^{init}_{i} = 1$.
+	\item For $R>\rho$, histogram of the positive region very close to the origin would remain unaffected. This region is shaded with orange color in Fig.~\ref{fig:hist2}. Correct bin-value for all the elements in $\mathbf{y}$ with value lying between $0$ and $R-\rho$ is $p^{init}_{i} = 0$.
+	\item Nothing can be concluded for measurements lying in between the above mentioned ranges. This region is shaded with gray color in Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}. Correct bin-value cannot be identified for this region, so we assign all the elements in $\mathbf{y}$ with value lying between $0$ and $(R-\rho)$ as $p^{init}_{i} = 0$. The lower and upper bounds ($t_l$~\&$~t_u$) of this disputed region can be obtained as, 
 	\begin{align*}
 	t_l & = \max(0, R-\rho), \\
 	t_u & = \max(\rho, R).
@@ -23,25 +23,30 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 \end{itemize}
 
 \begin{algorithm}[t]
-	\caption{\textsc{RCM-Initialization}}
+	\caption{\textsc{MoRAM-initialization}}
 	\label{alg:RCM}
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$, $\rho$
 		\State\textbf{Output:}  $\mb{x^0}$
 		\State $T \leftarrow \phi$, $t_l \leftarrow \max(0, R-\rho)$, $t_u \leftarrow \max(\rho, R)$
-		\For {$l= 0:m$}
-		\If {$y_l<0$}
-		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
-		\ElsIf {$0\leq y_l < t_l$}
-		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
-		\ElsIf {$t_l\leq y_l < t_u$}
-		\State {$p^{rcm}_l = 0$}
-		\ElsIf {$t_u \leq y_l < R$}
-		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
-		\ElsIf {$R  \leq y_l$}
-		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
+		\For {$i= 0:m$}
+%		\If {$y_l<0$}
+%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
+%		\ElsIf {$0\leq y_l < t_l$}
+%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
+%		\ElsIf {$t_l\leq y_l < t_u$}
+%		\State {$p^{rcm}_l = 0$}
+%		\ElsIf {$t_u \leq y_l < R$}
+%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
+%		\ElsIf {$R  \leq y_l$}
+%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
+%		
+%		\EndIf
 		
-		\EndIf	
+		\If {$t_l > y_i$ or $ y_i \geq t_u$}
+		\State {$T \leftarrow T \cup \{i\}$}
+		\EndIf
+		\State Calculate $p^{init}_i$ according to Eq. ~\ref{eq:rcm}.
 		\EndFor
 		\State $N \leftarrow |T|$
 		\State $\mb{x^0} \leftarrow H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)$
@@ -77,8 +82,8 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 		}
 		%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
 		%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
-		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
+		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
+		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
 	\caption{\emph{Histogram of $\mathbf{Ax^*}$}}
@@ -120,8 +125,8 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 		}
 		%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
 		%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
-		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
+		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
+		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
 	\caption{\emph{Histogram of $\mod(\mathbf{Ax^*})$, $R>\rho$}}
@@ -165,8 +170,8 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 		}
 		%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
 		%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,cyan, ultra thick] plot ({\x},{\x+4});
-		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,cyan, ultra thick]  plot ({\x},{\x});
+		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
+		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
 	\caption{\emph{Histogram of $\mod(\mathbf{Ax^*})$, $R<\rho$}}
@@ -174,7 +179,7 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 \end{figure}
 We divide the number line in the following 5 intervals, and assign the bin-value accordingly:
 \begin{equation}
-{p}^{rcm}_{i} = 
+{p}^{init}_{i} = 
 \begin{cases}
 1,& \text{if } y_i <0 \\
 0,& \text{if } 0\leq y_i < t_l \\
@@ -193,9 +198,9 @@ Value of $N$ largely depends on the difference between $\rho$ and $R$.
 
 Once we identify the correct bin-values for part of the measurements, we can re-calculate corrected measurements as,
 $$
-\mathbf{y_{c} = y + p^{rcm}R}.
+\mathbf{y_{c} = y + p^{init}R}.
 $$
-We use these corrected measurements $\mathbf{y_{rcm}}$ to calculate the initial estimate $\mathbf{{x}^0}$ using the estimation step described in the upcoming section.
+We use these corrected measurements $\mathbf{y_{init}}$ to calculate the initial estimate $\mathbf{{x}^0}$ using the estimation step described in the upcoming section.
 \subsubsection{Calculating the initial estimate from the corrected measurements}
 In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected measurements using first order unbiased estimator. For that, we use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $T$:
 \begin{equation}
@@ -203,18 +208,18 @@ In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected mea
 \label{eq:init}
 \end{equation}
 where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest absolute entries of a vector and sets the other entries to zero.
-\subsection{Alternative Minimization}
+\subsection{Alternating Minimization}
 \label{sec:altmin}
 \begin{algorithm}[H]
-	\caption{\textsc{MoRAM}}
+	\caption{\textsc{MoRAM-descent}}
 	\label{alg:MoRAM}
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$
 		\State\textbf{Output:}  $\widehat{x}$
 		\State $m,n \leftarrow \mathrm{size}(\mathbf{A})$ 
 		\State \textbf{Initialization}
-		\State $\mathbf{x^0} \leftarrow \textrm{RCM}(\mathbf{y, A})$ 
-		\State \textbf{Alternative Minimization}
+		\State $\mathbf{x^0} \leftarrow \textrm{MoRAM-initialization}(\mathbf{y, A})$ 
+		\State \textbf{Alternating Minimization}
 		\For {$l =0:L$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
@@ -225,14 +230,14 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 \end{algorithm}
 
 
-Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we  calculate the estimates $\mathbf{p}$ and $\mathbf{x}$ in alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of our Alternative Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
+Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we  calculate the estimates $\mathbf{p}$ and $\mathbf{x}$ in alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of our Alternating Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
 \begin{equation}
 \mathbf{{p}^{t}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}.
 \label{step1}
 \end{equation}
 
 
-Given $\mathbf{x^0}$ is close to $\mathbf{x^*}$, $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideal way is to calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y_c}$ with CoSaMP to calculate the next estimate $\mathbf{{x}_{t+1}}$. Thus,
+Given $\mathbf{x^0}$ is close to $\mathbf{x^*}$, $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideal way is to calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}_{t+1}}$. Thus,
 
 
 $$
@@ -242,30 +247,30 @@ $$
 \mathbf{{x}^{t+1}} = \argmin_{\mathbf{x} \in \mathcal{M}_s}\norm{\mathbf{Ax} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
 
-\begin{equation}
-\implies \mathbf{{x}^{t+1}} = \cosamp(\frac{1}{\sqrt{m}}\mathbf{A},\frac{1}{\sqrt{m}}\mathbf{y^t_c},s,\mathbf{x^t}).
-\label{eq:cosamp}
-\end{equation}
+%\begin{equation}
+%\implies \mathbf{{x}^{t+1}} = \cosamp(\frac{1}{\sqrt{m}}\mathbf{A},\frac{1}{\sqrt{m}}\mathbf{y^t_c},s,\mathbf{x^t}).
+%\label{eq:cosamp}
+%\end{equation}
 
 
-However, it should be noted that even the small error $\mathbf{d} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{y^t_c}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the CoSaMP is not robust enough to cope up with such large errors in $\mathbf{y^t_c}$. To tackle this issue, we augmented the sparse recovery problem using the fact that the nature of error $\mathbf{d^t_p}$ is sparse; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$. We take the sparsity of $\mathbf{d^t}$ to be $s_p = 0.1\times m$, suggesting that at most the $10\%$ of the total elements are classified with wrong bin-indices.
+However, it should be noted that even the small error $\mathbf{d} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{y^t_c}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the typical sparse recovery algorithms are not robust enough to cope up with such large errors in $\mathbf{y^t_c}$. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t_p}$ is sparse; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$.
 
 The augmented optimization problem becomes,
 
 $$
 \mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^T \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
-\begin{equation}
-= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^T).
-\label{eq:robcosamp}
-\end{equation}
-We call the step in Eq.~\ref{eq:robcosamp} a Robust CoSaMP. 
-However, for using CoSaMP , it is required to specify the total sparsity value $(s +s_p)$, where $s_p$ is unknown. Thus, we employ Basis pursuit instead of CoSaMP, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) in the literature, specified in Eq.~\ref{eq:jp}.
+%\begin{equation}
+%= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^T).
+%\label{eq:robcosamp}
+%\end{equation}
+
+ However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) in the literature, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
 \implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^T).
 \label{eq:jp}
 \end{equation}
-We repeat the steps of bin index calculation (as in Eq.~\ref{step1}) and sparse recovery (as in Eq.~\ref{eq:cosamp} or Eq.~\ref{eq:robcosamp} or Eq.~\ref{eq:jp}) alternatively for $\mathrm{N}$ iterations. While the sparse recovery with robust CoSaMP (Eq.~\ref{eq:robcosamp}) improves the reconstruction performance for large values of $R$ by making the sparse recovery step less susceptible to the errors, CoSaMP can also used in its original form (as in Eq.~\ref{eq:cosamp}) for lower values of $R$. Nevertheless, the best performing recovery algorithm uses Justice Pursuit, which is able to produce perfectly converging results, as described in experimental section.
+We repeat the steps of bin index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $\mathrm{N}$ iterations. For the lower values of $R$, CoSaMP can also used for sparse recovery. Nevertheless, the best performing recovery algorithm uses Justice Pursuit, which is able to produce perfectly converging results, as described in experimental section.
 
 %Thus, we can have two variants of the MoRAM algorithm: (i) MoRAM with CoSaMP, (ii) MoRAM with robust CoSaMP, and (iii) MoRAM with Justice Pursuit. 
 
