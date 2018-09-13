@@ -33,28 +33,24 @@ For our final experiment, we evaluated the performance of our algorithm on a rea
 \begin{figure*}[t!]
 	\begin{center}
 		%\vspace{-0em}
-		\begin{tabular}{cccc}
-			Original image & Recovery with $m=4000 $ & Recovery with $m=8000 $ & Reconstruction with $m= $ \\
+		\setlength{\tabcolsep}{1pt}
+		\begin{tabular}{ccccc}
+		\rotatebox{90}{$~~~~~~~m=4000$} &
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} & 
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r2_m_4000_s_800.pdf} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
+		& \small{(a) Original image}& \small{(b) $R=1$, SNR $=25.06$dB}& \small{(c) $R=2$, SNR $=6.60$dB}& \small{(d) $R=4$, SNR $=26.63$dB} \\
+		
+		\rotatebox{90}{$~~~~~~~m=8000$} &
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
-		(a) & (b) $R=1$,PSNR $=25.06$dB & (c)$R=1$,PSNR $=77.71$dB  & (d) PSNR =  \\
-		
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1.pdf} &
 		\includegraphics[width=0.24\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
-		(a) & (b) PSNR =  & (c)$R=2$,PSNR $=76.55$dB & (d) PSNR =  \\
-		
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_original.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r1.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf} &
-		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4.pdf}  \\
-		(a) & (b) PSNR =  & (c)$R=4$,PSNR $=77.79.29$dB & (d) PSNR =  \\
+		\includegraphics[width=0.24\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf}  \\
+		& \small{(a) Original image}& \small{(b) $R=1$, SNR $=77.71$dB} &\small{ (c) $R=2$, SNR $=76.55$dB} & \small{(d) $R=4$, SNR $=79.29$dB} \\
 	\end{tabular}
 	\end{center}
-	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=1000$) using $m=8000$ measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
+	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=8000$ (bottom) measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
 	\label{fig:lovett}
 \end{figure*}
 
