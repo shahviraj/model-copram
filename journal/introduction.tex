@@ -1,9 +1,39 @@
 \section{Introduction}
 \label{sec:intro}
 \subsection{Motivation}
-The problem of recovering a signal (or image) from its nonlinear observations is widely encountered in the domain of signal processing, signal acquisition and imaging systems. One such problem that we are considering in this paper is recovery of a signal from its \textit{modulo} samples. Modulo operation with respect to a positive real valued parameter $R$ returns the reminder after the Euclidean division of the sample by $R$. The typical behavior of modulo function is depicted in Fig.~\ref{fig:orgmodop}.
+The problem of reconstructing a signal (or image) from (possibly) nonlinear observations is widely encountered in standard signal acquisition and imaging systems. Our focus in this paper is the problem of signal reconstruction from \textit{modulo} measurements, where the modulo operation with respect to a positive real valued parameter $R$ returns the (fractional) remainder after division by $R$. See Fig.~\ref{fig:orgmodop} for an illustration.
 
-\begin{figure}[h]
+%The problem of reconstructing the signal from its modulo measurements, referred as \textit{modulo recovery problem} in the literature, can be formalized as follows.
+
+Formally, we consider a high dimensional signal (or image) $\mb{x}^* \in \R^n$. We are given modulo measurements of $\mb{x^*}$, that is, for each measurement vector $\mb{a_i} \in \R^n$, we observe:
+\begin{equation}
+y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~~~~\textnormal{for}~i = \{1,2,...,m\}, \nonumber
+\label{eq:modmeas0}
+\end{equation} 
+The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and knownledge the measurement matrix $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$. %Here, $\mod(\cdot)$ is modulo operation with respect to the period $R$. 
+
+%\begin{figure}[h]
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
+%		\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
+%		\draw[->] (0,-1) -- (0,4) node[above] {$f(t)$};
+%		\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+%		\draw (1.5,-0.5) node(below) {$p_i = 0$};
+%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
+%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
+%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue,thick] plot ({\x},{\x+4});
+%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
+%		\end{tikzpicture}
+%	\end{center}
+%	\caption{\emph{Modified modulo function for the given problem}}
+%	\label{fig:modop}
+%\end{figure}
+
+% One such example is the classical problem of phase retrieval, which arises in numerous imaging applications including ptychography, diffraction imaging and astronomical imaging \cite{shechtman2015phase, maiden2009improved}. In such imaging systems, due to the limitations of the optical sensors, only the magnitude of the light rays can be measured but not the phase. As each linear observation losses its phase, the effective forward model can be expressed as a composition of nonlinear absolute value function with the linear observation function. Though the phase retrieval problem is challenging ill-posed inverse problem, it is well-studied in the literature and there exists multiple provably efficient algorithmic procedures to solve it in different settings \cite{Netrapalli2013,candes2013phaselift,candes2015phase,wang2016sparse}.
+
+This specific form of signal recovery is gaining rapid interest in recent times. Recently, the use of a novel imaging sensor that wraps the data in a periodical manner  has been shown to overcome certain hardware limitations of typical imaging systems \cite{Bhandari,Zhao2015}. Many image acquisition systems suffer from the problem of limited dynamic range; however, real-world signals can contain a large range of intensity levels, and if tuned incorrectly, most intensity levels can lie in the saturation region of the sensors, causing loss of information through signal clipping. The problem gets amplified in the case of multiplexed linear imaging systems (such as compressive cameras or coded aperture systems), where required dynamic range is very high because of the fact that each linear measurement is a weighted aggregation of the original image intensity values. 
+
+\begin{figure}[!t]
 	\begin{center}
 		\begin{tikzpicture}
 			\draw[<->,thick] (-3,0)--(3,0) node[anchor=north]{$t$};
@@ -26,14 +56,20 @@ The problem of recovering a signal (or image) from its nonlinear observations is
 	\label{fig:orgmodop}
 \end{figure}
 
-The problem of reconstructing the signal from its modulo measurements, referred as \textit{modulo recovery problem} in the literature, can be formalized as follows.
 
-Consider a high dimensional signal (or image) $\mb{x}^* \in \R^n$. We are given modulo measurements of $\mb{x^*}$, that is, for $\mb{a_i} \in \R^n$:
+The standard solution to this issue is to improve sensor dynamic range via enhanced hardware; this, of course, can be expensive. An intriguing alternative is to deploy special digital \emph{modulo} sensors. As the name suggests, such sensor wraps the observed signal intensity value around a given dynamic range parameter. This makes the forward model highly nonlinear and the reconstruction problem highly ill-posed. For most nonlinear ill-posed inverse problems, such results require overcomplete observations, meaning that the number of minimum measurements $m$ required for signal recovery is higher than the ambient dimension $n$ of the signal itself. For the cases where $m$ and $n$ are large, this requirement puts a heavy burden on computation and storage. 
+
+In contrast, our focus is on solving the the inverse problem~\eqref{eq:modmeas0} with very few number of samples, {i.e.}, we are interested in the case $m<n$. While this makes the problem even more ill-posed, we show that such a barrier can be avoided if we assume that the underlying signal obeys a certain low-dimensional structure. We focus on the \emph{sparsity} assumption on the underlying signal, but our techniques could be extended to other signal structures.  
+
+\subsection{Setup}
+\label{subsec:setup}
+The $\mod(\cdot,R)$ transfer function is many-to-one with infinite support. Thus, in this paper, we simplify our analysis by considering a simplified version of the modulo function that already inherits much of the challenging aspects of the original function. We consider a modified version that is truncated to only two periods of operation: one on the positive half and one in the negative half as shown in the Fig.~\ref{fig:compare}(a). %We also incorporate sparsity as a signal prior, thus capture the measurements in compressed sense, \textit{i.e.} $m<n$.
+Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$ with i.i.d. Gaussian entries and $m<n$. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
 \begin{equation}
-y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\}, \nonumber
-\label{eq:modmeas0}
+y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\},
+\label{eq:modmeas1}
 \end{equation} 
-The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and the matrix $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$. Here, $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. 
+where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. The primary assumption in our model is that the natural signal $\mathbf{x^*}$ is $s-$sparse in a chosen basis. 
 
 %\begin{figure}[h]
 %	\begin{center}
@@ -51,42 +87,6 @@ The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and the
 %	\caption{\emph{Modified modulo function for the given problem}}
 %	\label{fig:modop}
 %\end{figure}
-
-% One such example is the classical problem of phase retrieval, which arises in numerous imaging applications including ptychography, diffraction imaging and astronomical imaging \cite{shechtman2015phase, maiden2009improved}. In such imaging systems, due to the limitations of the optical sensors, only the magnitude of the light rays can be measured but not the phase. As each linear observation losses its phase, the effective forward model can be expressed as a composition of nonlinear absolute value function with the linear observation function. Though the phase retrieval problem is challenging ill-posed inverse problem, it is well-studied in the literature and there exists multiple provably efficient algorithmic procedures to solve it in different settings \cite{Netrapalli2013,candes2013phaselift,candes2015phase,wang2016sparse}.
-
-Modulo recovery problem is a nonlinear inverse problem, and is gaining rapid interest in recent times. Recently, the use of a novel imaging sensor that wraps the data in a periodical manner is advocated widely to break away from the hardware limitations of typical imaging systems \cite{Bhandari,Zhao2015}. Most of the image and signal acquisition systems suffer from the problem of limited dynamic range. It is well known that real signals contain a large range of intensity levels, and not all of them can be accurately captured due to hardware limited dynamic range of conventional acquisition systems. If tuned incorrectly, most intensity levels can lie in the saturation region of the sensors, causing loss of information through clipping of signals. 
-
-The problem gets amplified in the case of multiplexed imaging systems, where required dynamic range is very high because of the fact that the observed signal intensity is a sum of various weighted versions of the original signal. The obvious solution to this issue is to increase the dynamic range of the sensors, but unfortunately it is not always possible due to expensive hardware. An alternating approach is the deploy a specifically designed sensors named modulo sensors. As the name suggests, such sensor wraps the observed signal intensity value over given dynamic range, which is analogous to familiar modulo operation with respect to parameter $R$. Usage of the modulo sensor to capture the linear measurements adds an additional effect of modulo operation over each observation, making the forward model highly nonlinear. Recovery of the underlying signal from such modulo measurements turns out to be a challenging and significant yet rarely studied problem in the domain of signal and image processing. 
-
-For most of the nonlinear inverse problems that were solved in the literature, such results require overcomplete observations, meaning the number of minimum measurements $m$ require for the signal recovery is higher than the ambient dimension $n$ of the signal itself. For the cases where $m$ and $n$ are large, this requirement puts limitation on computation and storage of the measurements. Thus, in this paper, we focus on solving the problem of modulo recovery with very few number of samples, \textit{i.e.} we set $m<n$. This can be achieved by assuming that the underlying signal obeys a certain low-dimensional structure. Typically, sparsity in some known basis is used as a structural assumption in many imaging applications as many real signals are known to be sparse in some basis. 
-
-\subsection{Setup}
-\label{subsec:setup}
-Modulo function is a many-to-one function with an infinite support. Thus, inverting the unbounded version of the modulo operation is highly challenging. Moreover, for most of the real world image acquisition systems, having an unbounded dynamic range is either unnecessary or impractical. Thus, in this paper, we simplify our analysis of modulo recovery problem by reducing the complexity of the modulo function. We consider a modified version of modulo operation that is truncated to only two periods of operation: one on the positive half and one in the negative half as shown in the Fig.~\ref{fig:modop}. We also incorporate sparsity as a signal prior, thus capture the measurements in compressed sense, \textit{i.e.} $m<n$.
-
-Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$ with i.i.d. Gaussian entries and $m<n$. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
-\begin{equation}
-y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\},
-\label{eq:modmeas1}
-\end{equation} 
-where $\mod(\cdot)$ is modulo operation with respect to a fixed, real-valued parameter $R$. The primary assumption in our model is that the natural signal $\mathbf{x^*}$ is $s-$sparse in a chosen basis. 
-
-\begin{figure}[h]
-	\begin{center}
-		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
-		\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
-		\draw[->] (0,-1) -- (0,4) node[above] {$f(t)$};
-		\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
-		\draw (1.5,-0.5) node(below) {$p_i = 0$};
-		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
-		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue,thick] plot ({\x},{\x+4});
-		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
-		\end{tikzpicture}
-	\end{center}
-	\caption{\emph{Modified modulo function for the given problem}}
-	\label{fig:modop}
-\end{figure}
 
 \subsection{Our contributions}
 In this paper, we propose a Alternating Minimization based recovery algorithm for exact reconstruction of signals from its compressed modulo measurements. We refer our algorithm as MoRAM- Modulo Recovery with Alternating Minimization. We also provide analytical proofs for exact recovery of signal using our algorithm. The key contribution of our approach is to identify and draw parallels between the problems of phase retrieval and modulo recovery, which allowed us to bring in the ideas from the classical phase retrieval solutions into relatively new setup of modulo recovery problems - which has been done for the first time to the best of our knowledge. 

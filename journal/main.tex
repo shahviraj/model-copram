@@ -14,9 +14,10 @@
 %\usepackage{float}
 \usepackage{algpseudocode}
 %\usepackage{rotating}
-
+\usepackage{cite}
 \usepackage{amsfonts}
 \usepackage{mathtools}
+\usepackage{microtype}
 \usepackage{hyperref}
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 %\usepackage[shortcuts]{extdash}
@@ -62,8 +63,12 @@
 \hyphenation{op-tical net-works semi-conduc-tor}
 \DeclarePairedDelimiter{\diagfences}{(}{)}
 \newcommand{\diag}{\operatorname{diag}\diagfences}
+
+
+
+
 \begin{document}
-\title{Reconstruction from Modulo Measurements}
+\title{Signal Reconstruction from Modulo Observations}
 
 \author{
 	Viraj Shah and Chinmay Hegde \\
@@ -71,7 +76,7 @@
 	Iowa State University \\
 	Ames, IA, USA 50010
 	\thanks{Email: \{viraj,chinmay@iastate.edu\}. This work was supported by grants CCF-1566281 and CAREER CCF-1750920 from the National Science Foundation, and a faculty fellowship from the Black and Veatch Foundation, and a GPU grant from the NVIDIA Corporation.	
-	We thank Praneeth Narayanamurthy, Gauri Jagatap and Thanh Nguyen for suggestions that improved the manuscript.
+	We thank Praneeth Narayanamurthy, Gauri Jagatap, and Thanh Nguyen for helpful comments.
 }
 	%  \texttt{viraj,chinmay@iastate.edu} \\
 }
@@ -80,7 +85,7 @@
 \maketitle
 
 \begin{abstract}
-	We consider the problem of reconstructing a signal $\mb{x^*} \in \R^n$ from its compressed modulo measurements $\mb{y}=\mod(\mb{Ax^*})$. Our work is based on the novel imaging sensor called modulo sensor that extends the dynamic range of the imaging system by wrapping the data in a periodical manner to produce modulo samples. Reconstructing the image from these modulo measurements is an ill-posed nonlinear inverse problem and we put sparsity assumptions on the signal to solve it efficiently. Our work takes a fresh approach by employing ideas inspired from the field of compressed phase retrieval. We and pose the modulo recovery problem in a form that is similar to compressed phase retrieval problem. Our proposed recovery algorithm Modulo Recovery with Alternating Minimization (MoRAM) is combination of alternating minimization with justice pursuit based formulation for sparse signal recovery from grossly corrupted measurements. We prove that given enough number of measurements, our algorithm perfectly recovers the underlying sparse signal. We also provide extensive experiments on both synthetic and real data to support our claims. 
+	We consider the problem of reconstructing a signal from under-determined \emph{modulo} observations (or measurements). This observation model is inspired by a (relatively) less well-known imaging mechanism called modulo imaging, which can be used to extend the dynamic range of imaging systems; variations of this model have also been studied under the category of \emph{phase unwrapping}. Signal reconstruction under this model is a challenging ill-posed problem, and existing reconstruction methods cannot be used directly. In this paper, we propose a novel approach to (rigorously) solving the inverse problem, inspired by recent advances in algorithms for \emph{phase retrieval} under sparsity constraints. We prove that given a sufficient number of measurements, our algorithm perfectly recovers the underlying signal. We also provide extensive experiments on both synthetic and real data to support our claims. 
 \end{abstract}
 \input{./introduction}
 \input{./priorwork}
@@ -93,7 +98,7 @@
 %\input{./model}
 %\clearpage
 %\input{../common/ack}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{./vsbib}
 %\input{../common/appendix_a}
 %\input{../common/appendix_b}
