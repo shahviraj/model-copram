@@ -6,11 +6,11 @@ We call our algorithm \emph{MoRAM}, short for \emph{Modulo Reconstruction with A
 
 \subsection{Initialization by re-calculating the measurements}
 \label{sec:init}
-Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We have several initialization techniques available, typically used in Phase Retrieval problems; such as spectral initialization. However, the nature of the problem in our case is fundamentally different due to asymmetric and non-linear behavior of the modulo transfer function. To overcome this issue, we propose a method to re-calculate the true measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We aim to undo the effect of modulo operation for the fraction of the total measurements. To understand the method for such re-calculation, we will first try to understand the effect of modulo operation on the linear measurements.
+Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We have several initialization techniques available, typically used in phase retrieval problems; such as spectral initialization. However, the nature of the problem in our case is fundamentally different due to asymmetric and non-linear behavior of the modulo transfer function. To overcome this issue, we propose a method to re-calculate the true measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We aim to undo the effect of modulo operation for the fraction of the total measurements. To understand the method for such re-calculation, we will first try to understand the effect of modulo operation on the linear measurements.
 
 \subsubsection{The effect of modulo operation} 
 \label{sec:modeff}
-We observe the histograms of the $\mathbf{Ax^*}$(Fig.~\ref{fig:hist1}) and $\mathbf{\mod(\mathbf{Ax^*})}$(Fig.~\ref{fig:hist2}) to understand the information we can obtain from the modulo measurements. We are particularly interested in the case where signal strengths are low compared to the value of $R$, nevertheless, we also analyze the other case when $R$ is less than the signal strength. Here, we define $\rho$ as maximum element in $\mathbf{Ax^*}$. $\rho$ is bounded by a real number with very high probability, as the distribution of $\mathbf{Ax^*}$ is Gaussian.
+We observe the histograms of the $\mathbf{Ax^*}$(Fig.~\ref{fig:hist1}) and $\mathbf{\mod(\mathbf{Ax^*})}$(Fig.~\ref{fig:hist2}) to understand the information we can obtain from the modulo measurements. We are particularly interested in the case where signal strengths are low compared to the value of $R$, nevertheless, we also analyze the other case when $R$ is less than the signal strength. Here, we approximate the spread of the $\mathbf{Ax^*}$ with a hyper-parameter $\rho$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:hist1}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$.
 In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after modulo operation for both the cases: $R>\rho$ and $R<\rho$. Comparing these histograms with the histogram of true measurements (Fig.~\ref{fig:hist1}), we can observe how the values of first histogram translates into second or third when the modulo operation is applied. We can draw following conclusions:
 \begin{itemize}
 	\item Only the values lying on the negative side of the x-axis are going to be affected.
@@ -67,7 +67,7 @@ In Fig.~\ref{fig:hist2} and Fig.~\ref{fig:hist3}, we can see the histogram after
 		%\fill [fill=orange!60] (2.6,0) -- plot[domain=0:4.4] (\normaltwo) -- ({\y},0) -- cycle;
 		
 		% Draw and label normal distribution function
-		\draw[color=blue,domain=-3:3,thick] plot (\normaltwo) node[right] {};
+		\draw[color=blue,domain=-4.25:4.25,thick] plot (\normaltwo) node[right] {};
 		\draw[<->] (-5,0) -- (5,0) node[right] {$\mathbf{Ax^*}$};
 		\draw[<->] (0,-1) -- (0,4);
 		
@@ -225,8 +225,8 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 		\For {$l =0:L$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
-		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^T}\norm{u}_1  s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}$ 
-		\State $\mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},[\mathbf{x^t~~p^t}]^T)}$.
+		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^\t}\norm{u}_1  s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}$ 
+		\State $\implies \mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},[\mathbf{x^t~~p^t}]^\t)}$.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
@@ -260,16 +260,16 @@ However, it should be noted that even the small error $\mathbf{d} = \mathbf{p^t 
 The augmented optimization problem becomes,
 
 $$
-\mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^T \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
+\mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^\t \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
 %\begin{equation}
-%= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^T).
+%= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^\t).
 %\label{eq:robcosamp}
 %\end{equation}
 
  However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) in the literature, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
-\implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^T).
+\implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
 \label{eq:jp}
 \end{equation}
 We repeat the steps of bin index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $\mathrm{N}$ iterations. For the lower values of $R$, CoSaMP can also used for sparse recovery. Nevertheless, the best performing recovery algorithm uses Justice Pursuit, which is able to produce perfectly converging results, as described in experimental section.
