@@ -10,7 +10,7 @@ Formally, we consider a high dimensional signal (or image) $\mb{x}^* \in \R^n$. 
 y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~~~~\textnormal{for}~i = \{1,2,...,m\}, \nonumber
 \label{eq:modmeas0}
 \end{equation} 
-The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and knownledge the measurement matrix $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$. %Here, $\mod(\cdot)$ is modulo operation with respect to the period $R$. 
+The task is to recover $\mb{x^*}$ using the modulo measurements $\mb{y}$ and knowledge the measurement matrix $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^\t$. %Here, $\mod(\cdot)$ is modulo operation with respect to the period $R$. 
 
 %\begin{figure}[h]
 %	\begin{center}
@@ -64,7 +64,7 @@ In contrast, our focus is on solving the the inverse problem~\eqref{eq:modmeas0}
 \subsection{Setup}
 \label{subsec:setup}
 The $\mod(\cdot,R)$ transfer function is many-to-one with infinite support. Thus, in this paper, we simplify our analysis by considering a simplified version of the modulo function that already inherits much of the challenging aspects of the original function. We consider a modified version that is truncated to only two periods of operation: one on the positive half and one in the negative half as shown in the Fig.~\ref{fig:compare}(a). %We also incorporate sparsity as a signal prior, thus capture the measurements in compressed sense, \textit{i.e.} $m<n$.
-Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^T$ with i.i.d. Gaussian entries and $m<n$. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
+Assume $\mathcal{X} \subseteq \R^n$ to be a given (known) subset in the data space, and consider a signal (or image) $\mb{x}^* \in \mathcal{X}$. We construct $\mathbf{A} = \left[\mathbf{a_1~a_2~...~a_m}\right]^\t$ with i.i.d. Gaussian entries and $m<n$. We aim to recover the original signal $\mb{x^*}\in \R^n$ from its compressed modulo measurements $y_i$ defined as:
 \begin{equation}
 y_i=\mod(\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle,R)~\textnormal{for}~i = \{1,2,...,m\},
 \label{eq:modmeas1}

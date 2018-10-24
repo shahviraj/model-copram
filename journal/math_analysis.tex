@@ -13,19 +13,23 @@ $$
 y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle = \sum_{j=1}^{n}\mb{A}_{ij}x^*_{j}.
 $$
 
-So, 
+Being a linear combination of Guassian random variables, $y_{c,i}$ also follows Gaussian distribution.
+
 $$
-y_{c,i} \sim \mathcal{N}\left(\mu= \sum_{j=1}^{n}x^{*}\mu_{\mb{A}_{ij}}, \sigma =\sum_{j=1}^{n}x^{*2}_{j}\sigma^2_{\mb{A}_{ij}}\right)
+\mu_{y_{c}} = \sum_{j=1}^{n}x^{*}\mu_{\mb{A}_{ij}} = 0,
 $$
 $$
-\implies y_{c,i} \sim \mathcal{N}\left(\mu= 0, \sigma =\sum_{j=1}^{n}x^{*2}_{j} = \norm{\mathbf{{x}^*}}^2 = 1 \right)
+\sigma_{y_{c}} =\sum_{j=1}^{n}x^{*2}_{j} \sigma^2_{\mb{A}_{ij}} = \sum_{j=1}^{n}x^{*2}_{j} = \norm{\mathbf{{x}^*}}^2 = 1;
+$$
+$$
+\implies y_{c,i} \sim \mathcal{N}\left(\mu= 0, \sigma = 1 \right)
 $$
 
-Here, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
+Hence, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
 
 We can calculate $N$ using the fact that the compressive measurements $y_c$ follow the standard normal distribution, and the total number of measurements are $m$. We define $\mathcal{M}_{\alpha,\beta}$ as set of all measurements lying in the interval $[\alpha,\beta]$. Thus,
 
- $\card{\mathcal{M}_{\alpha,\beta}}=mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
+ $\card\left(\mathcal{M}_{\alpha,\beta}\right)=mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
 Where, $Q(\cdot)$ is Q-function, defined as, $Q(t) = 1-\Phi(t)$ with $\Phi(\cdot)$ being CDF of standard normal distribution. \\
 We also note that,
  $$Q(-t) = 1 - Q(t)$$.
@@ -162,7 +166,8 @@ $$
 with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
 
 
-\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. \\ Given the number of measurements $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
+\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. Given the number of measurements \\
+	$m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
 	
 	$$
 	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps;
@@ -211,7 +216,7 @@ $$
 }
 
 
-\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log{n/m}+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $x^*$ with probability at least $1-Kexp(-cm)$, with $C$ and $c$ being numerical constants.
+\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $x^*$ with probability at least $1-Kexp(-cm)$, with $C$ and $c$ being numerical constants.
 }
 
 \proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements. As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
@@ -266,17 +271,26 @@ N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
 \label{eq:ineq3}
 \end{align}
 
-Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required for the case $R < \rho$ as,
+Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required for the case $R > \rho$ as,
 
 \begin{align}
 m \geq \max & \Bigg[ C\left(\frac{t}{\kappa}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \nonumber \\ 
 & \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg]
 \label{eq:ineq4}
 \end{align}
-
+For $R=4$ and $\rho =3$, the above inequality approximates to,
+\begin{align*}
+m \geq \max & \Bigg[ 2C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
+& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg]
+\end{align*}
 Similarly for the case when $R<\rho$ we get,
 \begin{align}
 m \geq \max &  \Bigg[C\left(\frac{t}{\kappa}\right)^2s \left(\frac{2R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)^{-1}, \nonumber \\ 
 & \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
 \label{eq:ineq5}
 \end{align}
+With $R=1$ and $\rho =3$, we can approximate it as,
+\begin{align*}
+m \geq \max &  \Bigg[4C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
+& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
+\end{align*}
