@@ -102,14 +102,14 @@ Solving the phase retrieval problem is essentially equivalent to retrieving the 
 			\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.7}]
 			\draw[<->] (-4,0) -- (4,0) node[right] {$t$};
 			\draw[->] (0,-1) -- (0,4);
-			\draw[scale=0.5, dashed, thick] (0,4)--(7,4) node[right]{$R$};
+			\draw[scale=0.5, dashed, blue, thick] (4,4)--(4,0) node[above right]{$R$};
 			\draw (1.5,-0.5) node(below) {$p_i = 0$};
 			\draw (-1.5,-0.5) node(below) {$p_i = 1$};
 			\draw[scale=0.5,blue,thick] (1.5,6.5)--(2.5,6.5) node[right,black]{$f(t)$};
 			%\draw[scale=0.5,dotted,red,ultra thick] (1.5,5.5)--(2.5,5.5) node[right,black]{$g(t)$};
 			\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-			\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, thick] plot ({\x},{\x+4});
-			\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
+			\draw[scale=0.5,domain=-4:0,smooth,variable=\x,blue, thick] plot ({\x},{\x+4});
+			\draw[scale=0.5,domain=0:4,smooth,variable=\x,blue, thick]  plot ({\x},{\x});
 			%\draw[scale=0.5,domain=0:7,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{\x});
 			%\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, ultra thick, dotted]  plot ({\x},{-\x});
 			\end{tikzpicture} &
@@ -125,8 +125,8 @@ Solving the phase retrieval problem is essentially equivalent to retrieving the 
 			\draw (0,-1.5) node(right) {$g(t)=\mathrm{abs}(t)$};
 			%\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
 			%\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
-			\draw[scale=0.5,domain=0:7,smooth,variable=\x,red,thick]  plot ({\x},{\x});
-			\draw[scale=0.5,domain=-7:0,smooth,variable=\x,red, thick]  plot ({\x},{-\x});
+			\draw[scale=0.5,domain=0:4,smooth,variable=\x,red,thick]  plot ({\x},{\x});
+			\draw[scale=0.5,domain=-4:0,smooth,variable=\x,red, thick]  plot ({\x},{-\x});
 			\end{tikzpicture} \\
 			(a) & (b)
 		\end{tabular}
