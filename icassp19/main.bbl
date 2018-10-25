@@ -1,0 +1,186 @@
+\begin{thebibliography}{10}
+
+\bibitem{Bhandari}
+A.~Bhandari, F.~Krahmer, and R.~Raskar,
+\newblock ``{On unlimited sampling},''
+\newblock Tech. {R}ep.
+
+\bibitem{Zhao2015}
+H.~Zhao, B.~Shi, C.~Fernandez-Cull, S.~Yeung, and R.~Raskar,
+\newblock ``{Unbounded high dynamic range photography using a modulo camera},''
+\newblock in {\em Intl. Conf. on Comp. Photography (ICCP)}, 2015.
+
+\bibitem{Netrapalli2013}
+P.~Netrapalli, P.~Jain, and S.~Sanghavi,
+\newblock ``{Phase retrieval using alternating minimization},''
+\newblock {\em arXiv preprint arXiv:1306.0160}, pp. 1--22, 2013.
+
+\bibitem{Laska2009}
+J.~Laska, M.~Davenport, and R.~Baraniuk,
+\newblock ``{Exact signal recovery from sparsely corrupted measurements through
+  the pursuit of justice},''
+\newblock in {\em Proc. Asilomar Conf. Signals, Systems, and Computers}, 2009,
+  pp. 1556--1560.
+
+\bibitem{candes2013phaselift}
+E.~Candes, T.~Strohmer, and V.~Voroninski,
+\newblock ``Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming,''
+\newblock {\em Comm. Pure Appl. Math.}, vol. 66, no. 8, pp. 1241--1274, 2013.
+
+\bibitem{gross2017improved}
+D.~Gross, F.~Krahmer, and R.~Kueng,
+\newblock ``Improved recovery guarantees for phase retrieval from coded
+  diffraction patterns,''
+\newblock {\em Appl. Comput. Harmon. Anal.}, vol. 42, no. 1, pp. 37--64, 2017.
+
+\bibitem{candes2015phasediff}
+E.~Candes, X.~Li, and M.~Soltanolkotabi,
+\newblock ``Phase retrieval from coded diffraction patterns,''
+\newblock {\em Appl. Comput. Harmon. Anal.}, vol. 39, no. 2, pp. 277--299,
+  2015.
+
+\bibitem{wang2016sparse}
+G.~Wang, L.~Zhang, G.~Giannakis, M.~Ak{\c{c}}akaya, and J.~Chen,
+\newblock ``Sparse phase retrieval via truncated amplitude flow,''
+\newblock {\em arXiv preprint arXiv:1611.07641}, 2016.
+
+\bibitem{wang2016solving}
+G.~Wang and G.~Giannakis,
+\newblock ``Solving random systems of quadratic equations via truncated
+  generalized gradient flow,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2016, pp.
+  568--576.
+
+\bibitem{candes2015phase}
+E.~Candes, X.~Li, and M.~Soltanolkotabi,
+\newblock ``Phase retrieval via wirtinger flow: theory and algorithms,''
+\newblock {\em IEEE Trans. Inform. Theory}, vol. 61, no. 4, pp. 1985--2007,
+  2015.
+
+\bibitem{zhang2016reshaped}
+H.~Zhang and Y.~Liang,
+\newblock ``Reshaped wirtinger flow for solving quadratic system of
+  equations,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2016, pp.
+  2622--2630.
+
+\bibitem{chen2015solving}
+Y.~Chen and E.~Candes,
+\newblock ``Solving random quadratic systems of equations is nearly as easy as
+  solving linear systems,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2015, pp.
+  739--747.
+
+\bibitem{cai2016optimal}
+T.~Cai, X.~Li, Z.~Ma, et~al.,
+\newblock ``Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow,''
+\newblock {\em Ann. Stat.}, vol. 44, no. 5, pp. 2221--2251, 2016.
+
+\bibitem{ohlsson2012cprl}
+H.~Ohlsson, A.~Yang, R.~Dong, and S.~Sastry,
+\newblock ``Cprl--an extension of compressive sensing to the phase retrieval
+  problem,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2012, pp.
+  1367--1375.
+
+\bibitem{li2013sparse}
+X.~Li and V.~Voroninski,
+\newblock ``Sparse signal recovery from quadratic measurements via convex
+  programming,''
+\newblock {\em SIAM J. on Math. Analysis}, vol. 45, no. 5, pp. 3019--3033,
+  2013.
+
+\bibitem{bahmani2015efficient}
+S.~Bahmani and J.~Romberg,
+\newblock ``Efficient compressive phase retrieval with constrained sensing
+  vectors,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2015, pp.
+  523--531.
+
+\bibitem{jaganathan2012recovery}
+K.~Jaganathan, S.~Oymak, and B.~Hassibi,
+\newblock ``Recovery of sparse 1-d signals from the magnitudes of their fourier
+  transform,''
+\newblock in {\em Proc. IEEE Int. Symp. Inform. Theory (ISIT)}. IEEE, 2012, pp.
+  1473--1477.
+
+\bibitem{netrapalli2013phase}
+P.~Netrapalli, P.~Jain, and S.~Sanghavi,
+\newblock ``Phase retrieval using alternating minimization,''
+\newblock in {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, 2013, pp.
+  2796--2804.
+
+\bibitem{Jagatap2017}
+G.~Jagatap and C.~Hegde,
+\newblock ``{Fast, sample-efficient algorithms for structured phase
+  retrieval},''
+\newblock {\em Proc. Adv. in Neural Inf. Proc. Sys. (NIPS)}, , no. Nips, pp.
+  1--11, 2017.
+
+\bibitem{bioucas2007phase}
+J.~Bioucas-Dias and G.~Valadao,
+\newblock ``Phase unwrapping via graph cuts,''
+\newblock {\em {IEEE} Trans. Image Proc.}, vol. 16, no. 3, pp. 698--709, 2007.
+
+\bibitem{ICCP15_Zhao}
+Z.~Hang, S.~Boxin, F.~Christy, Y.~Sai-Kit, and R.~Ramesh,
+\newblock ``Unbounded high dynamic range photography using a modulo camera,''
+\newblock in {\em Intl. Conf. on Comp. Photography (ICCP)}, 2015.
+
+\bibitem{Lang2017}
+F.~Lang, T.~Pl{\"{o}}tz, and S.~Roth,
+\newblock ``{Robust multi-image HDR reconstruction for the modulo camera},''
+\newblock in {\em Lecture Notes in Computer Science (including subseries
+  Lecture Notes in Artificial Intelligence and Lecture Notes in
+  Bioinformatics)}, 2017, vol. 10496 LNCS, pp. 78--89.
+
+\bibitem{Shah}
+V.~Shah, M.~Soltani, and C.~Hegde,
+\newblock ``{Reconstruction from periodic nonlinearities, with applications to
+  HDR imaging},''
+\newblock Tech. {R}ep.
+
+\bibitem{soltani2017stable}
+M.~Soltani and C.~Hegde,
+\newblock ``Stable recovery of sparse vectors from random sinusoidal feature
+  maps,''
+\newblock {\em arXiv preprint arXiv:1701.06607}, 2017.
+
+\bibitem{Cucuringu2017}
+M.~Cucuringu and H.~Tyagi,
+\newblock ``{On denoising modulo 1 samples of a function},''
+\newblock 2017.
+
+\bibitem{vershynin2010introduction}
+R.~Vershynin,
+\newblock ``Introduction to the non-asymptotic analysis of random matrices,''
+\newblock {\em arXiv preprint arXiv:1011.3027}, 2010.
+
+\bibitem{Jacques2013}
+L.~Jacques, J.~Laska, P.~Boufounos, and R.~Baraniuk,
+\newblock ``{Robust 1-Bit compressive sensing via binary stable embeddings of
+  sparse vectors},''
+\newblock {\em IEEE Trans. Inform. Theory}, vol. 59, no. 4, pp. 2082--2102,
+  2013.
+
+\bibitem{li2013compressed}
+X.~Li,
+\newblock ``Compressed sensing and matrix completion with constant proportion
+  of corruptions,''
+\newblock {\em Const. Approx.}, vol. 37, no. 1, pp. 73--99, 2013.
+
+\bibitem{bora2017compressed}
+A.~Bora, A.~Jalal, E.~Price, and A.~Dimakis,
+\newblock ``Compressed sensing using generative models,''
+\newblock {\em arXiv preprint arXiv:1703.03208}, 2017.
+
+\bibitem{shah2018solving}
+V.~Shah and C.~Hegde,
+\newblock ``Solving linear inverse problems using gan priors: An algorithm with
+  provable guarantees,''
+\newblock {\em Proc. IEEE Int. Conf. Acoust., Speech, and Signal Processing
+  (ICASSP)}, 2018.
+
+\end{thebibliography}

@@ -1,0 +1,139 @@
+% Template for SSP-2016 paper; to be used with:
+%          spconf.sty  - ICASSP/ICIP LaTeX style file, and
+%          IEEEbib.bst - IEEE bibliography style file.
+% --------------------------------------------------------------------------
+\documentclass{article}
+\usepackage{spconf,amsmath,epsfig}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{fullpage}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{epstopdf}
+\usepackage{epsfig}
+\usetikzlibrary{tikzmark,calc}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{todonotes}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{rotating}
+\numberwithin{equation}{section} 
+\newtheorem{theorem}{Theorem}[section]                   %[section]   %numberes automatically
+\newtheorem{lemma}[theorem]{Lemma}         %[theorem]  in the middle
+\newtheorem{corollary}[theorem]{Corollary}     %{corollary}{Corollary}[theorem]   
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{ass}[theorem]{Assumption}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{heuristic}[theorem]{Heuristic}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{exmp}[theorem]{Example} 
+\newcommand{\SREC}{S-REC}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\def\R{{\mathbb{R}}}
+
+\def\sgn{\mathrm{sgn}}
+\def\card{\mathrm{card}}
+\def\t{\intercal}
+\def\t{\top}
+\def\cosamp{\mathrm{CoSaMP}}
+\newcommand{\mb}[1]{\mathbf{#1}}
+\DeclarePairedDelimiter{\diagfences}{(}{)}
+\newcommand{\diag}{\operatorname{diag}\diagfences}
+
+\newcommand{\eps}{\epsilon}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\s}{0.18}
+
+% Example definitions.
+% --------------------
+\def\x{{\mathbf x}}
+\def\L{{\cal L}}
+\def\S{{\mathcal{S}}}
+
+
+\newcommand{\red}[1]{{\textcolor{red}{#1}}}  %\textcolor{red}
+
+\newcommand{\norm}[1]{\|#1\|}
+
+
+% latex spacing issues
+\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
+\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
+%\setlength{\abovecaptionskip}{5pt plus 1pt minus 2pt}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+
+%\usepackage{titlesec}
+
+
+%\ninept
+% Title.
+% ------
+\title{Solving Linear Inverse Problems Using GAN Priors: \\ An Algorithm with Provable Guarantees}
+%
+% Single address.
+% ---------------
+\name{Viraj Shah and Chinmay Hegde \thanks{This work was supported in part by grants from the National Science Foundation (NSF CCF-1566281) and NVIDIA.}
+}
+
+\address{ECpE Department, Iowa State University, Ames, IA, 50010}
+ 
+%
+% For example:
+% ------------
+%\address{School\\
+%	Department\\
+%	Address}
+%
+% Two addresses (uncomment and modify for two-address case).
+% ----------------------------------------------------------
+%\twoauthors
+%  {A. Author-one, B. Author-two\sthanks{Thanks to XYZ agency for funding.}}
+%	{School A-B\\
+%	Department A-B\\
+%	Address A-B}
+%  {C. Author-three, D. Author-four\sthanks{The fourth author performed the work
+%	while at ...}}
+%	{School C-D\\
+%	Department C-D\\
+%	Address C-D}
+%
+\begin{document}
+	\maketitle
+	\ninept
+%	\todo{check the acknowledgement information}
+	\input{./abstract}
+	\begin{keywords}
+	Inverse problems, compressive sensing, generative adversarial networks
+	\end{keywords}
+	\input{./introduction}
+	\input{./priorwork}
+	\input{./preliminaries}
+	\input{./algorithm}
+	\input{./math_analysis}
+	\input{./experiment_results}
+	\input{./conclusion}
+%	\input{../common/conclusion}
+	%\clearpage
+	%\input{../common/ack}
+	{{
+	\footnotesize
+	\bibliographystyle{IEEEbib}
+	\bibliography{vsbib}
+	}
+	}
+	%\input{../common/appendix_a}
+	%\input{../common/appendix_b}
+	
+\end{document}
+

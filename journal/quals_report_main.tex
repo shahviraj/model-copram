@@ -1,0 +1,104 @@
+%\pdfoutput=1
+
+\documentclass[10pt]{article}
+
+\input{./macro}
+%\usepackage{authblk}
+\usepackage[margin=1in]{geometry}
+%\usepackage[parfill]{parskip}
+%\usepackage{times}
+%\usepackage{graphicx}
+
+
+%\usepackage{natbib}
+%\usepackage{float}
+\usepackage{algpseudocode}
+%\usepackage{rotating}
+\usepackage{cite}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+%\usepackage[shortcuts]{extdash}
+\newcommand{\SREC}{S\=/REC}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\def\R{{\mathbb{R}}}
+%\newtheorem{theorem}{Theorem}[section]
+\newcommand{\mb}[1]{\mathbf{#1}}
+%\newtheoremstyle{exampstyle}
+%  {10pt} % Space above
+%  {10pt} % Space below
+%  {} % Body font
+%  {} % Indent amount
+%  {\bfseries} % Theorem head font
+%  {.} % Punctuation after theorem head
+%  {.5em} % Space after theorem head
+%  {} % Theorem head spec (can be left empty, meaning `normal')
+%\theoremstyle{exampstyle} \newtheorem{theorem}{Theorem}[section]
+%
+%\newtheorem{corollary}{Corollary}[theorem]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{definition}{Definition}
+%\title{Compressed Sensing on GANs using Iterative Projections}
+
+\def\sgn{\mathrm{sgn}}
+\def\card{\mathrm{card}}
+\def\t{\intercal}
+\def\t{\top}
+\def\cosamp{\mathrm{CoSaMP}}
+%\author{Viraj Shah}
+%\author{Chinmay Hegde}
+%\affil{ECpE Department, Iowa State University}
+
+%\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\eps}{\epsilon}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\s}{0.18}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usetikzlibrary{calc}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\DeclarePairedDelimiter{\diagfences}{(}{)}
+\newcommand{\diag}{\operatorname{diag}\diagfences}
+
+
+\begin{document}
+\title{Signal Reconstruction from Modulo Observations}
+
+\author{
+	Viraj Shah and Chinmay Hegde \\
+	Electrical and Computer Engineering Department \\
+	Iowa State University \\
+	Ames, IA, USA 50010
+	\thanks{Email: \{viraj,chinmay@iastate.edu\}. This work was supported by grants CCF-1566281 and CAREER CCF-1750920 from the National Science Foundation, and a faculty fellowship from the Black and Veatch Foundation, and a GPU grant from the NVIDIA Corporation.	
+	We thank Praneeth Narayanamurthy, Gauri Jagatap, and Thanh Nguyen for helpful comments.
+}
+	%  \texttt{viraj,chinmay@iastate.edu} \\
+}
+
+
+\maketitle
+
+\begin{abstract}
+	We consider the problem of reconstructing a signal from under-determined \emph{modulo} observations (or measurements). This observation model is inspired by a (relatively) less well-known imaging mechanism called modulo imaging, which can be used to extend the dynamic range of imaging systems; variations of this model have also been studied under the category of \emph{phase unwrapping}. Signal reconstruction under this model is a challenging ill-posed problem, and existing reconstruction methods cannot be used directly. In this paper, we propose a novel approach to (rigorously) solving the inverse problem, inspired by recent advances in algorithms for \emph{phase retrieval} under sparsity constraints. We prove that given a sufficient number of measurements, our algorithm perfectly recovers the underlying signal. We also provide extensive experiments on both synthetic and real data to support our claims. 
+\end{abstract}
+\input{./introduction}
+\input{./priorwork}
+\input{./preliminaries}
+\input{./algorithm}
+\input{./math_analysis}
+\input{./experiment_results}
+\input{./conclusion}
+%\input{./appendix}
+%\input{./model}
+%\clearpage
+%\input{../common/ack}
+\bibliographystyle{unsrt}
+\bibliography{./vsbib}
+%\input{../common/appendix_a}
+%\input{../common/appendix_b}
+
+\end{document}

@@ -1,30 +1,5 @@
 \section{Numerical experiments}
 \label{sec:exp}
-%\begin{figure*}[t!]
-%	\begin{center}
-%		%\vspace{-0em}
-%		\setlength{\tabcolsep}{1pt}
-%		\begin{tabular}{ccccc}
-%			\rotatebox{90}{$~~~~~~~m=4000$} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} & 
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_4000_s_800.pdf} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
-%			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=25.06$dB}& \small{(c) $R=2$, SNR $=6.60$dB}& \small{(d) $R=4$, SNR $=26.63$dB} \\
-%			
-%			\rotatebox{90}{$~~~~~~~m=8000$} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
-%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf}  \\
-%			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=77.71$dB} &\small{ (c) $R=2$, SNR $=76.55$dB} & \small{(d) $R=4$, SNR $=79.29$dB} \\
-%		\end{tabular}
-%	\end{center}
-%	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=8000$ (bottom) measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
-%	\label{fig:lovett}
-%\end{figure*}
-
-
 \begin{figure*}[t!]
 	\begin{center}
 		%\vspace{-0em}
@@ -32,20 +7,20 @@
 		\begin{tabular}{ccccc}
 			\rotatebox{90}{$~~~~~~~m=4000$} &
 			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf} & 
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_4000_s_800.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r450_m_4000_s_800.pdf}  \\
-			& \small{(a) Original image}& \small{(b) $R=4$, SNR $=26.63$dB}& \small{(c) $R=4.25$, SNR $=27.20$dB}& \small{(d) $R=4.5$, SNR $=27.21$dB} \\
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} & 
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_4000_s_800.pdf} &
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
+			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=25.06$dB}& \small{(c) $R=2$, SNR $=6.60$dB}& \small{(d) $R=4$, SNR $=26.63$dB} \\
 			
-			\rotatebox{90}{$~~~~~~~m=6000$} &
+			\rotatebox{90}{$~~~~~~~m=8000$} &
 			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_6000_s_800.pdf} & 
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_6000_s_800.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r450_m_6000_s_800.pdf}  \\
-			& \small{(a) Original image}& \small{(b) $R=4$, SNR $=81.50$dB}& \small{(c) $R=4.25$, SNR $=82.88$dB}& \small{(d) $R=4.5$, SNR $=83.25$dB} \\
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf}  \\
+			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=77.71$dB} &\small{ (c) $R=2$, SNR $=76.55$dB} & \small{(d) $R=4$, SNR $=79.29$dB} \\
 		\end{tabular}
 	\end{center}
-	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=6000$ (bottom) measurements for (b) $R=4$, (c) $R=4.25$, (d) $R=4.5$}}
+	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=8000$ (bottom) measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
 	\label{fig:lovett}
 \end{figure*}
 
@@ -67,21 +42,22 @@ For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo tria
 	\begin{center}
 		\begin{tabular}{ccc}
 			%\vspace{-0em}
-			\input{plots/r_4_plot.tex}
+			\input{plots/r_1_plot.tex}
 			&
-			\input{plots/r_425_plot.tex}
+			\input{plots/r_2_plot.tex}
 			&
-			\input{plots/r_450_plot.tex} \\
+			\input{plots/r_4_plot.tex} \\
 			(a) & (b) & (c) \\
 			%\begin{figure}[t]
 			%	\begin{center}
-			%\vspace{-0em}	
+			%\vspace{-0em}
+			
 		\end{tabular}
 	\end{center}
-	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=4$; (b) $R=4.25$; (c) $R=4.50$.}}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=1$; (b) $R=2$; (c) $R=4$.}}
 	\label{fig:plot}
 \end{figure*}
-For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=6000$ compressed modulo measurements, for $3$ different values of $R$, $4,4.25$ and $4.5$. As expected, the reconstruction performance increases with increasing value of $R$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=6000$, The algorithm produces perfect recovery for all $3$ values of $R$ with high PSNR.
+For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=8000$ compressed modulo measurements, for $3$ different values of $R$, $1,2$ and $4$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=8000$, The algorithm produces perfect recovery for all $3$ values of $R$ with high PSNR.
 %
 %\begin{center}
 %	\begin{table}[h]
