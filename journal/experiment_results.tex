@@ -45,7 +45,7 @@
 			& \small{(a) Original image}& \small{(b) $R=4$, SNR $=81.50$dB}& \small{(c) $R=4.25$, SNR $=82.88$dB}& \small{(d) $R=4.5$, SNR $=83.25$dB} \\
 		\end{tabular}
 	\end{center}
-	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=6000$ (bottom) measurements for (b) $R=4$, (c) $R=4.25$, (d) $R=4.5$}}
+	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=6000$ (bottom) measurements for (b) $R=4$, (c) $R=4.25$, (d) $R=4.5$.}}
 	\label{fig:lovett}
 \end{figure*}
 
@@ -78,7 +78,7 @@ For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo tria
 			%\vspace{-0em}	
 		\end{tabular}
 	\end{center}
-	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=4$; (b) $R=4.25$; (c) $R=4.50$.}}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=4$; (b) $R=4.25$; (c) $R=4.5$.}}
 	\label{fig:plot}
 \end{figure*}
 For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=6000$ compressed modulo measurements, for $3$ different values of $R$, $4,4.25$ and $4.5$. As expected, the reconstruction performance increases with increasing value of $R$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=6000$, The algorithm produces perfect recovery for all $3$ values of $R$ with high PSNR.

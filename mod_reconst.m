@@ -9,7 +9,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 4.75; %period of the modulo function
+pr.R = 5; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
