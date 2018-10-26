@@ -11,7 +11,7 @@
 %\usepackage{fullpage}
 \usepackage{tikz}
 \usepackage{graphicx}
-\usepackage{subfig}
+%\usepackage{subfig}
 \usepackage{epstopdf}
 \usepackage{epsfig}
 \usetikzlibrary{tikzmark,calc}
@@ -24,6 +24,7 @@
 \usepackage{mathtools}
 \usepackage{pgfplots}
 \usepackage{rotating}
+\usepackage{subcaption}
 \numberwithin{equation}{section} 
 \newtheorem{theorem}{Theorem}[section]                   %[section]   %numberes automatically
 \newtheorem{lemma}[theorem]{Lemma}         %[theorem]  in the middle
@@ -67,12 +68,13 @@
 
 
 % latex spacing issues
-\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
-\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
-%\setlength{\abovecaptionskip}{5pt plus 1pt minus 2pt}
-\setlength{\abovedisplayskip}{3pt}
-\setlength{\belowdisplayskip}{3pt}
+%\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
+%\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
+%%\setlength{\abovecaptionskip}{5pt plus 1pt minus 2pt}
+%\setlength{\abovedisplayskip}{3pt}
+%\setlength{\belowdisplayskip}{3pt}
 
+\captionsetup{belowskip=3pt,aboveskip=5pt}
 %\usepackage{titlesec}
 
 
@@ -119,7 +121,7 @@
 	\input{./introduction}
 	\input{./priorwork}
 	\input{./algorithm}
-	\input{./math_analysis}
+%	\input{./math_analysis}
 	\input{./experiment_results}
 %	\input{./conclusion}
 	{{
