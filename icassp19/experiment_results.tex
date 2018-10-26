@@ -1,5 +1,30 @@
 \section{Numerical experiments}
 \label{sec:exp}
+%\begin{figure*}[t!]
+%	\begin{center}
+%		%\vspace{-0em}
+%		\setlength{\tabcolsep}{1pt}
+%		\begin{tabular}{ccccc}
+%			\rotatebox{90}{$~~~~~~~m=4000$} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} & 
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_4000_s_800.pdf} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
+%			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=25.06$dB}& \small{(c) $R=2$, SNR $=6.60$dB}& \small{(d) $R=4$, SNR $=26.63$dB} \\
+%			
+%			\rotatebox{90}{$~~~~~~~m=8000$} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
+%			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf}  \\
+%			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=77.71$dB} &\small{ (c) $R=2$, SNR $=76.55$dB} & \small{(d) $R=4$, SNR $=79.29$dB} \\
+%		\end{tabular}
+%	\end{center}
+%	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=8000$ (bottom) measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
+%	\label{fig:lovett}
+%\end{figure*}
+
+
 \begin{figure*}[t!]
 	\begin{center}
 		%\vspace{-0em}
@@ -7,27 +32,25 @@
 		\begin{tabular}{ccccc}
 			\rotatebox{90}{$~~~~~~~m=4000$} &
 			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_4000_s_800.pdf} & 
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_4000_s_800.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
-			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=25.06$dB}& \small{(c) $R=2$, SNR $=6.60$dB}& \small{(d) $R=4$, SNR $=26.63$dB} \\
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf} & 
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_4000_s_800.pdf} &
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r450_m_4000_s_800.pdf}  \\
+			& \small{(a) Original image}& \small{(b) $R=4$, SNR $=26.63$dB}& \small{(c) $R=4.25$, SNR $=27.20$dB}& \small{(d) $R=4.5$, SNR $=27.21$dB} \\
 			
-			\rotatebox{90}{$~~~~~~~m=8000$} &
+			\rotatebox{90}{$~~~~~~~m=6000$} &
 			\includegraphics[width=0.22\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r1_m_8000_s_800.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r2_m_8000_s_800.pdf} &
-			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_8000_s_800.pdf}  \\
-			& \small{(a) Original image}& \small{(b) $R=1$, SNR $=77.71$dB} &\small{ (c) $R=2$, SNR $=76.55$dB} & \small{(d) $R=4$, SNR $=79.29$dB} \\
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r4_m_6000_s_800.pdf} & 
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_6000_s_800.pdf} &
+			\includegraphics[width=0.22\linewidth]{./fig/lovett_r450_m_6000_s_800.pdf}  \\
+			& \small{(a) Original image}& \small{(b) $R=4$, SNR $=81.50$dB}& \small{(c) $R=4.25$, SNR $=82.88$dB}& \small{(d) $R=4.5$, SNR $=83.25$dB} \\
 		\end{tabular}
 	\end{center}
-	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=8000$ (bottom) measurements for (b) $R=1$, (c) $R=2$, (d) $R=4$}}
+	\caption{{(a) Original Lovett Hall image ($n=16,384$); sparse reconstructions ($s=800$) using $m=4000$ (top) and $m=6000$ (bottom) measurements for (b) $R=4$, (c) $R=4.25$, (d) $R=4.5$.}}
 	\label{fig:lovett}
 \end{figure*}
 
-In this section, we present the results of simulations of signal reconstruction using our algorithm. All numerical experiments were conducted using MATLAB R2017a on a linux system with an Intel CPU and 64GB RAM. Our experiments explores the performance of the MoRAM algorithm on both synthetic data as well as real images.
-
-We perform experiments on a synthetic sparse signal $\mb{x^*} \in \R^n$ generated randomly with $n=1000$. The sparsity level of the signal is chosen in steps of $3$ starting from $3$ with a maximum value of $12$. The non-zero elements of the test signal $\mb{x^*}$ are generated using zero-mean Gaussian distribution $\mathcal{N}(0, 1)$ and normalized such that $\norm{\mb{x^*}} =1$. The elements of the Gaussian measurement matrix $\mb{A} \in \R^{m\times n}, a_{ij}$ are also generated using the standard normal distribution $\mathcal{N}(0, 1)$. The number of measurements $m$ is varied from $m = 100$ to $m=1000$ in steps of $100$.  
-
+%In this section, we present the results of simulations of signal reconstruction using our algorithm. All numerical experiments were conducted using MATLAB R2017a on a linux system with an Intel CPU and 64GB RAM.
+Our experiments explores the performance of the MoRAM algorithm on both synthetic data as well as real images. We perform experiments on a synthetic sparse signal $\mb{x^*} \in \R^n$ generated randomly with $n=1000$. The sparsity level of the signal is chosen in steps of $3$ starting from $3$ with a maximum value of $12$. The non-zero elements of the test signal $\mb{x^*}$ are generated using zero-mean Gaussian distribution $\mathcal{N}(0, 1)$ and normalized such that $\norm{\mb{x^*}} =1$. The elements of the Gaussian measurement matrix $\mb{A} \in \R^{m\times n}, a_{ij}$ are also generated using the standard normal distribution $\mathcal{N}(0, 1)$. The number of measurements $m$ is varied from $m = 100$ to $m=1000$ in steps of $100$. 
 %It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:compare}(a) is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$.
 
 %To enforce the quanti, we fix the signal strength by setting $\norm{\mb{x^*}} =1$ in our experiments, while varying the value of modulo parameter $R$ as ${1,2,4}$.
@@ -37,129 +60,25 @@ Using $\mb{A, x^*}$ and $\R$, We first obtain the compressed modulo measurements
 For each combination of $R, m$ and $s$, we run $10$ independent Monte Carlo trials, and calculate mean of the relative reconstruction error over these trials. Fig.~\ref{fig:plot} (a), (b) and (c) illustrate the performance of our algorithm for increasing values of $R$ respectively. It is evident that for each combination of $R$ and $s$, our algorithm converges with probability $1$ to give the exact recovery of the true signal (zero relative error) provided enough number of measurements. In all such cases, the minimum number of measurements required for exact recovery are well below the ambient dimension $(n)$ of the underlying signal. 
 
 %Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
-\subsection{Experiments on real image}
 \begin{figure*}[!t]
 	\begin{center}
 		\begin{tabular}{ccc}
 			%\vspace{-0em}
-			\input{plots/r_1_plot.tex}
+			\input{plots/r_4_plot.tex}
 			&
-			\input{plots/r_2_plot.tex}
+			\input{plots/r_425_plot.tex}
 			&
-			\input{plots/r_4_plot.tex} \\
+			\input{plots/r_450_plot.tex} \\
 			(a) & (b) & (c) \\
 			%\begin{figure}[t]
 			%	\begin{center}
-			%\vspace{-0em}
-			
+			%\vspace{-0em}	
 		\end{tabular}
 	\end{center}
-	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=1$; (b) $R=2$; (c) $R=4$.}}
+	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,n=1000$, and (a) $R=4$; (b) $R=4.25$; (c) $R=4.5$.}}
 	\label{fig:plot}
 \end{figure*}
-For our final experiment, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=8000$ compressed modulo measurements, for $3$ different values of $R$, $1,2$ and $4$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=8000$, The algorithm produces perfect recovery for all $3$ values of $R$ with high PSNR.
+Further, we evaluated the performance of our algorithm on a real image. We obtain sparse representation of the real image by transforming the original image in the wavelet basis (db1). The image used in our experiment is $128 \times 128$ ($n=16384$) image of Lovett Hall (fig.~\ref{fig:lovett}(a)), and  we use the thresholded wavelet transform (with Haar wavelet) to transform this image in the sparse signal with $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=6000$ compressed modulo measurements, for $3$ different values of $R$, $4,4.25$ and $4.5$. As expected, the reconstruction performance increases with increasing value of $R$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=6000$, The algorithm produces perfect recovery for all $3$ values of $R$ with high PSNR.
 %
-%\begin{center}
-%	\begin{table}[h]
-%		\centering
-%		\begin{tabular}{ccc}\toprule
-%			\multicolumn{3}{c}{\small{\textbf{Fixed:} $n=1000,\norm{\mathbf{{x}^*}}=1$}} \\ \midrule
-%			\multicolumn{3}{c}{\textbf{Justice Pursuit}}
-%			\\\cmidrule(r){1-3}%\cmidrule(r){3-4}  
-%			\small{$R =1$}&\small{$R=2$}&\small{$R=4$} \\\midrule
-%			\hyperref[fig:plot-2-1]{Figure~\ref{fig:plot-2-1}} & \hyperref[fig:plot-2-2]{Figure~\ref{fig:plot-2-2}}
-%			& \hyperref[fig:plot-2-3]{Figure~\ref{fig:plot-2-3}} \\
-%			\bottomrule
-%		\end{tabular}
-%		\caption{The Results}\label{Tab3}
-%	\end{table} 	
-%\end{center}
-%In the Table~\ref{Tab3}, we provide experimental results for each of the combination above.
 
-%\begin{figure}[h]
-%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_1_s_3_12_m_100_1000_justice-pursuit.pdf}
-%	\end{center}
-%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=1,n=1000$.}}
-%	\label{fig:plot-r-1}
-%\end{figure}
-
-
-%\begin{figure}[t]
-%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_2_s_3_12_m_100_1000_justice-pursuit.pdf}
-%	\end{center}
-%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=2,n=1000$.}}
-%	\label{fig:plot-r-2}
-%\end{figure}
-%
-%
-%\begin{figure}[t]
-%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.9\linewidth]{./fig/rconst_rcm_amp_1_r_4_s_3_12_m_100_1000_justice-pursuit.pdf}
-%	\end{center}
-%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=4,n=1000$.}}
-%	\label{fig:plot-r-4}
-%\end{figure}
-
-%\begin{figure*}[!t]
-%	\begin{center}
-%	\begin{tabular}{ccc}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.3\textwidth]{./fig/rconst_rcm_amp_1_r_1_s_3_12_m_100_1000_justice-pursuit.pdf}
-%	%\end{center}
-%%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=1,n=1000$.}}
-%%	\label{fig:plot-r-1}
-%%\end{figure}
-%&
-%
-%%\begin{figure}[t]
-%%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.3\textwidth]{./fig/rconst_rcm_amp_1_r_2_s_3_12_m_100_1000_justice-pursuit.pdf}
-%%	\end{center}
-%%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=2,n=1000$.}}
-%%	\label{fig:plot-r-2}
-%%\end{figure}
-%&
-%
-%%\begin{figure}[t]
-%%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.3\textwidth]{./fig/rconst_rcm_amp_1_r_4_s_3_12_m_100_1000_justice-pursuit.pdf}
-%\end{tabular}
-%	\end{center}
-%%	\caption{{Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=4,n=1000$.}}
-%%	\label{fig:plot-r-4}
-%\end{figure*}
-
-
-%\begin{figure}[h]
-%	\begin{center}
-%		%\vspace{-0em}
-%		\includegraphics[width=0.9\linewidth]{./fig/reconst_lovett.pdf}
-%	\end{center}
-%	\caption{{Reconstruction using MoRAM}}
-%	\label{fig:lovettreconst}
-%\end{figure}
-%\begin{figure}[!t]
-%	\centering
-%	\input{plots/r_1_plot.tex}
-%	\caption{\sl Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=1,n=1000$.} \label{fig:plot-r-1}
-%\end{figure}
-%
-%\begin{figure}[!t]
-%	\centering
-%	\input{plots/r_2_plot.tex}
-%	\caption{\sl Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=2,n=1000$.} \label{fig:plot-r-2}
-%\end{figure}
-%
-%\begin{figure}[!t]
-%	\centering
-%	\input{plots/r_4_plot.tex}
-%	\caption{\sl Mean relative reconstruction error vs no. of measurements $(m)$ for MoRAM with $\norm{\mb{x^*}}_2=1,R=4,n=1000$.} \label{fig:plot-r-4}
-%\end{figure}
 
