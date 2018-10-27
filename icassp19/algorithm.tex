@@ -20,7 +20,7 @@ $$
 y_i = \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle + p^*_iR = y_{c_i}+p^*_iR.
 $$
 
-It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the true compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP or basis-pursuit.
+It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the true compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP~\cite{needell2010cosamp} or basis-pursuit~\cite{chen2001atomic}.
 
 \section{Algorithm and Main Results}
 Given $\mathbf{y, A}, s, R$, our approach recovers $\mathbf{x^*}$ and $\mathbf{p^*}$ in two steps: (i) an initialization step, and (ii) descent step via Alt-Min.
@@ -28,10 +28,10 @@ Given $\mathbf{y, A}, s, R$, our approach recovers $\mathbf{x^*}$ and $\mathbf{p
 \subsection{Initialization by re-calculating the measurements}
 \label{sec:init}	
 Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We propose a novel initialization method to re-calculate the true Gaussian measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We undo the effect of modulo operation for the fraction of the total measurements, and calculate the initial estimate using such corrected measurements.
-We introduce a hyper-parameter $\rho$ that approximates the spread of the $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$.
-In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y}_c = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y}_c$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
 
-For analysis, we divide the compressed observations $\mb{y}_c$ in two sets: $\mb{y}_{c,+}$ contains all the positive observations lying in $[0,\rho]$ with bin-index$=0$, while $\mb{y}_{c,-}$ contains all the negative ones in $[-\rho,0]$ with bin-index$=1$. Similarly, modulo observations $\mb{y}$ can also be divided in two sets $\mb{y}_+ = \mod(\mb{y}_{c,+})$ and $\mb{y}_- = \mod(\mb{y}_{c,-})$. Modulo function shifts the set $\mb{y}_{c,-}$ to the right by $R$, while leaves the set $\mb{y}_{c,+}$ unaffected. Thus, the sets $\mb{y}_-$ and $\mb{y}_+$ occupy the interval $[R-\rho,R]$ and $[0,\rho]$ respectively. From that, it can be concluded with surety that all the modulo observations lying in the interval $[\rho, R]$ are part of set $\mb{y}_{c,-}$, and have bin-index value equal to $1$. Similarly, all the modulo observations lying in the interval $[0,R-\rho]$ are part of set $\mb{y}_{c,+}$, and have bin-index value equal to $0$. Nothing can be concluded for other modulo observations lying in $[R-\rho,\rho]$ (region of uncertainty). We assign bin-index$=0$ for such observations. Thus, the corrected bin-index vector can be calculated as:
+We introduce a hyper-parameter $\rho$ that approximates the spread of the $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$. In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y_c} = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y_c}$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
+
+For analysis, we divide the compressed observations $\mb{y_c}$ in two sets: $\mb{y_{c,+}}$ contains all the positive observations lying in $[0,\rho]$ with bin-index$=0$, while $\mb{y_{c,-}}$ contains all the negative ones in $[-\rho,0]$ with bin-index$=1$. Similarly, modulo observations $\mb{y}$ can also be divided in two sets $\mb{y}_+ = \mod(\mb{y}_{c,+})$ and $\mb{y}_- = \mod(\mb{y}_{c,-})$. Modulo function shifts the set $\mb{y}_{c,-}$ to the right by $R$, while leaves the set $\mb{y}_{c,+}$ unaffected. Thus, the sets $\mb{y}_-$ and $\mb{y}_+$ occupy the interval $[R-\rho,R]$ and $[0,\rho]$ respectively. From that, it can be concluded with surety that all the modulo observations lying in the interval $[\rho, R]$ are part of set $\mb{y}_{c,-}$, and have bin-index value equal to $1$. Similarly, all the modulo observations lying in the interval $[0,R-\rho]$ are part of set $\mb{y}_{c,+}$, and have bin-index value equal to $0$. Nothing can be concluded for other modulo observations lying in $[R-\rho,\rho]$ (region of uncertainty). We assign bin-index$=0$ for such observations. Thus, the corrected bin-index vector can be calculated as:
 \begin{equation}
 {p}^{init}_{i} = 
 \begin{cases}
@@ -95,7 +95,8 @@ For analysis, we divide the compressed observations $\mb{y}_c$ in two sets: $\mb
 			
 			% Draw and label normal distribution function
 			\draw[color=blue,domain=-4.25:4.25,thick] plot (\normaltwo) node[right] {};
-			\draw[<->] (-4.25,0) -- (4.25,0);% node[above left] {$\mathbf{Ax^*}$};
+			\draw[<->] (-4.25,0) -- (4.25,0);
+			\draw (4.25,0.1) node[above left] {$\mathbf{y_c}$};
 			\draw[<->] (0,-0.8) -- (0,4);
 			
 			\draw (-3,-0.5) node(below) {$-\rho$};
@@ -134,7 +135,7 @@ For analysis, we divide the compressed observations $\mb{y}_c$ in two sets: $\mb
 		\draw[color=blue,domain=1:4,dashed,thick] plot (\normalone) node[right] {};
 		\draw[color=blue,domain=-0:4,thick] plot (\normalsum) node[right] {};
 		\draw[<->] (-0.5,0) -- (4.5,0);
-		%\draw (4,-1) node[below left] {$\mod(\mathbf{Ax^*})$};
+		\draw (4.25,0) node[above] {$\mathbf{y}$};
 		\draw[<->] (0,-0.8) -- (0,4);
 		\draw[dashed] ({\y},{\fy}) -- ({\y},0);
 		\draw[dashed] ({4},{3}) -- ({4},0);
@@ -167,7 +168,7 @@ For analysis, we divide the compressed observations $\mb{y}_c$ in two sets: $\mb
 		\end{tikzpicture}}	
 		\caption{\small{}}
 	\end{subfigure}
-	\caption{\emph{Density plots of (a) $\mathbf{Ax^*}$; (b) $\mod(\mathbf{Ax^*})$.}}
+	\caption{\emph{Density plots of (a) $\mathbf{y_c=Ax^*}$; (b) $\mb{y}=\mod(\mathbf{Ax^*})$.}}
 	\label{fig:densityplot}
 \end{figure}
 %\begin{figure}[h]
@@ -250,7 +251,7 @@ For analysis, we divide the compressed observations $\mb{y}_c$ in two sets: $\mb
 
 We define set $T$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(T)$.
 \begin{align*}
-N & =  m - \card(\textnormal{region of uncertainity})
+N & =  m - \card(\textnormal{region of uncertainity}).
 \end{align*}
 Value of $N$ largely depends on the difference between $\rho$ and $R$.
 Once we identify the correct bin-index for part of the measurements, we can re-calculate corrected measurements as,
@@ -266,7 +267,7 @@ We use these corrected measurements $\mathbf{y^{init}_{c}}$ to calculate the ini
 where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest absolute entries of a vector and sets the other entries to zero.
 \subsection{Alternating Minimization}
 \label{sec:altmin}
-\begin{algorithm}[H]
+\begin{algorithm}[t]
 	\caption{\textsc{MoRAM-descent}}
 	\label{alg:MoRAM}
 	\begin{algorithmic}
