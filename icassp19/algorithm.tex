@@ -1,6 +1,7 @@
 \section{Mathematical model}
 \label{sec:model}
-Let us introduce some notation. We denote matrices using bold capital-case letters ($\mb{A,B}$), column vectors using bold-small case letters ($\mb{x,y,z}$ etc.) and scalars using non-bold letters ($R,m$ etc.). The superscript $\t$ to denotes the transpose. The cardinality of set $S$ is given by $\card(S)$. The signum function is defined as $\sgn(x) := \frac{x}{|x|}, \forall x \in \R, x \neq 0$, with $\sgn(0)=1$. An $i^{th}$ element of the vector $\mb{x} \in \R^n$ is denoted by $x_{i}$.% Similarly, $i^{th}$ row of the matrix $\mb{A} \in \R^{m \times n}$ is denoted by $\mb{a_i}$, while the element of $\mb{A}$ in $i^{th}$ row and $j^{th}$ column is denoted as $a_{ij}$. 
+Let us introduce some notation. We denote matrices using bold capital-case letters ($\mb{A,B}$), column vectors using bold-small case letters ($\mb{x,y,z}$ etc.) and scalars using non-bold letters ($R,m$ etc.). %The superscript $\t$ to denotes the transpose. 
+The cardinality of set $S$ is given by $\card(S)$. The signum function is defined as $\sgn(x) := \frac{x}{|x|}, \forall x \in \R, x \neq 0$, with $\sgn(0)=1$. %An $i^{th}$ element of the vector $\mb{x} \in \R^n$ is denoted by $x_{i}$.% Similarly, $i^{th}$ row of the matrix $\mb{A} \in \R^{m \times n}$ is denoted by $\mb{a_i}$, while the element of $\mb{A}$ in $i^{th}$ row and $j^{th}$ column is denoted as $a_{ij}$. 
 The projection of vector $\mb{x} \in \R^n$ onto a set of coordinates $S$ is represented as $\mb{x}_S \in \R^n,~\mb{x}_{S_j} = \mb{x}_j$ for $j \in S$, and $0$ elsewhere.
 
 As depicted in Fig.~\ref{fig:compare}(a), we consider the modulo operation within 2 periods.
@@ -27,9 +28,10 @@ Given $\mathbf{y, A}, s, R$, our approach recovers $\mathbf{x^*}$ and $\mathbf{p
 
 \subsection{Initialization by re-calculating the measurements}
 \label{sec:init}	
-Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We propose a novel initialization method to re-calculate the true Gaussian measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We undo the effect of modulo operation for the fraction of the total measurements, and calculate the initial estimate using such corrected measurements.
+Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$.
+% We propose a novel initialization method to re-calculate the true Gaussian measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We undo the effect of modulo operation for the fraction of the total measurements, and calculate the initial estimate using such corrected measurements.
 
-We introduce a hyper-parameter $\rho$ that approximates the spread of the $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$. In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y_c} = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y_c}$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation.%, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
+To do so, we first introduce a hyper-parameter $\rho$ that approximates the spread of the entries of $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$. In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y_c} = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y_c}$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation.%, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
 
 With reference to Fig.~\ref{fig:densityplot}(a), we divide the compressed observations $\mb{y_c}$ in two sets: $\mb{y_{c,+}}$ contains all the positive observations lying in $[0,\rho]$ with bin-index$=0$ (orange), while $\mb{y_{c,-}}$ contains all the negative ones in $[-\rho,0]$ with bin-index$=1$ (green). Similarly, in Fig.~\ref{fig:densityplot}(b), modulo observations $\mb{y}$ can also be divided in two sets $\mb{y}_+ = \mod(\mb{y}_{c,+})$ and $\mb{y}_- = \mod(\mb{y}_{c,-})$. Modulo function shifts the set $\mb{y}_{c,-}$ to the right by $R$, while leaves the set $\mb{y}_{c,+}$ unaffected. Thus, the sets $\mb{y}_-$ and $\mb{y}_+$ occupy the interval $[R-\rho,R]$ and $[0,\rho]$ respectively. From that, it can be concluded with surety that all the modulo observations lying in the interval $[\rho, R]$ (green) are part of set $\mb{y}_{c,-}$, and have bin-index value equal to $1$. Similarly, all the modulo observations lying in the interval $[0,R-\rho]$ (orange) are part of set $\mb{y}_{c,+}$, and have bin-index value equal to $0$. Nothing can be concluded for other modulo observations lying in $[R-\rho,\rho]$ (gray, region of uncertainty). We assign bin-index$=0$ for such observations. Thus, the corrected bin-index vector can be calculated as:
 \begin{equation}
@@ -203,7 +205,7 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 		\For {$l =0:L$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
-		\State $\implies \mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t)}$.
+		\State $\mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t)}$.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
@@ -227,13 +229,13 @@ $$
 
 However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009} in the literature, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
-\implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
+\mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
 \label{eq:jp}
 \end{equation}
 We repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $L$ iterations.% Our algorithm is able to achieve perfect convergence, as supported by the results in the experiments section.
 
 \subsection{Theoretical results}
-We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs and supporting definitions and lemmas that are discussed in detail in the longer version of our paper available on author's website \footnote{\url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}}.
+We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs, which are discussed in detail in an extended version [CITE]. % of our paper available on author's website \footnote{\url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}}.
 \begin{theorem}[Guarantee for Initialization]
 	Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the number of measurements satisfy, $m \geq C(\frac{t}{\kappa})^2s\left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}$, where $\kappa = \frac{\delta}{2}$, $\phi(\cdot)$ represents standard normal pdf; then with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
 	$$
@@ -241,12 +243,12 @@ We now provide theoretical guarantees and their proof sketches for our proposed 
 	$$
 	\label{th:1}
 \end{theorem}
-For the proof of Theorem~\ref{th:1}, we calculate the upper and lower bounds on $N$ in terms of $m,R$ and $\rho$.%, using the fact that the compressive measurements $\mb{y_c}$ follow the standard normal distribution. 
-We further exploit the sparsity of the underlying signal $\mb{x^*}$ to bound the distance between a fixed sparse signal $\mb{x^*}$ and non-thresholded version of $\mb{x^0}$ using results from~\cite{vershynin2010introduction}. We take union bound over all the $s-$sparse vectors to complete the proof.
+%For the proof of Theorem~\ref{th:1}, we calculate the upper and lower bounds on $N$ in terms of $m,R$ and $\rho$.%, using the fact that the compressive measurements $\mb{y_c}$ follow the standard normal distribution. 
+%We further exploit the sparsity of the underlying signal $\mb{x^*}$ to bound the distance between a fixed sparse signal $\mb{x^*}$ and non-thresholded version of $\mb{x^0}$ using results from~\cite{vershynin2010introduction}. We take union bound over all the $s-$sparse vectors to complete the proof.
 
 For simplicity, we limit our analysis of the descent to only one iteration of Alternating Minimization in our algorithm. In fact, as proven in our analysis, theoretically only one iteration of AltMin with JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one AltMin iterations to converge to the optimum solution.
 \begin{theorem}[Guarantee for Descent]
 	Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1, \eta \in [0,1],~\eps > 0$, if we have number of (Gaussian) measurements satisfying $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$ and $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-K\exp(-cm)-\eta$, with $K$ and $c$ being numerical constants.
 	\label{th:2}
 \end{theorem}
-For proving Theorem~\ref{th:2}, we start with the results pertaining to 1-bit compressive sensing from~\cite{Jacques2013} to prove that the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction. We claim the guaranteed recovery of the true signal using the result proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization (such as basis-pursuit) even if a positive fraction of the measurements are arbitrarily corrupted.
+%For proving Theorem~\ref{th:2}, we start with the results pertaining to 1-bit compressive sensing from~\cite{Jacques2013} to prove that the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction. We claim the guaranteed recovery of the true signal using the result proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization (such as basis-pursuit) even if a positive fraction of the measurements are arbitrarily corrupted.

@@ -68,8 +68,8 @@
 
 
 % latex spacing issues
-%\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
-%\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
+\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
+\setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
 %%\setlength{\abovecaptionskip}{5pt plus 1pt minus 2pt}
 %\setlength{\abovedisplayskip}{3pt}
 %\setlength{\belowdisplayskip}{3pt}
@@ -77,7 +77,7 @@
 \captionsetup{belowskip=5pt,aboveskip=5pt}
 %\usepackage{titlesec}
 
-\pgfplotsset{compat=1.15}
+\pgfplotsset{compat=1.14}
 %\ninept
 % Title.
 % ------
@@ -116,7 +116,7 @@
 %	\todo{check the acknowledgement information}
 	\input{./abstract}
 	\begin{keywords}
-	Modulo recovery \todo{one or two more index words}
+	Sparse recovery, nonlinear observation models, modulo sensors, imaging applications.
 	\end{keywords}
 	\input{./introduction}
 	\input{./priorwork}
@@ -125,7 +125,7 @@
 	\input{./experiment_results}
 %	\input{./conclusion}
 	{{
-	\footnotesize
+	%\footnotesize
 	\bibliographystyle{IEEEbib}
 	\bibliography{vsbib}
 	}
