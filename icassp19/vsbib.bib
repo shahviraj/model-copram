@@ -311,11 +311,18 @@
 	publisher={Elsevier}
 }
 
+@inproceedings{Cucuringu2017,
+	title={On denoising modulo 1 samples of a function},
+	author={Cucuringu, M. and Tyagi, H.},
+	booktitle=aistats,
+	year={2018}
+}
+
 @article{BergFriedlander:2008,
 	Author = {E. van den Berg and M. P. Friedlander},
 	Title = {Probing the Pareto frontier for basis pursuit solutions},
 	year = {2008},
-	journal = {SIAM Journal on Scientific Computing},
+	journal = {SIAM J. on Sci. Computing},
 	volume = {31},
 	number = {2},
 	pages = {890-912},
@@ -329,6 +336,14 @@
 	month = {June},
 	year = 2007
 }
+
+@misc{shahhegde,
+	author = {Shah, V. and Hegde, C.},
+	title = {Signal Reconstruction from Modulo Observations (extended version of this paper)},
+	howpublished = "available at: \url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}",
+	year = {2018}
+}
+
 @article{Bioucas-Dias2007,
 	abstract = {Phase unwrapping is the inference of absolute phase from modulo-2 phase. This paper introduces a new energy minimization framework for phase unwrapping. The considered objective functions are first-order Markov random fields. We provide an exact energy minimization algorithm, whenever the corresponding clique potentials are convex, namely for the phase unwrapping classical norm, with 1. Its complexity is (3), where is the length of the absolute phase domain measured in 2 units and () is the complexity of a max-flow computation in a graph with nodes and edges. For nonconvex clique potentials, often used owing to their dis-continuity preserving ability, we face an NP-hard problem for which we devise an approximate solution. Both algorithms solve integer optimization problems by computing a sequence of binary optimizations, each one solved by graph cut techniques. Accordingly , we name the two algorithms PUMA, for phase unwrapping max-flow/min-cut. A set of experimental results illustrates the effectiveness of the proposed approach and its competitiveness in comparison with state-of-the-art phase unwrapping algorithms.},
 	author = {Bioucas-Dias, J. and Valad{\~{a}}o, G.},
@@ -416,88 +431,20 @@
 	url = {http://news.mit.edu/2017/ultra-high-contrast-digital-sensing-cameras-0714 http://arxiv.org/abs/1803.03669},
 	year = {2018}
 }
-@article{Jagatap2017,
-	abstract = {We consider the problem of recovering a signal x * ∈ R n , from magnitude-only measurements, y i = ||a i , x * | for i = {\{}1, 2, . . . , m{\}}. Also known as the phase retrieval problem, it is a fundamental challenge in nano-, bio-and astronomical imaging systems, and speech processing. The problem is ill-posed, and therefore additional assumptions on the signal and/or the measurements are necessary. In this paper, we first study the case where the underlying signal x * is s-sparse. We develop a novel recovery algorithm that we call Compressive Phase Retrieval with Alternating Minimization, or CoPRAM. Our algorithm is simple and can be obtained via a natural combination of the classical alternating minimization approach for phase retrieval, with the CoSaMP algorithm for sparse recovery. Despite its simplicity, we prove that our algorithm achieves a sample complexity of O s 2 log n with Gaussian samples, which matches the best known existing results. It also demonstrates linear convergence in theory and practice and requires no extra tuning parameters other than the signal sparsity level s. We then consider the case where the underlying signal x * arises from structured sparsity models. We specifically examine the case of block-sparse signals with uniform block size of b and block sparsity k = s/b. For this problem, we design a recovery algorithm that we call Block CoPRAM that further reduces the sample complexity to O (ks log n). For sufficiently large block lengths of b = $\Theta$(s), this bound equates to O (s log n). To our knowledge, this constitutes the first end-to-end linearly convergent algorithm for phase retrieval where the Gaussian sample complexity has a sub-quadratic dependence on the sparsity level of the signal.},
-	author = {Jagatap, G. and Hegde, C.},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Jagatap, Hegde - Unknown - Fast, Sample-Efficient Algorithms for Structured Phase Retrieval.pdf:pdf},
-	issn = {10495258},
-	journal = nips,
-	keywords = {cs,mr,pr,th},
-	mendeley-tags = {pr,th,cs,mr},
-	number = {Nips},
-	pages = {1--11},
-	title = {{Fast, sample-efficient algorithms for structured phase retrieval}},
-	url = {https://papers.nips.cc/paper/7077-fast-sample-efficient-algorithms-for-structured-phase-retrieval.pdf},
-	year = {2017}
+@inproceedings{Jagatap2017,
+	title={Fast, Sample-Efficient Algorithms for Structured Phase Retrieval},
+	author={Jagatap, G. and Hegde, C.},
+	booktitle=nips,
+	year={2017}
 }
 
-@article{Netrapalli2013,
-	abstract = {Phase retrieval problems involve solving linear equations, but with missing sign (or phase, for complex numbers) information. Over the last two decades, a popular generic empirical approach to the many variants of this problem has been one of alternating minimization; i.e. alternating between estimating the missing phase information, and the candidate solution. In this paper, we show that a simple alternating minimization algorithm geometrically converges to the solution of one such problem -- finding a vector {\$}x{\$} from {\$}y,A{\$}, where {\$}y = |A{\^{}}T x|{\$} and {\$}|z|{\$} denotes a vector of element-wise magnitudes of {\$}z{\$} -- under the assumption that {\$}A{\$} is Gaussian. Empirically, our algorithm performs similar to recently proposed convex techniques for this variant (which are based on "lifting" to a convex matrix problem) in sample complexity and robustness to noise. However, our algorithm is much more efficient and can scale to large problems. Analytically, we show geometric convergence to the solution, and sample complexity that is off by log factors from obvious lower bounds. We also establish close to optimal scaling for the case when the unknown vector is sparse. Our work represents the only known theoretical guarantee for alternating minimization for any variant of phase retrieval problems in the non-convex setting.},
-	archivePrefix = {arXiv},
-	arxivId = {1306.0160},
-	author = {Netrapalli, P. and Jain, P. and Sanghavi, S.},
-	doi = {10.1109/TSP.2015.2448516},
-	eprint = {1306.0160},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Netrapalli, Jain, Sanghavi - 2015 - Phase Retrieval using Alternating Minimization.pdf:pdf},
-	issn = {1053-587X},
-	journal = {arXiv preprint arXiv:1306.0160},
-	keywords = {cs,pr,th},
-	mendeley-tags = {cs,pr,th},
-	pages = {1--22},
-	title = {{Phase retrieval using alternating minimization}},
-	url = {https://arxiv.org/pdf/1306.0160.pdf http://arxiv.org/abs/1306.0160},
-	year = {2013}
-}
-
-@article{Cucuringu2017,
-	abstract = {Consider an unknown smooth function {\$}f: [0,1] \backslashrightarrow \backslashmathbb{\{}R{\}}{\$}, and say we are given {\$}n{\$} noisy mod 1 samples of {\$}f{\$}, i.e., {\$}y{\_}i = (f(x{\_}i) + \backslasheta{\_}i)\backslashmod 1{\$} for {\$}x{\_}i \backslashin [0,1]{\$}, where {\$}\backslasheta{\_}i{\$} denotes noise. Given the samples {\$}(x{\_}i,y{\_}i){\_}{\{}i=1{\}}{\^{}}{\{}n{\}}{\$}, our goal is to recover smooth, robust estimates of the clean samples {\$}f(x{\_}i) \backslashbmod 1{\$}. We formulate a natural approach for solving this problem which works with angular embeddings of the noisy mod 1 samples over the unit complex circle, inspired by the angular synchronization framework. Our approach amounts to solving a quadratically constrained quadratic program (QCQP) which is NP-hard in its basic form, and therefore we consider its relaxation which is a trust region sub-problem and hence solvable efficiently. We demonstrate its robustness to noise via extensive numerical simulations on several synthetic examples, along with a detailed theoretical analysis. To the best of our knowledge, we provide the first algorithm for denoising mod 1 samples of a smooth function, which comes with robustness guarantees.},
-	archivePrefix = {arXiv},
-	arxivId = {1710.10210},
-	author = {Cucuringu, M. and Tyagi, H.},
-	eprint = {1710.10210},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Cucuringu, Tyagi - 2018 - On denoising modulo 1 samples of a function.pdf:pdf},
-	keywords = {mr,th},
-	mendeley-tags = {mr,th},
-	title = {{On denoising modulo 1 samples of a function}},
-	url = {https://arxiv.org/pdf/1710.10210.pdf http://arxiv.org/abs/1710.10210},
-	year = {2017}
-}
-@inproceedings{Zhao2015,
-	abstract = {This paper presents a novel framework to extend the dynamic range of images called Unbounded High Dynamic Range (UHDR) photography with a modulo camera. A modulo camera could theoretically take unbounded radiance levels by keeping only the least significant bits. We show that with limited bit depth, very high radiance levels can be recovered from a single modulus image with our newly proposed unwrapping algorithm for natural images. We can also obtain an HDR image with details equally well preserved for all radiance levels by merging the least number of modulus images. Synthetic experiment and experiment with a real modulo camera show the effectiveness of the proposed approach.},
-	author = {Zhao, H. and Shi, B. and Fernandez-Cull, C. and Yeung, S. and Raskar, R.},
-	booktitle = {Intl. Conf. on Comp. Photography (ICCP)},
-	doi = {10.1109/ICCPHOT.2015.7168378},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Zhao et al. - Unknown - Unbounded High Dynamic Range Photography using a Modulo Camera.pdf:pdf},
-	isbn = {9781479986675},
-	keywords = {hdr,mr},
-	mendeley-tags = {hdr,mr},
-	title = {{Unbounded high dynamic range photography using a modulo camera}},
-	url = {http://images3.freshpatents.com/pdf/},
-	year = {2015}
-}
-@techreport{Bhandari,
-	abstract = {Shannon's sampling theorem provides a link between the continuous and the discrete realms stating that bandlimited signals are uniquely determined by its values on a discrete set. This theorem is realized in practice using so called analog-to-digital converters (ADCs). Unlike Shannon's sampling theorem, the ADCs are limited in dynamic range. Whenever a signal exceeds some preset threshold, the ADC saturates, resulting in aliasing due to clipping. The goal of this paper is to analyze an alternative approach that does not suffer from these problems. Our work is based on recent developments in ADC design, which allow for ADCs that reset rather than to saturate, thus producing modulo samples. An open problem that remains is: Given such modulo samples of a bandlimited function as well as the dynamic range of the ADC, how can the original signal be recovered and what are the sufficient conditions that guarantee perfect recovery? In this paper, we prove such sufficiency conditions and complement them with a stable recovery algorithm. Our results not limited to certain amplitude ranges, in fact even the same circuit architecture allows for the recovery of arbitrary large amplitudes as long as some estimate of the signal norm is available when recovering. Numerical experiments that corroborate our theory indeed show that it is possible to perfectly recover function that takes values that are orders of magnitude higher than the ADC's threshold.},
-	archivePrefix = {arXiv},
-	arxivId = {arXiv:1707.06340v2},
-	author = {Bhandari, A. and Krahmer, F. and Raskar, R.},
-	eprint = {arXiv:1707.06340v2},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Bhandari, Krahmer, Raskar - Unknown - On Unlimited Sampling.pdf:pdf},
-	keywords = {mr,th},
-	mendeley-tags = {mr,th},
-	title = {{On unlimited sampling}},
-	url = {https://arxiv.org/pdf/1707.06340.pdf}
-}
-@techreport{Shah,
-	abstract = {We consider the problem of reconstructing signals and images from periodic nonlinearities. For such problems, we design a measurement scheme that supports efficient reconstruction; moreover, our method can be adapted to extend to compressive sensing-based signal and image acquisition systems. Our techniques can be potentially useful for reducing the measurement complexity of high dynamic range (HDR) imaging systems, with little loss in reconstruction quality. Several numerical experiments on real data demonstrate the effectiveness of our approach.},
-	archivePrefix = {arXiv},
-	arxivId = {arXiv:1710.00109v1},
-	author = {Shah, V. and Soltani, M. and Hegde, C.},
-	eprint = {arXiv:1710.00109v1},
-	file = {:home/viraj/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Shah, Soltani, Hegde - Unknown - RECONSTRUCTION FROM PERIODIC NONLINEARITIES, WITH APPLICATIONS TO HDR IMAGING.pdf:pdf},
-	keywords = {cs,mr,my},
-	mendeley-tags = {cs,mr,my},
-	title = {{Reconstruction from periodic nonlinearities, with applications to HDR imaging}},
-	url = {https://arxiv.org/pdf/1710.00109.pdf}
+@inproceedings{Shah,
+	title={Reconstruction from periodic nonlinearities, with applications to HDR imaging},
+	author={Shah, V. and Soltani, M. and Hegde, C.},
+	booktitle=asilomar,
+	pages={863--867},
+	year={2017},
+	organization={IEEE}
 }
 @inproceedings{Lang2017,
 	abstract = {{\textcopyright} Springer International Publishing AG 2017. Photographing scenes with high dynamic range (HDR) poses great challenges to consumer cameras with their limited sensor bit depth. To address this, Zhao et al. recently proposed a novel sensor concept – the modulo camera – which captures the least significant bits of the recorded scene instead of going into saturation. Similar to conventional pipelines, HDR images can be reconstructed from multiple exposures, but significantly fewer images are needed than with a typical saturating sensor. While the concept is appealing, we show that the original reconstruction approach assumes noise-free measurements and quickly breaks down otherwise. To address this, we propose a novel reconstruction algorithm that is robust to image noise and produces significantly fewer artifacts. We theoretically analyze correctness as well as limitations, and show that our approach significantly outperforms the baseline on real data.},
@@ -561,8 +508,45 @@
 	year = {2013}
 }
 
+@article{rheejoo,
+	title={ Wide dynamic range CMOS image sensor with pixel level ADC},
+	author={Rhee, J. and Joo, Y.},
+	journal={Electron. Lett.},
+	year={2010},
+	pages = {360-361},
+	volume = {39},
+}
+@article{sasagawa2016implantable,
+	title={An implantable CMOS image sensor with self-reset pixels for functional brain imaging},
+	author={Sasagawa, K. and Yamaguchi, T. and Haruta, M. and Sunaga, Y. and Takehara, H. and Takehara, H. and Noda, T. and Tokuda, T. and Ohta, J.},
+	journal={IEEE Trans. on Electron Devices},
+	volume={63},
+	number={1},
+	pages={215--222},
+	year={2016},
+	publisher={IEEE}
+}
+@article{yamaguchi2016implantable,
+	title={Implantable self-reset CMOS image sensor and its application to hemodynamic response detection in living mouse brain},
+	author={Yamaguchi, T. and Takehara, H. and Sunaga, Y. and Haruta, M. and Motoyama, M. and Ohta, Y. and Noda, T. and Sasagawa, K. and Tokuda, T. and Ohta, J.},
+	journal={Japanese J. of Appl. Physics},
+	volume={55},
+	number={4S},
+	pages={04EM02},
+	year={2016},
+	publisher={IOP Publishing}
+}
+@inproceedings{kavusi2004quantitative,
+	title={Quantitative study of high-dynamic-range image sensor architectures},
+	author={Kavusi, S. and El Gamal, A.},
+	booktitle={Sensors and Camera Systems for Sci., Indust., and Digi. Photography Applications V},
+	volume={5301},
+	pages={264--276},
+	year={2004},
+	organization={Intl. Soc. for Optics and Photonics}
+}
 @article{vershynin2010introduction,
-	title={Introduction to the non-asymptotic analysis of random matrices},
+	title={Introduction to the non-ptotic analysis of random matrices},
 	author={Vershynin, R.},
 	journal={arXiv preprint arXiv:1011.3027},
 	year={2010}
@@ -883,8 +867,16 @@ year={2017}
 	year={2016}
 }
 
+@article{Bhandari,
+	title={On unlimited sampling},
+	author={Bhandari, A. and Krahmer, F. and Raskar, R.},
+	journal=sampta,
+	year={2017},
+	pages={31-35}
+}
+
 @inproceedings{ICCP15_Zhao,
-  author = {Hang, Z. and Boxin, S. and Christy, F. and Sai-Kit, Y. and Ramesh, R.},
+  author = {Zhao, H. and Shi,B. and Fernandez-Cull, C. and Yeung, S. and Raskar, R.},
   title = {Unbounded High Dynamic Range Photography using a Modulo Camera},
   booktitle = {Intl. Conf. on Comp. Photography (ICCP)},
   year = {2015}
@@ -931,7 +923,13 @@ year={2017}
 	journal={arXiv preprint arXiv:1701.06607},
 	year={2017}
 }
-
+@article{soltani2017stable,
+	title={Stable recovery of sparse vectors from random sinusoidal feature maps},
+	author={Mohammadreza Soltani and Chinmay Hegde},
+	journal={icassp},
+	year={2017},
+	pages={6384-6388}
+}
 @article{baraniuk2010model,
 	title={Model-based compressive sensing},
 	author={Baraniuk, R. and Cevher, V. and Duarte, M. and Hegde, C.},

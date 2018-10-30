@@ -61,7 +61,7 @@ With reference to Fig.~\ref{fig:densityplot}(a), we divide the compressed observ
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$, $\rho$
 		\State\textbf{Output:}  $\mb{x^0}$
-		\State $T \leftarrow \emptyset$%, $t_l \leftarrow (R-\rho)$, $t_u \leftarrow R$
+		\State $U \leftarrow \emptyset$%, $t_l \leftarrow (R-\rho)$, $t_u \leftarrow R$
 		\For {$i= 0:m$}
 %		\If {$y_l<0$}
 %		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
@@ -77,12 +77,12 @@ With reference to Fig.~\ref{fig:densityplot}(a), we divide the compressed observ
 %		\EndIf
 		
 		\If {$(R-\rho) > y_i$ or $ y_i \geq \rho$}
-		\State {$T \leftarrow T \cup \{i\}$}
+		\State {$U \leftarrow U \cup \{i\}$}
 		\EndIf
 		\State Calculate $p^{init}_i$ according to Eq.~\ref{eq:rcm}.
 		\EndFor
-		\State $N \leftarrow |T|$, calculate $\mb{y^{init}_c}$ according to Eq.~\ref{eq:y_init}
-		\State $\mb{x^0} \leftarrow H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,T,i}a_{T,i}\right)$
+		\State $N \leftarrow |U|$, calculate $\mb{y^{init}_c}$ according to Eq.~\ref{eq:y_init}
+		\State $\mb{x^0} \leftarrow H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,U,i}a_{U,i}\right)$
 	\end{algorithmic}
 \end{algorithm}
  \begin{figure}[t]
@@ -174,7 +174,7 @@ With reference to Fig.~\ref{fig:densityplot}(a), we divide the compressed observ
 	\caption{\emph{Density plots of (a) $\mathbf{y_c=Ax^*}$; (b) $\mb{y}=\mod(\mathbf{Ax^*})$.}}
 	\label{fig:densityplot}
 \end{figure}
-We define set $T$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(T)$.
+We define set $U$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(U)$.
 %\begin{align*}
 %N & =  m - \card(\textnormal{region of uncertainity}).
 %\end{align*}
@@ -186,7 +186,7 @@ Once we identify the correct bin-index for part of the measurements, we can re-c
 \end{align}
 We use these corrected measurements $\mathbf{y^{init}_{c}}$ to calculate the initial estimate $\mathbf{{x}^0}$ with first order unbiased estimator.% using the estimation step described in the upcoming section.
 \begin{equation}
-\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,T,i}a_{T,i}\right).
+\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,U,i}a_{U,i}\right),
 \label{eq:init}
 \end{equation}
 where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest absolute entries of a vector and sets the other entries to zero.
@@ -197,12 +197,12 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 	\label{alg:MoRAM}
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$
-		\State\textbf{Output:}  $\widehat{x}$
+		\State\textbf{Output:}  $\mb{x^T}$
 		\State $m,n \leftarrow \mathrm{size}(\mathbf{A})$ 
 		\State \textbf{Initialization}
 		\State $\mathbf{x^0} \leftarrow \textrm{MoRAM-initialization}(\mathbf{y, A})$ 
 		\State \textbf{Alternating Minimization}
-		\For {$l =0:L$}
+		\For {$t =0:T$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
 		\State $\mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t)}$.
@@ -227,26 +227,26 @@ $$
 %\label{eq:robcosamp}
 %\end{equation}
 
-However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009} in the literature, specified in Eq.~\ref{eq:jp}.
+However, the sparsity of $\mathbf{d^t}(s_{dt})$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009} in the literature, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
 \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
 \label{eq:jp}
 \end{equation}
-We repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $L$ iterations.% Our algorithm is able to achieve perfect convergence, as supported by the results in the experiments section.
+We repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $T$ iterations.% Our algorithm is able to achieve perfect convergence, as supported by the results in the experiments section.
 
 \subsection{Theoretical results}
-We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs, which are discussed in detail in an extended version [CITE]. % of our paper available on author's website \footnote{\url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}}.
+We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs, which are discussed in detail in an extended version~\cite{shahhegde}. % of our paper available on author's website \footnote{\url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}}.
 \begin{theorem}[Guarantee for Initialization]
-	Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the number of measurements satisfy, $m \geq C(\frac{t}{\kappa})^2s\left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}$, where $\kappa = \frac{\delta}{2}$, $\phi(\cdot)$ represents standard normal pdf; then with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
+	Let $\delta \in (0,1)$ and $\nu \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the number of measurements satisfy, $m \geq C(\frac{\nu}{\kappa})^2s\left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}$, where $\kappa = \frac{\delta}{2}$, $\phi(\cdot)$ represents standard normal pdf; then with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-\nu^2s\right)$ we have,
 	$$
 	\norm{\mb{x^0} - \mb{x^*}}_2 \leq \delta \norm{\mb{x^*}}_2.
 	$$
 	\label{th:1}
 \end{theorem}
+\vspace{-2em}
 %For the proof of Theorem~\ref{th:1}, we calculate the upper and lower bounds on $N$ in terms of $m,R$ and $\rho$.%, using the fact that the compressive measurements $\mb{y_c}$ follow the standard normal distribution. 
 %We further exploit the sparsity of the underlying signal $\mb{x^*}$ to bound the distance between a fixed sparse signal $\mb{x^*}$ and non-thresholded version of $\mb{x^0}$ using results from~\cite{vershynin2010introduction}. We take union bound over all the $s-$sparse vectors to complete the proof.
-
-For simplicity, we limit our analysis of the descent to only one iteration of Alternating Minimization in our algorithm. In fact, as proven in our analysis, theoretically only one iteration of AltMin with JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one AltMin iterations to converge to the optimum solution.
+For simplicity, we limit our analysis of the descent to only one iteration of Alternating Minimization in our algorithm. In fact, as proven in our analysis, theoretically only one iteration of AltMin with JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one AltMin iterations to converge to the optimum solution. We build our proofs on the results from~\cite{vershynin2010introduction,li2013compressed,Jacques2013}.
 \begin{theorem}[Guarantee for Descent]
 	Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1, \eta \in [0,1],~\eps > 0$, if we have number of (Gaussian) measurements satisfying $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$ and $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-K\exp(-cm)-\eta$, with $K$ and $c$ being numerical constants.
 	\label{th:2}
