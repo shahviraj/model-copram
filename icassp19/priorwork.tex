@@ -1,5 +1,9 @@
 \subsection{Prior work}
 \label{sec:prior}
+%<<<<<<< HEAD
+%=======
+%\emph{\textbf{Modulo recovery and phase unwrapping:}} \textcolor{red}{In the literature, typically the modulo recovery problem is considered within the setup of Nyquist sampling \textit{i.e.}, bandlimited (smooth) signal assumption, uniform grid sampling in time/spatial domain etc. being the key characteristics. For example, given the modulo samples of a bandlimited function, \cite{Bhandari} provides a stable algorithm for perfect recovery of the signal and also proves the $O(n)$ sample complexity for the perfect recovery. \cite{Cucuringu2017} formulates and solves an QCQP problem with non-convex constraints for denoising the modulo 1 ($R =1$) samples of the unknown function along with providing a least-square based modulo recovery algorithm. However, both these algorithms consider uniform sampling grid with a bandlimited signal, and thus, not suitable for sparsity based sub-Nyquist sampling scheme. For images, the phase unwrapping algorithm proposed in \cite{bioucas2007phase} (and the subsequent Single-shot UHDR in \cite{ICCP15_Zhao}) is specialized to images, and employs graph cuts for recover true image from a single modulo measurement per pixel. However, the fact that it operates in uniform grid sampling regime with the inherent assumption that the input image has very few sharp discontinuities makes it unsuitable for practical compressive sampling. Our main motivation for this paper is the multi-shot UHDR method of \cite{ICCP15_Zhao}, which reconstructs the true image from multiplexed linear measurements obtained in oversampled setting. There, the measurement matrix has to be chosen carefully, and because the method doesn't use any inherent signal structure, it results in high oversampling factor. In our previous work \cite{Shah}, we proposed an algorithm based on \cite{ICCP15_Zhao, soltani2017stable} for signal recovery from quantized modulo measurements, which can also be adapted for sparse measurements, however, similar to \cite{ICCP15_Zhao}, it doesn't leverage sparsity in the modulo recovery process. Table~\ref{tab:compare} provides a qualitative comparison of our approach with the above mentioned approaches.}
+%>>>>>>> 01a7d9cab49e7c6ec09540246f124486d8e027cd
 
 Due to space, we defer a more thorough discussion of prior work to an extended version of this paper. For a qualitative comparison of our MoRAM method with existing approaches, refer Table~\ref{tab:comp}.
 
@@ -15,19 +19,25 @@ Due to space, we defer a more thorough discussion of prior work to an extended v
 
 \begin{table*}[t]
 	\centering
+%<<<<<<< HEAD
 	\caption{Comparison of MoRAM with existing modulo recovery methods. \label{tab:comp}}
-	\begin{tabular}{|p{3cm}|p{3cm}|p{2.5cm}|p{3cm}|p{3cm}|}
+%	\begin{tabular}{|p{3cm}|p{3cm}|p{2.5cm}|p{3cm}|p{3cm}|}
+%=======
+	\begin{tabular}{|p{4.7cm}|p{3cm}|p{2.2cm}|p{2.6cm}|p{3.2cm}|}
+%>>>>>>> 01a7d9cab49e7c6ec09540246f124486d8e027cd
 		\cline{1-5}
-		& Unlimited Sampling~\cite{Bhandari}  & OLS Method~\cite{Cucuringu2018} & multishot UHDR~\cite{ICCP15_Zhao}  & MoRAM \\ \cline{1-5}
+		& Unlimited Sampling~\cite{Bhandari}& OLS Method~\cite{Cucuringu2018} & multishot UHDR~\cite{ICCP15_Zhao}  & MoRAM \\ \cline{1-5}
 
-		Provides sample complexity bounds?  & Yes  & --  & No & Yes \\ \cline{1-5}
-		Assumption on structure of signal  & Bandlimited, i.e. smoothness   & Bandlimited, i.e. smoothness &  No assumptions & Sparsity     \\ \cline{1-5}
-		Sampling scheme (w.r.to Nyquist criteria)  & oversampled, uniform grid &  --, uniform grid  &  oversampled, (carefully chosen) linear measurements   & under-sampled,
+		Assumption on structure of signal  & Bandlimited   & Bandlimited &  No assumptions & Sparsity     \\ \cline{1-5}
+		Sampling scheme  & uniform grid &  uniform grid  & (carefully chosen) linear measurements   & 
 		random linear measurements \\ \cline{1-5}
-		Sample complexity  & $ \mathcal{O}(n)$    & --    & $\mathcal{O}(n)$   & $\mathcal{O}(slog(n))$ \\ \cline{1-5}
+		Sample complexity & oversampled, $\mathcal{O}(n)$    & --    & oversampled, $\mathcal{O}(n)$   & undersampled,~$\mathcal{O}(slog(n))$ \\ \cline{1-5}
+		Provides sample complexity bounds?  & Yes  & --  & No & Yes \\ \cline{1-5}
 		Leverages Sparsity?  & No & No   & No    & Yes \\ \cline{1-5}
-		(Theoretical) bound on Dynamic range    & Unbounded   & Unbounded     & Unbounded   & $2R$  \\ \cline{1-5}                 
+		(Theoretical) bound on dynamic range    & Unbounded   & Unbounded     & Unbounded   & $2R$  \\ \cline{1-5}                 
 	\end{tabular}
+\caption{Comparison of different modulo recovery algorithms and corresponding sampling schemes.}
+\label{tab:compare}
 \end{table*}
 
 %\textcolor{red}{ About comparision between Bhandari et al. and Our approach:: \\
