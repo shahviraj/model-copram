@@ -1,294 +1,294 @@
-\section{Mathematical Analysis}
-\label{sec:mathanalysis}
-\subsection{Analysis of the initialization}
-%We perform the initialization in two steps:
-%(i) Measurement correction step, (ii) Estimation step.
-%
-%\subsubsection{Measurement correction step}\label{meascorr}In this step, based on the absolute value of compressed modulo measurements, we identify the measurements for which we can undo the effect of modulo operation by guessing the correct value of bin-index $\mathbf{p}$. We define the set $T$ as set of indices of all such measurements that can be corrected.
-%
-%We determine the measurements to be corrected based on the method described in section~\ref{sec:init}. 
-%In this analysis, our goal is to find out the total number of measurements ($N=\card(T)$), that can be corrected through the thresholding of the measurements. Only these $N$ measurements would be used in the estimation step.
-%Each element of $\mb{A}$ is i.i.d. standard normal, thus, $\mu_{\mb{A}_{ij}} = 0$ and $\sigma_{\mb{A}_{ij}}=1$.
-%$$
-%y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle = \sum_{j=1}^{n}\mb{A}_{ij}x^*_{j}.
-%$$
-%
-%Being a linear combination of Guassian random variables, $y_{c,i}$ also follows Gaussian distribution.
-%
-%$$
-%\mu_{y_{c}} = \sum_{j=1}^{n}x^{*}\mu_{\mb{A}_{ij}} = 0,
-%$$
-%$$
-%\sigma_{y_{c}} =\sum_{j=1}^{n}x^{*2}_{j} \sigma^2_{\mb{A}_{ij}} = \sum_{j=1}^{n}x^{*2}_{j} = \norm{\mathbf{{x}^*}}^2 = 1;
-%$$
-%$$
-%\implies y_{c,i} \sim \mathcal{N}\left(\mu= 0, \sigma = 1 \right)
-%$$
-%
-%Hence, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
-%
-%We can calculate $N$ using the fact that the compressive measurements $y_c$ follow the standard normal distribution, and the total number of measurements are $m$. We define $\mathcal{M}_{\alpha,\beta}$ as set of all measurements lying in the interval $[\alpha,\beta]$. Thus,
-%
-% $\card\left(\mathcal{M}_{\alpha,\beta}\right)=mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
-%Where, $Q(\cdot)$ is Q-function, defined as, $Q(t) = 1-\Phi(t)$ with $\Phi(\cdot)$ being CDF of standard normal distribution. \\
-%We also note that,
-% $$Q(-t) = 1 - Q(t).$$
-%Q-function is not an elementary function (as its closed form expression is non-existent). However, it can be bounded by following functions where $\phi(\cdot)$ is standard normal density function:
-%$$
-%\left(\frac{t}{1+t^2}\right)\phi(t) < Q(t) < \frac{\phi(t)}{t}.
-%$$
-%Thus for $R > \rho$,
-%\begin{align}
-%N & = \card\left(\mathcal{M}_{-R + \rho,0}\right) + \card\left(\mathcal{M}_{0, R-\rho}\right) \nonumber \\
-%N &  = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right) \nonumber \\
-%& = m\left(Q(-(R-\rho))- Q(R-\rho)\right) \nonumber \\
-%& = m\left(1-2Q(R-\rho)\right). \nonumber
-%\end{align}
-
-Using the bounds above,
-\begin{align}
-N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
-\label{eq:n_bound}
-\end{align}
-%\noindent case (ii). $R < \rho$: In this case,
-%\begin{align}
-%N & = \card\left(\mathcal{M}_{-\rho,-R}\right) + \card\left(\mathcal{M}_{R,\rho}\right) \nonumber \\
-%N & = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right) \nonumber \\
-%& = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) \nonumber \\
-%& = 2m\left(Q(R)-Q(\rho)\right).
-%\end{align}
+%\section{Mathematical Analysis}
+%\label{sec:mathanalysis}
+%\subsection{Analysis of the initialization}
+%%We perform the initialization in two steps:
+%%(i) Measurement correction step, (ii) Estimation step.
+%%
+%%\subsubsection{Measurement correction step}\label{meascorr}In this step, based on the absolute value of compressed modulo measurements, we identify the measurements for which we can undo the effect of modulo operation by guessing the correct value of bin-index $\mathbf{p}$. We define the set $T$ as set of indices of all such measurements that can be corrected.
+%%
+%%We determine the measurements to be corrected based on the method described in section~\ref{sec:init}. 
+%%In this analysis, our goal is to find out the total number of measurements ($N=\card(T)$), that can be corrected through the thresholding of the measurements. Only these $N$ measurements would be used in the estimation step.
+%%Each element of $\mb{A}$ is i.i.d. standard normal, thus, $\mu_{\mb{A}_{ij}} = 0$ and $\sigma_{\mb{A}_{ij}}=1$.
+%%$$
+%%y_{c,i} =\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle = \sum_{j=1}^{n}\mb{A}_{ij}x^*_{j}.
+%%$$
+%%
+%%Being a linear combination of Guassian random variables, $y_{c,i}$ also follows Gaussian distribution.
+%%
+%%$$
+%%\mu_{y_{c}} = \sum_{j=1}^{n}x^{*}\mu_{\mb{A}_{ij}} = 0,
+%%$$
+%%$$
+%%\sigma_{y_{c}} =\sum_{j=1}^{n}x^{*2}_{j} \sigma^2_{\mb{A}_{ij}} = \sum_{j=1}^{n}x^{*2}_{j} = \norm{\mathbf{{x}^*}}^2 = 1;
+%%$$
+%%$$
+%%\implies y_{c,i} \sim \mathcal{N}\left(\mu= 0, \sigma = 1 \right)
+%%$$
+%%
+%%Hence, each element of $\mathbf{y_c}$ follows a zero mean Gaussian distribution with unit variance.
+%%
+%%We can calculate $N$ using the fact that the compressive measurements $y_c$ follow the standard normal distribution, and the total number of measurements are $m$. We define $\mathcal{M}_{\alpha,\beta}$ as set of all measurements lying in the interval $[\alpha,\beta]$. Thus,
+%%
+%% $\card\left(\mathcal{M}_{\alpha,\beta}\right)=mP(\alpha \leq y_{c,i}\leq \beta) = m\left(Q(\alpha)- Q(\beta)\right)$; \\
+%%Where, $Q(\cdot)$ is Q-function, defined as, $Q(t) = 1-\Phi(t)$ with $\Phi(\cdot)$ being CDF of standard normal distribution. \\
+%%We also note that,
+%% $$Q(-t) = 1 - Q(t).$$
+%%Q-function is not an elementary function (as its closed form expression is non-existent). However, it can be bounded by following functions where $\phi(\cdot)$ is standard normal density function:
+%%$$
+%%\left(\frac{t}{1+t^2}\right)\phi(t) < Q(t) < \frac{\phi(t)}{t}.
+%%$$
+%%Thus for $R > \rho$,
+%%\begin{align}
+%%N & = \card\left(\mathcal{M}_{-R + \rho,0}\right) + \card\left(\mathcal{M}_{0, R-\rho}\right) \nonumber \\
+%%N &  = m\left(Q(-R+\rho)- Q(0)\right) + m\left(Q(0)- Q(R-\rho)\right) \nonumber \\
+%%& = m\left(Q(-(R-\rho))- Q(R-\rho)\right) \nonumber \\
+%%& = m\left(1-2Q(R-\rho)\right). \nonumber
+%%\end{align}
 %
 %Using the bounds above,
-%$$
-%N \geq 2m \left(\frac{R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right).
-%$$
-
-For given number of measurements $m$, Eq.~\ref{eq:n_bound} provides the lower bound on the value of $N$.
-\subsubsection{Estimation step}
-We calculate the initial estimate using the measurements in set $T$ as following,
-$$
-\mathbf{{x}^0} = H_s(M) = H_s\left(\frac{1}{\card(T)}\sum_{i\in T}y_{i}a_{i}\right).
-$$
-$$
-\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
-$$
-We use the versions of $\mb{y}$ and $\mb{A}$ truncated to the row indices belonging to set $T$, and column indices to set $S$. We denote such submatrices with the subscript $T\times S$. 
-
-\theorem{Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the total number of corrected measurements satisfy, $N \geq C(\frac{t}{\kappa})^2s$, where $\kappa = \frac{\delta}{2}$, then  with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
-	$$
-	\norm{\mb{x^0} - \mb{x^*}}_2 \leq \delta \norm{\mb{x^*}}_2.
-	$$
-	\label{th:1}}
-\proof {We define $\mb{\tilde{x}^0}$ as the value of the initial estimate before the hard thresholding step:}
-%$$
-%\mb{\tilde{x}^0} = M = \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i} =  \frac{1}{N}\mb{A}_T^\t\mb{y_T}.
-%$$
-%Substituting $\mb{y_T}=\mb{A}_T\mb{x^*}$,
-%$$
-%\mb{\tilde{x}^0} = M = \frac{1}{N}\mb{A}_T^\t \mb{A}_T\mb{x^*}.
-%$$
-%
-%We note that each row of our truncated Gaussian measurement matrix ($\mb{A}_{\scriptscriptstyle{T\times S}}$) is independent, and also follows the Gaussian distribution with zero mean.  
-%We denote this distribution with Gaussian random vector $Z$ in $\R^s$, and arrange $N$ rows as the independent samples from the distribution; $Z_i := \mb{A}_{\scriptscriptstyle{T\times S},i}$. 
-%
-%Recall that the covariance matrix of $Z$ can be calculated as $\Sigma = \mathbb{E}Z\otimes Z$,
-%$$
-%\Sigma= \mathbb{E}Z\otimes Z = \mathbb{E} ZZ^\t = \diag{\mathbb{E}z_1^2,\mathbb{E}z_2^2,...,\mathbb{E}z_n^2} = I_n.
-%$$
-%
-%Now, calculating the sample covariance matrix of $Z$ using the samples $Z_i = \mb{A}_{\scriptscriptstyle{T\times S},i}$,
-%$$
-%\Sigma_N = \frac{1}{N}\sum_{i=1}^{N}Z_i \otimes Z_i = \frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}.
-%$$
-%
-%Given $N \geq C\left(\frac{t}{\kappa}\right)^2s$, we invoke the Corollary 5.50 of~\cite{vershynin2010introduction} which relates $\Sigma_N$ and $\Sigma$ as following with probability at least $1 - 2\exp\left(-t^2s\right)$:
-%
-%\begin{align*}
-%\norm{\Sigma_N - \Sigma} &\leq \kappa \\
-%\implies \norm{\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_s} &\leq \kappa \\
-%\end{align*}
-%
-%Here, let us fix the $s-$sparse vector $\mb{x^*}$ in unit norm ball. We can evaluate the operator norm in above equation over set of $s-$sparse vectors in unit norm ball.
-%
-%\begin{align*}
-%\implies \sup_{\mb{x} \in S} \frac{\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x}}_2}{\norm{\mb{x}}_2} &\leq \kappa \\
-%\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
-% \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}\mb{x^*} - \mb{x^*}\right)}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
-% \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}}_2 \\
-%\end{align*}
-%
-%with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$.
-%
-%Taking an union bound over all $n \choose s$ such $s-$sparse vectors,
-%\begin{align*}
-%\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \kappa \norm{\mb{x^*}}_2\right) & \geq 1 - 2{n \choose s}\exp\left(-t^2s\right) \\ 
-%& \geq 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
-%\end{align*}
-%
-%The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. We consider,
-%\begin{align*}
-%\norm{\mb{{x}^0} - \mb{x^*}}_2 &=  \norm{\mb{\tilde{x}^0} -\mb{\tilde{x}^0} +\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
-%& \leq \norm{\mb{{x}^0} -\mb{\tilde{x}^0}}_2 +  \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
-%& \leq 2 \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
-%& \leq 2 \kappa \norm{\mb{x^*}}_2 = \delta \norm{\mb{x^*}}_2
-%\end{align*}
-%with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$.
-%Last inequality follows from the fact that $\mb{\tilde{x}^0}$ is closer to $\mb{x^0}$ compared to $\mb{x^*}$, because $\mb{x^0}$ is the best $s-$sparse approximation of $\mb{\tilde{x}^0}$. $\qed$}
-
-\subsection{Analysis of descent}
-We perform the Alternative Minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
-
-The first step is to obtain the initial estimate for bin-index vector, $\mb{p^0}$ using $\mb{x^0}$.
-$$
-\mathbf{{p}^{0}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2}.
-$$
-If we try to undo the effect of modulo operation by adding back $R$ for the affected measurements based on the bin-index vector $\mb{p^0}$, it would introduce the error equaling $R$ corresponding to the incorrect bin-index values in $\mb{p^0}$.
-$$
-\mathbf{y^0_c} = \langle \mathbf{A}\mathbf{x^{0}} \rangle = \mathbf{y} - \mathbf{p^0}R,
-$$
-
-In the following theorem, we claim the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction.
-For the next lemma, we first introduce the concept of binary $\epsilon$-stable embedding as appeared in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{-1,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
-\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
-	$$
-	d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
-	$$
-	for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
-}
-
-In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
-$$
-F(\mb{x}):= \sgn(\mb{Ax});
-$$
-with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
-
-
-\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. Given the number of measurements \\
-	$m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
-	
-	$$
-	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps;
-	$$
-where $d_H$ is Hamming distance between binary vectors defined as:
-$$
-d_H(\mb{a,b}) := \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i,
-$$
-for $n-$ dimensional binary vectors $\mb{a,b}$.
-\label{lemma1} 
-} \\
-%\proof{ 
-%Given $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, using Theorem 3 from~\cite{Jacques2013} we conclude that $F(\cdot)$ is a B$\eps$SE for $s$-sparse vectors.
-%Thus for sparse vectors $\mb{x^*, x^0}$:
-%\begin{align}
-%\label{eq:th3}
-%d_H(F\mb{(x^*)},F\mb{(x^0)}) \leq d_S(\mb{x^*,x^0}) + \eps.
-%\end{align}
-%
-%Here, $d_S(\cdot)$ is defined as the natural angle formed by two vectors. Specifically, for $\mb{p,q}$ in unit norm ball,
-%$$
-%d_s(\mb{p},\mb{q}) := \frac{1}{\pi}arccos\langle\mb{p},\mb{q}\rangle = \frac{1}{\pi}\theta,
-%$$
-%where $\theta$ is the angle between two unit norm vectors $\mb{p}$ and $\mb{q}$.
-%
-%We note that,
-%$$
-%\norm{\mb{p-q}}_2 = 2\sin(\frac{\theta}{2}).
-%$$
-%Thus,
-%\begin{align}
-%\label{eq:dhds}
-%2d_s(\mb{p},\mb{q}) \leq \norm{\mb{p - q}}_2 \leq \pi d_s(\mb{p},\mb{q})
-%\end{align}
-%Combining eq.~\ref{eq:th3} and eq.~\ref{eq:dhds}, we conclude,
-%
-%$$
-%d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{1}{2}\norm{\mb{x^*-x^0}} + \eps.
-%$$
-%
-%\begin{align}
-%\label{eq:hd}
-%\implies d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps.
-%\qed
-%\end{align}
-%}
-
-
-\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-Kexp(-cm)$, with $K$ and $c$ being numerical constants.
-}
-
-\proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements.}
-%As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
-%
-%$$
-%\mb{y} = \mb{Ax} + \mb{I_nR(p^0-p^*)} = \mb{Ax} + \mb{d}.
-%$$  
-%Here, the $\sl{l}0$-norm of $\mb{d}$ gives us the number of noisy measurements in $\mb{y^0_c}$.
-%%$$
-%%\textnormal{the number of noisy measurements in~} \mb{y^0_c} = \norm{\mb{d}}_0
-%%$$
-%
-%If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector $\mb{p^*}$, then $\norm{\mb{d}}_0$ is small enough with respect to total number of measurements $m$; thus, $\mb{\mb{d}}$ can be treated as sparse corruption. If we model this corruption as a sparse noise, then we can employ JP for a guaranteed recovery of the true signal given (i) sparsity of the noise is a fraction of total number of measurements; (ii) sufficiently large number of measurements are available.  
-%
-%We compute $\norm{\mb{d}}_0$ as,
-%
-%$$
-%\norm{\mb{d}}_0 =  \norm{(\mb{p^*-p^0})R}_0;
-%$$
-%
-%expanding further,
-%\begin{align*}
-%\norm{\mb{d}}_0  & = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2} -  \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^*} \rangle)}{2} \\
-%& = \frac{\sgn({\mb{Ax^*}})- \sgn({\mb{Ax^0}})}{2} \\
-%& = \frac{F\mb{(x^*)} - F\mb{(x^0)}}{2} \\
-%& = d_H(F\mb{(x^*)}, F\mb{(x^0)}). \\
-%\textnormal{From eq.~\ref{eq:hd},} \\
-%& \leq \frac{\delta}{2} + \epsilon = \gamma m.
-%\end{align*}
-%
-%Algorithm \ref{alg:MoRAM} is essentially a JP formulation based on basis pursuit as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization even if a positive fraction of the measurements are arbitrarily corrupted. With $\norm{\mb{d}}_0 \leq \gamma m$, we invoke the Theorem $1.1$ from \cite{li2013compressed} to complete the proof.
-%$\qed$}
-
-\subsection{Minimum number of measurements required}
-In this section, we combine the various inequalities involving number of measurements $m$ from above sections to determine the minimum value of $m$ required for successful recovery of the true signal.
-%
-%The condition on $N$ comes from theorem \ref{th:1},
-%\begin{align}
-%N \geq C\left(\frac{t}{\kappa}\right)^2s.
-%\label{eq:ineq1}
-%\end{align}
-%
-%Also from lemma \ref{lemma1},
-%\begin{align}
-%m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right).
-%\label{eq:ineq2}
-%\end{align}
-%
-%Now for $R> \rho$, we have following from the analysis in section~\ref{meascorr},
 %\begin{align}
 %N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
-%\label{eq:ineq3}
+%\label{eq:n_bound}
 %\end{align}
-
-Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required as,
-
-\begin{align}
-m \geq \max & \Bigg[ C\left(\frac{t}{\kappa}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \nonumber \\ 
-& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg]
-\label{eq:ineq4}
-\end{align}
-For $R=4$ and $\rho =3$, the above inequality approximates to,
-\begin{align*}
-m \geq \max & \Bigg[ 2C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
-& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg].
-\end{align*}
-%Similarly for the case when $R<\rho$ we get,
+%%\noindent case (ii). $R < \rho$: In this case,
+%%\begin{align}
+%%N & = \card\left(\mathcal{M}_{-\rho,-R}\right) + \card\left(\mathcal{M}_{R,\rho}\right) \nonumber \\
+%%N & = m\left(Q(-\rho)- Q(-R)\right) + m\left(Q(R)- Q(\rho)\right) \nonumber \\
+%%& = m\left(1 - Q(\rho)-1 +Q(R) +Q(R) -Q(\rho)\right) \nonumber \\
+%%& = 2m\left(Q(R)-Q(\rho)\right).
+%%\end{align}
+%%
+%%Using the bounds above,
+%%$$
+%%N \geq 2m \left(\frac{R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right).
+%%$$
+%
+%For given number of measurements $m$, Eq.~\ref{eq:n_bound} provides the lower bound on the value of $N$.
+%\subsubsection{Estimation step}
+%We calculate the initial estimate using the measurements in set $T$ as following,
+%$$
+%\mathbf{{x}^0} = H_s(M) = H_s\left(\frac{1}{\card(T)}\sum_{i\in T}y_{i}a_{i}\right).
+%$$
+%$$
+%\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
+%$$
+%We use the versions of $\mb{y}$ and $\mb{A}$ truncated to the row indices belonging to set $T$, and column indices to set $S$. We denote such submatrices with the subscript $T\times S$. 
+%
+%\theorem{Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the total number of corrected measurements satisfy, $N \geq C(\frac{t}{\kappa})^2s$, where $\kappa = \frac{\delta}{2}$, then  with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
+%	$$
+%	\norm{\mb{x^0} - \mb{x^*}}_2 \leq \delta \norm{\mb{x^*}}_2.
+%	$$
+%	\label{th:1}}
+%\proof {We define $\mb{\tilde{x}^0}$ as the value of the initial estimate before the hard thresholding step:}
+%%$$
+%%\mb{\tilde{x}^0} = M = \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i} =  \frac{1}{N}\mb{A}_T^\t\mb{y_T}.
+%%$$
+%%Substituting $\mb{y_T}=\mb{A}_T\mb{x^*}$,
+%%$$
+%%\mb{\tilde{x}^0} = M = \frac{1}{N}\mb{A}_T^\t \mb{A}_T\mb{x^*}.
+%%$$
+%%
+%%We note that each row of our truncated Gaussian measurement matrix ($\mb{A}_{\scriptscriptstyle{T\times S}}$) is independent, and also follows the Gaussian distribution with zero mean.  
+%%We denote this distribution with Gaussian random vector $Z$ in $\R^s$, and arrange $N$ rows as the independent samples from the distribution; $Z_i := \mb{A}_{\scriptscriptstyle{T\times S},i}$. 
+%%
+%%Recall that the covariance matrix of $Z$ can be calculated as $\Sigma = \mathbb{E}Z\otimes Z$,
+%%$$
+%%\Sigma= \mathbb{E}Z\otimes Z = \mathbb{E} ZZ^\t = \diag{\mathbb{E}z_1^2,\mathbb{E}z_2^2,...,\mathbb{E}z_n^2} = I_n.
+%%$$
+%%
+%%Now, calculating the sample covariance matrix of $Z$ using the samples $Z_i = \mb{A}_{\scriptscriptstyle{T\times S},i}$,
+%%$$
+%%\Sigma_N = \frac{1}{N}\sum_{i=1}^{N}Z_i \otimes Z_i = \frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}.
+%%$$
+%%
+%%Given $N \geq C\left(\frac{t}{\kappa}\right)^2s$, we invoke the Corollary 5.50 of~\cite{vershynin2010introduction} which relates $\Sigma_N$ and $\Sigma$ as following with probability at least $1 - 2\exp\left(-t^2s\right)$:
+%%
+%%\begin{align*}
+%%\norm{\Sigma_N - \Sigma} &\leq \kappa \\
+%%\implies \norm{\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_s} &\leq \kappa \\
+%%\end{align*}
+%%
+%%Here, let us fix the $s-$sparse vector $\mb{x^*}$ in unit norm ball. We can evaluate the operator norm in above equation over set of $s-$sparse vectors in unit norm ball.
+%%
+%%\begin{align*}
+%%\implies \sup_{\mb{x} \in S} \frac{\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x}}_2}{\norm{\mb{x}}_2} &\leq \kappa \\
+%%\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}} - I_n\right)\mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
+%% \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{T\times S}}^\t \mb{A}_{\scriptscriptstyle{T\times S}}\mb{x^*} - \mb{x^*}\right)}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
+%% \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}}_2 \\
+%%\end{align*}
+%%
+%%with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$.
+%%
+%%Taking an union bound over all $n \choose s$ such $s-$sparse vectors,
+%%\begin{align*}
+%%\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \kappa \norm{\mb{x^*}}_2\right) & \geq 1 - 2{n \choose s}\exp\left(-t^2s\right) \\ 
+%%& \geq 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
+%%\end{align*}
+%%
+%%The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. We consider,
+%%\begin{align*}
+%%\norm{\mb{{x}^0} - \mb{x^*}}_2 &=  \norm{\mb{\tilde{x}^0} -\mb{\tilde{x}^0} +\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
+%%& \leq \norm{\mb{{x}^0} -\mb{\tilde{x}^0}}_2 +  \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
+%%& \leq 2 \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
+%%& \leq 2 \kappa \norm{\mb{x^*}}_2 = \delta \norm{\mb{x^*}}_2
+%%\end{align*}
+%%with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$.
+%%Last inequality follows from the fact that $\mb{\tilde{x}^0}$ is closer to $\mb{x^0}$ compared to $\mb{x^*}$, because $\mb{x^0}$ is the best $s-$sparse approximation of $\mb{\tilde{x}^0}$. $\qed$}
+%
+%\subsection{Analysis of descent}
+%We perform the Alternative Minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
+%
+%The first step is to obtain the initial estimate for bin-index vector, $\mb{p^0}$ using $\mb{x^0}$.
+%$$
+%\mathbf{{p}^{0}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2}.
+%$$
+%If we try to undo the effect of modulo operation by adding back $R$ for the affected measurements based on the bin-index vector $\mb{p^0}$, it would introduce the error equaling $R$ corresponding to the incorrect bin-index values in $\mb{p^0}$.
+%$$
+%\mathbf{y^0_c} = \langle \mathbf{A}\mathbf{x^{0}} \rangle = \mathbf{y} - \mathbf{p^0}R,
+%$$
+%
+%In the following theorem, we claim the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction.
+%For the next lemma, we first introduce the concept of binary $\epsilon$-stable embedding as appeared in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{-1,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
+%\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
+%	$$
+%	d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
+%	$$
+%	for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
+%}
+%
+%In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
+%$$
+%F(\mb{x}):= \sgn(\mb{Ax});
+%$$
+%with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
+%
+%
+%\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. Given the number of measurements \\
+%	$m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
+%	
+%	$$
+%	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps;
+%	$$
+%where $d_H$ is Hamming distance between binary vectors defined as:
+%$$
+%d_H(\mb{a,b}) := \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i,
+%$$
+%for $n-$ dimensional binary vectors $\mb{a,b}$.
+%\label{lemma1} 
+%} \\
+%%\proof{ 
+%%Given $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, using Theorem 3 from~\cite{Jacques2013} we conclude that $F(\cdot)$ is a B$\eps$SE for $s$-sparse vectors.
+%%Thus for sparse vectors $\mb{x^*, x^0}$:
+%%\begin{align}
+%%\label{eq:th3}
+%%d_H(F\mb{(x^*)},F\mb{(x^0)}) \leq d_S(\mb{x^*,x^0}) + \eps.
+%%\end{align}
+%%
+%%Here, $d_S(\cdot)$ is defined as the natural angle formed by two vectors. Specifically, for $\mb{p,q}$ in unit norm ball,
+%%$$
+%%d_s(\mb{p},\mb{q}) := \frac{1}{\pi}arccos\langle\mb{p},\mb{q}\rangle = \frac{1}{\pi}\theta,
+%%$$
+%%where $\theta$ is the angle between two unit norm vectors $\mb{p}$ and $\mb{q}$.
+%%
+%%We note that,
+%%$$
+%%\norm{\mb{p-q}}_2 = 2\sin(\frac{\theta}{2}).
+%%$$
+%%Thus,
+%%\begin{align}
+%%\label{eq:dhds}
+%%2d_s(\mb{p},\mb{q}) \leq \norm{\mb{p - q}}_2 \leq \pi d_s(\mb{p},\mb{q})
+%%\end{align}
+%%Combining eq.~\ref{eq:th3} and eq.~\ref{eq:dhds}, we conclude,
+%%
+%%$$
+%%d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{1}{2}\norm{\mb{x^*-x^0}} + \eps.
+%%$$
+%%
+%%\begin{align}
+%%\label{eq:hd}
+%%\implies d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps.
+%%\qed
+%%\end{align}
+%%}
+%
+%
+%\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-Kexp(-cm)$, with $K$ and $c$ being numerical constants.
+%}
+%
+%\proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements.}
+%%As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
+%%
+%%$$
+%%\mb{y} = \mb{Ax} + \mb{I_nR(p^0-p^*)} = \mb{Ax} + \mb{d}.
+%%$$  
+%%Here, the $\sl{l}0$-norm of $\mb{d}$ gives us the number of noisy measurements in $\mb{y^0_c}$.
+%%%$$
+%%%\textnormal{the number of noisy measurements in~} \mb{y^0_c} = \norm{\mb{d}}_0
+%%%$$
+%%
+%%If the initial bin-index vector $\mb{p^0}$ is close to the true bin-index vector $\mb{p^*}$, then $\norm{\mb{d}}_0$ is small enough with respect to total number of measurements $m$; thus, $\mb{\mb{d}}$ can be treated as sparse corruption. If we model this corruption as a sparse noise, then we can employ JP for a guaranteed recovery of the true signal given (i) sparsity of the noise is a fraction of total number of measurements; (ii) sufficiently large number of measurements are available.  
+%%
+%%We compute $\norm{\mb{d}}_0$ as,
+%%
+%%$$
+%%\norm{\mb{d}}_0 =  \norm{(\mb{p^*-p^0})R}_0;
+%%$$
+%%
+%%expanding further,
+%%\begin{align*}
+%%\norm{\mb{d}}_0  & = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2} -  \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^*} \rangle)}{2} \\
+%%& = \frac{\sgn({\mb{Ax^*}})- \sgn({\mb{Ax^0}})}{2} \\
+%%& = \frac{F\mb{(x^*)} - F\mb{(x^0)}}{2} \\
+%%& = d_H(F\mb{(x^*)}, F\mb{(x^0)}). \\
+%%\textnormal{From eq.~\ref{eq:hd},} \\
+%%& \leq \frac{\delta}{2} + \epsilon = \gamma m.
+%%\end{align*}
+%%
+%%Algorithm \ref{alg:MoRAM} is essentially a JP formulation based on basis pursuit as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization even if a positive fraction of the measurements are arbitrarily corrupted. With $\norm{\mb{d}}_0 \leq \gamma m$, we invoke the Theorem $1.1$ from \cite{li2013compressed} to complete the proof.
+%%$\qed$}
+%
+%\subsection{Minimum number of measurements required}
+%In this section, we combine the various inequalities involving number of measurements $m$ from above sections to determine the minimum value of $m$ required for successful recovery of the true signal.
+%%
+%%The condition on $N$ comes from theorem \ref{th:1},
+%%\begin{align}
+%%N \geq C\left(\frac{t}{\kappa}\right)^2s.
+%%\label{eq:ineq1}
+%%\end{align}
+%%
+%%Also from lemma \ref{lemma1},
+%%\begin{align}
+%%m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right).
+%%\label{eq:ineq2}
+%%\end{align}
+%%
+%%Now for $R> \rho$, we have following from the analysis in section~\ref{meascorr},
+%%\begin{align}
+%%N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
+%%\label{eq:ineq3}
+%%\end{align}
+%
+%Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required as,
+%
 %\begin{align}
-%m \geq \max &  \Bigg[C\left(\frac{t}{\kappa}\right)^2s \left(\frac{2R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)^{-1}, \nonumber \\ 
-%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
-%\label{eq:ineq5}
+%m \geq \max & \Bigg[ C\left(\frac{t}{\kappa}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \nonumber \\ 
+%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg]
+%\label{eq:ineq4}
 %\end{align}
-%With $R=1$ and $\rho =3$, we can approximate it as,
+%For $R=4$ and $\rho =3$, the above inequality approximates to,
 %\begin{align*}
-%m \geq \max &  \Bigg[4C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
-%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
+%m \geq \max & \Bigg[ 2C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
+%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg].
 %\end{align*}
+%%Similarly for the case when $R<\rho$ we get,
+%%\begin{align}
+%%m \geq \max &  \Bigg[C\left(\frac{t}{\kappa}\right)^2s \left(\frac{2R}{(1+R^2)} \phi(R) - \frac{\phi(\rho)}{\rho}\right)^{-1}, \nonumber \\ 
+%%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
+%%\label{eq:ineq5}
+%%\end{align}
+%%With $R=1$ and $\rho =3$, we can approximate it as,
+%%\begin{align*}
+%%m \geq \max &  \Bigg[4C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
+%%& \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right) \Bigg]
+%%\end{align*}

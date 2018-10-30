@@ -20,7 +20,7 @@ $$
 y_i = \langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle + p^*_iR = y_{c_i}+p^*_iR.
 $$
 
-It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the true compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP~\cite{needell2010cosamp} or basis-pursuit~\cite{chen2001atomic}.
+It is evident that if we can recover $\mathbf{p^*}$ successfully, we can calculate the true compressed measurements $\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle$ and use them to reconstruct $\mathbf{x^*}$ with any sparse recovery algorithm such as CoSaMP~\cite{needell2010cosamp} or basis-pursuit~\cite{chen2001atomic,spgl1:2007,BergFriedlander:2008}.
 
 \section{Algorithm and Main Results}
 Given $\mathbf{y, A}, s, R$, our approach recovers $\mathbf{x^*}$ and $\mathbf{p^*}$ in two steps: (i) an initialization step, and (ii) descent step via Alt-Min.
@@ -29,14 +29,14 @@ Given $\mathbf{y, A}, s, R$, our approach recovers $\mathbf{x^*}$ and $\mathbf{p
 \label{sec:init}	
 Similar to other non-convex approaches, MoRAM also requires an initial estimate $\mathbf{{x}^0}$ that is close to the true signal $\mathbf{{x}^*}$. We propose a novel initialization method to re-calculate the true Gaussian measurements ($\mb{y_c}= \mb{Ax^*}$) from the available modulo measurements. We undo the effect of modulo operation for the fraction of the total measurements, and calculate the initial estimate using such corrected measurements.
 
-We introduce a hyper-parameter $\rho$ that approximates the spread of the $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$. In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y_c} = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y_c}$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
+We introduce a hyper-parameter $\rho$ that approximates the spread of the $\mathbf{Ax^*}$. We choose a value of $\rho$ such that it bounds the maximum element of $|\mathbf{Ax^*}|$ with very high probability. As shown in Fig.~\ref{fig:densityplot}, with very high probability, $\mathbf{Ax^*}$ lies within $[-\rho, \rho]$. In Fig.~\ref{fig:densityplot} (a) and (b), we provide the density plots of the $\mb{y_c} = \mathbf{Ax^*}$ and $\mb{y} = \mathbf{\mod(\mathbf{Ax^*})}$ respectively. Note that the compressed measurements $\mathbf{y_c}$ follow the standard normal distribution, as $\mb{A}$ is Gaussian random matrix. These plots essentially depict the distribution of our observations before and after the modulo operation.%, and help us to understand the transformation effected by modulo operation. %In practice, $\rho$ can be calculated based on tail bounds.
 
-For analysis, we divide the compressed observations $\mb{y_c}$ in two sets: $\mb{y_{c,+}}$ contains all the positive observations lying in $[0,\rho]$ with bin-index$=0$, while $\mb{y_{c,-}}$ contains all the negative ones in $[-\rho,0]$ with bin-index$=1$. Similarly, modulo observations $\mb{y}$ can also be divided in two sets $\mb{y}_+ = \mod(\mb{y}_{c,+})$ and $\mb{y}_- = \mod(\mb{y}_{c,-})$. Modulo function shifts the set $\mb{y}_{c,-}$ to the right by $R$, while leaves the set $\mb{y}_{c,+}$ unaffected. Thus, the sets $\mb{y}_-$ and $\mb{y}_+$ occupy the interval $[R-\rho,R]$ and $[0,\rho]$ respectively. From that, it can be concluded with surety that all the modulo observations lying in the interval $[\rho, R]$ are part of set $\mb{y}_{c,-}$, and have bin-index value equal to $1$. Similarly, all the modulo observations lying in the interval $[0,R-\rho]$ are part of set $\mb{y}_{c,+}$, and have bin-index value equal to $0$. Nothing can be concluded for other modulo observations lying in $[R-\rho,\rho]$ (region of uncertainty). We assign bin-index$=0$ for such observations. Thus, the corrected bin-index vector can be calculated as:
+With reference to Fig.~\ref{fig:densityplot}(a), we divide the compressed observations $\mb{y_c}$ in two sets: $\mb{y_{c,+}}$ contains all the positive observations lying in $[0,\rho]$ with bin-index$=0$ (orange), while $\mb{y_{c,-}}$ contains all the negative ones in $[-\rho,0]$ with bin-index$=1$ (green). Similarly, in Fig.~\ref{fig:densityplot}(b), modulo observations $\mb{y}$ can also be divided in two sets $\mb{y}_+ = \mod(\mb{y}_{c,+})$ and $\mb{y}_- = \mod(\mb{y}_{c,-})$. Modulo function shifts the set $\mb{y}_{c,-}$ to the right by $R$, while leaves the set $\mb{y}_{c,+}$ unaffected. Thus, the sets $\mb{y}_-$ and $\mb{y}_+$ occupy the interval $[R-\rho,R]$ and $[0,\rho]$ respectively. From that, it can be concluded with surety that all the modulo observations lying in the interval $[\rho, R]$ (green) are part of set $\mb{y}_{c,-}$, and have bin-index value equal to $1$. Similarly, all the modulo observations lying in the interval $[0,R-\rho]$ (orange) are part of set $\mb{y}_{c,+}$, and have bin-index value equal to $0$. Nothing can be concluded for other modulo observations lying in $[R-\rho,\rho]$ (gray, region of uncertainty). We assign bin-index$=0$ for such observations. Thus, the corrected bin-index vector can be calculated as:
 \begin{equation}
 {p}^{init}_{i} = 
 \begin{cases}
 0,& \text{if } 0\leq y_i < (R-\rho) \\
-0,& \text{if } (R-\rho)\leq y_i < \rho ~~~~ \textnormal{(region of uncertainty)} \\
+0,& \text{if } (R-\rho)\leq y_i < \rho ~ \textnormal{(region of uncertainty)} \\
 1,& \text{if } \rho \leq y_i < R \\
 \end{cases}
 \label{eq:rcm}
@@ -94,11 +94,12 @@ For analysis, we divide the compressed observations $\mb{y_c}$ in two sets: $\mb
 			%\fill [fill=orange!60] (2.6,0) -- plot[domain=0:4.4] (\normaltwo) -- ({\y},0) -- cycle;
 			
 			% Draw and label normal distribution function
-			\draw[color=blue,domain=-4.25:4.25,thick] plot (\normaltwo) node[right] {};
+			\draw[color=blue,domain=-4.25:4.25,thick, samples=100] plot (\normaltwo) node[right] {};
 			\draw[<->] (-4.25,0) -- (4.25,0);
 			\draw (4.25,0.1) node[above left] {$\mathbf{y_c}$};
 			\draw[<->] (0,-0.8) -- (0,4);
-			
+			\fill [fill=green!60] (0,0) -- plot[domain=-4.25:0] (\normaltwo) -- (0,0) -- cycle;
+			\fill [fill=orange!60] (0,0) -- plot[domain=0:4.25] (\normaltwo) -- (0,0) -- cycle;
 			\draw (-3,-0.5) node(below) {$-\rho$};
 			\draw (-4,-0.5) node(below) {$-R$};
 			\draw (3,-0.5) node(below) {$\rho$};
@@ -171,88 +172,10 @@ For analysis, we divide the compressed observations $\mb{y_c}$ in two sets: $\mb
 	\caption{\emph{Density plots of (a) $\mathbf{y_c=Ax^*}$; (b) $\mb{y}=\mod(\mathbf{Ax^*})$.}}
 	\label{fig:densityplot}
 \end{figure}
-%\begin{figure}[h]
-%	\begin{center}
-%		\begin{tikzpicture}[scale=1, every node/.style={scale=1}]
-%		\def\normaltwo{\x,{3*1/exp(((\x)^2)/2)}}
-%		\def\y{4.4}
-%		
-%		%\fill [fill=orange!60] (2.6,0) -- plot[domain=0:4.4] (\normaltwo) -- ({\y},0) -- cycle;
-%		
-%		% Draw and label normal distribution function
-%		\draw[color=blue,domain=-4.25:4.25,thick] plot (\normaltwo) node[right] {};
-%		\draw[<->] (-5,0) -- (5,0) node[right] {$\mathbf{Ax^*}$};
-%		\draw[<->] (0,-1) -- (0,4);
-%		
-%		\draw (-3,-0.5) node(below) {$-\rho$};
-%		\draw (-4,-0.5) node(below) {$-R$};
-%		\draw (3,-0.5) node(below) {$\rho$};
-%		\draw (4,-0.5) node(below) {$R$};
-%		
-%		\foreach \x in {-3,-4,3,4}
-%		{        
-%			\coordinate (A\x) at ($(0,0)+(\x*1cm,0)$) {};
-%			\draw ($(A\x)+(0,5pt)$) -- ($(A\x)-(0,5pt)$);
-%			
-%		}
-%		%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
-%		%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-%		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
-%		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
-%		\end{tikzpicture}
-%	\end{center}
-%	\caption{\emph{Histogram of $\mathbf{Ax^*}$}}
-%	\label{fig:hist1}
-%\end{figure}
-%\begin{figure}[h]
-%	\begin{center}
-%		\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
-%		\def\normaltwo{\x,{3*1/exp(((\x)^2)/2)}}
-%		\def\normalone{\x,{3*1/exp(((\x-4)^2)/2)}}
-%		\def\normalsum{\x,{3*1/exp(((\x-4)^2)/2)+3*1/exp(((\x)^2)/2)}}
-%		\def\y{3}
-%		\def\fy{3*1/exp(((\y-4)^2)/2)}
-%		\fill [fill=orange!60] (0,0) -- plot[domain=0:1] (\normaltwo) -- (1,0) -- cycle;
-%		\fill [fill=green!60] (3,0) -- plot[domain=3:4] (\normalone) -- (4,0) -- cycle;
-%		\fill [fill=gray!30] (1,0) -- plot[domain=1:3] (\normalsum) -- (3,0) -- cycle;
-%		% Draw and label normal distribution function
-%		\draw[color=blue,domain=-0:3,dashed,thick] plot (\normaltwo) node[right] {};
-%		\draw[color=blue,domain=1:4,dashed,thick] plot (\normalone) node[right] {};
-%		\draw[color=blue,domain=-0:4,thick] plot (\normalsum) node[right] {};
-%		\draw[<->] (-5,0) -- (5,0) node[right] {$\mathbf{Ax^*}$};
-%		\draw[<->] (0,-1) -- (0,4);
-%		\draw[dashed] ({\y},{\fy}) -- ({\y},0);
-%		\draw[dashed] ({4},{3}) -- ({4},0);
-%		\draw[dashed] ({1},{\fy}) -- ({1},0);
-%		\draw (-3,-0.5) node(below) {$-\rho$};
-%		\draw (-4,-0.5) node(below) {$-R$};
-%		\draw (3,-0.5) node(below) {$\rho$};
-%		\draw (4,-0.5) node(below) {$R$};
-%		\draw (1,-0.5) node(below) {$R-\rho$};
-%		\draw (0.5,1) node(below) {$p_i=0$};
-%		\draw (3.5,1) node(below) {$p_i=1$};
-%		\draw (2,0.5) node(below) {$p_i=0$};
-%		\foreach \x in {-3,-4,1,3,4}
-%		{        
-%			\coordinate (A\x) at ($(0,0)+(\x*1cm,0)$) {};
-%			\draw ($(A\x)+(0,5pt)$) -- ($(A\x)-(0,5pt)$);
-%			
-%		}
-%		%		\draw (-1.5,-0.5) node(below) {$p_i = 1$};
-%		%		\draw (0,-1.5) node(right) {$f(t) = \mod(t,R)$};
-%		%		\draw[scale=0.5,domain=-7:0,smooth,variable=\x,blue, ultra thick] plot ({\x},{\x+4});
-%		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
-%		\end{tikzpicture}
-%	\end{center}
-%	\caption{\emph{Histogram of $\mod(\mathbf{Ax^*})$, $R>\rho$}}
-%	\label{fig:hist2}
-%\end{figure}
-%We divide the number line in the following $3$ intervals, and assign the bin-index accordingly:
-
 We define set $T$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(T)$.
-\begin{align*}
-N & =  m - \card(\textnormal{region of uncertainity}).
-\end{align*}
+%\begin{align*}
+%N & =  m - \card(\textnormal{region of uncertainity}).
+%\end{align*}
 Value of $N$ largely depends on the difference between $\rho$ and $R$.
 Once we identify the correct bin-index for part of the measurements, we can re-calculate corrected measurements as,
 \begin{align}
@@ -280,7 +203,6 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 		\For {$l =0:L$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
-		%\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^\t}\norm{\mb{u}}_1~s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y^t_c}$ 
 		\State $\implies \mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t)}$.
 		\EndFor
 	\end{algorithmic}
@@ -293,18 +215,8 @@ In the descent step, starting with $\mathbf{{x}^0}$, we calculate the estimates 
 \end{equation}
 
 Given $\mathbf{x^0}$ is close to $\mathbf{x^*}$, $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideal way is to calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}_{t+1}}$. 
-%Thus,
-%
-%
-%$$
-%\mathbf{y^t_c} = \langle \mathbf{A}\mathbf{x^{t}} \rangle = \mathbf{y} - \mathbf{p^t}R,
-%$$
-%$$
-%\mathbf{{x}^{t+1}} = \argmin_{\mathbf{x} \in \mathcal{M}_s}\norm{\mathbf{Ax} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
-%$$
-However, it should be noted that even the small error $\mathbf{d^t} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{x^t}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the typical sparse recovery algorithms are not robust enough to cope up with such large errors in $\mathbf{y^t_c}$ \cite{Laska2009}. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t}$ is sparse with sparsity $s_{dt}=\norm{\mb{d^t}}_0$; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$.
 
-Thus we solve the augmented optimization problem:
+However, even the small error $\mathbf{d^t} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{x^t}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. The typical sparse recovery algorithms are not robust enough to cope up with such gross errors in $\mathbf{y^t_c}$ \cite{Laska2009}. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t}$ is sparse with sparsity $s_{dt}=\norm{\mb{d^t}}_0$; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Thus we solve the augmented optimization problem:
 $$
 \mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^\t \in \mathcal{M}_{s+s_{dt}}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
@@ -321,19 +233,20 @@ However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse r
 We repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) alternatively for $L$ iterations.% Our algorithm is able to achieve perfect convergence, as supported by the results in the experiments section.
 
 \subsection{Theoretical results}
-We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs and supporting lemmas that are discussed in detail in the longer version of our paper available on author's website \footnote{http://virajshah.me/}.
+We now provide theoretical guarantees and their proof sketches for our proposed algorithm. For brevity, here we omit the proofs and supporting definitions and lemmas that are discussed in detail in the longer version of our paper available on author's website \footnote{\url{http://virajshah.me/},\url{http://home.engineering.iastate.edu/~chinmay/}}.
 \begin{theorem}[Guarantee for Initialization]
-	Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the number of measurements satisfy, $m \geq C(\frac{t}{\kappa})^2s\left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}$, where $\kappa = \frac{\delta}{2}$, $\phi(\cdot)$ represents standard normal pdf; then  with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
+	Let $\delta \in (0,1)$ and $t \geq 1$. The initial estimate $\mb{x^0}$ is the output of the algorithm~\ref{alg:RCM}. If the number of measurements satisfy, $m \geq C(\frac{t}{\kappa})^2s\left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}$, where $\kappa = \frac{\delta}{2}$, $\phi(\cdot)$ represents standard normal pdf; then with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$ we have,
 	$$
 	\norm{\mb{x^0} - \mb{x^*}}_2 \leq \delta \norm{\mb{x^*}}_2.
 	$$
 	\label{th:1}
 \end{theorem}
-For the proof of Theorem~\ref{th:1}, we calculate the upper and lower bounds on $N$ in terms of $m,R$ and $\rho$, using the fact that the compressive measurements $\mb{y_c}$ follow the standard normal distribution. We further exploit the sparsity structure of the underlying signal $\mb{x^*}$ to bound the distance between a fixed sparse signal $\mb{x^*}$ and non-thresholded version of $\mb{x^0}$ using results from~\cite{vershynin2010introduction}. We take union bound over all the $s-$sparse vectors to complete the proof.
+For the proof of Theorem~\ref{th:1}, we calculate the upper and lower bounds on $N$ in terms of $m,R$ and $\rho$.%, using the fact that the compressive measurements $\mb{y_c}$ follow the standard normal distribution. 
+We further exploit the sparsity of the underlying signal $\mb{x^*}$ to bound the distance between a fixed sparse signal $\mb{x^*}$ and non-thresholded version of $\mb{x^0}$ using results from~\cite{vershynin2010introduction}. We take union bound over all the $s-$sparse vectors to complete the proof.
 
-In the next theorem, we provide guarantee for the AltMin based descent step of our algorithm. For simplicity, we limit our analysis of the descent to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
+For simplicity, we limit our analysis of the descent to only one iteration of Alternating Minimization in our algorithm. In fact, as proven in our analysis, theoretically only one iteration of AltMin with JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one AltMin iterations to converge to the optimum solution.
 \begin{theorem}[Guarantee for Descent]
 	Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1, \eta \in [0,1],~\eps > 0$, if we have number of (Gaussian) measurements satisfying $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$ and $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-K\exp(-cm)-\eta$, with $K$ and $c$ being numerical constants.
 	\label{th:2}
 \end{theorem}
-For proving Theorem~\ref{th:2}, we start with the results pertaining to 1-bit compressive sensing from~\cite{Jacques2013} to prove that the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction.  We claim the guaranteed recovery of the true signal using the result proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization (such as basis-pursuit) even if a positive fraction of the measurements are arbitrarily corrupted.
+For proving Theorem~\ref{th:2}, we start with the results pertaining to 1-bit compressive sensing from~\cite{Jacques2013} to prove that the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction. We claim the guaranteed recovery of the true signal using the result proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization (such as basis-pursuit) even if a positive fraction of the measurements are arbitrarily corrupted.

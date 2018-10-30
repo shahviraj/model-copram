@@ -47,12 +47,12 @@
 
 
 %In this section, we present the results of simulations of signal reconstruction using our algorithm. All numerical experiments were conducted using MATLAB R2017a on a linux system with an Intel CPU and 64GB RAM.
-Our experiments explores the performance of the MoRAM algorithm on both synthetic data and real images. We perform experiments on a synthetic sparse signal $\mb{x^*} \in \R^n$ with $n=1000$.The non-zero elements of $\mb{x^*}$ are generated from $\mathcal{N}(0,1)$ and normalized such that $\norm{\mb{x^*}} =1$. We set $\rho=3$ for all our experiments. The number of measurements $m$ is varied from $m = 100$ to $m=1000$ in steps of $100$. 
+Our experiments explores the performance of the MoRAM algorithm on both synthetic data and real images. We generate a synthetic sparse signal $\mb{x^*} \in \R^n$ with $n=1000$. The non-zero elements of $\mb{x^*}$ are generated from $\mathcal{N}(0,1)$ and normalized such that $\norm{\mb{x^*}} =1$. We set $\rho=3$ for all our experiments. The number of measurements $m$ is varied from $m = 100$ to $m=1000$ in steps of $100$. 
 %It is important to note that unlike the absolute value function, the modulo function described in Fig.~\ref{fig:compare}(a) is not scale-invariant. The modulo function works over the quantities $y_{c,i}=\langle \mathbf{a_i} \cdot \mathbf{x^*} \rangle, i=1,..,m$; and it is defined over the parameter $R$; thus depending on the magnitudes of $y_{c,i}$ and $R$ relative to each other, the behavior of the measurement model and the reconstruction algorithm would be altered. For instance, if the value of $R$ is too small compared to the range of the $y_{c,i}$, the modulo operation would hardly have any effect on the measurements, leaving $\mathbf{y_c \approx y}$.
 
 %To enforce the quanti, we fix the signal strength by setting $\norm{\mb{x^*}} =1$ in our experiments, while varying the value of modulo parameter $R$ as ${1,2,4}$.
 
-Using $\mb{A, x^*}$ and $\R$, We first obtain the compressed modulo measurements $\mb{y}$ by passing the signal through forward model described by Eq.~\ref{eq:modmeas2}. We reconstruct the signal using MoRAM algorithm and plot the variation of the mean of relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^L}}}{\norm{\mathbf{x^*}}}$) across $10$ such independent experiments vs. number of measurements $m$. In Fig.~\ref{fig:plot} we depict such plots for $2$ values of $R=\{4,4,5\}$ and $4$ values of $s=\{3,6,9,12\}$. It is evident that for each combination of $R$ and $s$, our algorithm converges with probability $1$ to give the exact recovery of the true signal (zero relative error) provided enough number of measurements. In all such cases, the minimum number of measurements required for exact recovery are well below the ambient dimension $(n)$ of the underlying signal. 
+Using $\mb{A, x^*}$ and $\R$, We first obtain the compressed modulo measurements $\mb{y}$ by passing the signal through forward model described by Eq.~\ref{eq:modmeas2}. We reconstruct the signal from $\mb{y}$ using MoRAM algorithm and plot the variation of the mean of relative reconstruction error ($\frac{\norm{\mathbf{x^*-x^L}}}{\norm{\mathbf{x^*}}}$) across $10$ such independent experiments vs. number of measurements $m$. In Fig.~\ref{fig:plot} we depict such plots for $2$ values of $R=\{4,4.5\}$ and $4$ values of $s=\{3,6,9,12\}$. It is evident that for each combination of $R$ and $s$, our algorithm converges with probability $1$ to give the exact recovery of the true signal (zero relative error) provided enough number of measurements. In all such cases, the minimum number of measurements required for exact recovery are well below the ambient dimension $(n)$ of the underlying signal. 
 
 %Another important factor affecting the reconstruction is the quality of the initial estimate ($\mathbf{{x}^0}$) obtained through first order estimation. As described in~\ref{sec:init}, the quality of the initial estimate is a direct function of number of measurements ($m$). As we set $m$ higher, the initial estimate $\mathbf{{x}^0}$ would move closer to the original signal $\mathbf{{x}^*}$. For our experiments, we consider two ranges of $m$: $m \in [100,1000]$ and $m \in [1000,10000]$.
 \begin{figure}[t!]
@@ -61,29 +61,29 @@ Using $\mb{A, x^*}$ and $\R$, We first obtain the compressed modulo measurements
 		\setlength{\tabcolsep}{0pt}
 		\renewcommand{\arraystretch}{0.5}
 		\begin{tabular}{cccc}
-			& & $R=4$ & $R=4.5$ \\
+			& & Conventional sensor, & Modulo sensor,\\
+			& & with basis-pursuit & with MoRAM, $R=4$  \\
 			\rotatebox{90}{$~~~~~~~m=4000$} &
 			\includegraphics[width=0.32\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf} & 
+			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_clip_4000.pdf} & 
 			%\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_4000_s_800.pdf} &
-			\includegraphics[width=0.32\linewidth]{./fig/lovett_r450_m_4000_s_800.pdf}  \\
-			& \small{(a) Original image}& \small{(b) SNR $=26.63$dB}& %\small{(c) $R=4.25$, SNR $=27.20$dB}&
-			\small{(c) SNR $=27.21$dB} \\
+			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_m_4000_s_800.pdf}  \\
+			& \small{(a) Original image}& \small{(b) SNR $=8.20$dB}& %\small{(c) $R=4.25$, SNR $=27.20$dB}&
+			\small{(c) SNR $=26.63$dB} \\
 			
 			\rotatebox{90}{$~~~~~~~m=6000$} &
 			\includegraphics[width=0.32\linewidth]{./fig/lovett_original.pdf} &
-			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_m_6000_s_800.pdf} & 
+			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_clip_6000.pdf} & 
 			%	\includegraphics[width=0.22\linewidth]{./fig/lovett_r425_m_6000_s_800.pdf} &
-			\includegraphics[width=0.32\linewidth]{./fig/lovett_r450_m_6000_s_800.pdf}  \\
-			& \small{(a) Original image} & \small{(b) SNR $=81.50$dB} & %\small{(c) $R=4.25$, SNR $=82.88$dB}& 
-			\small{(c) SNR $=83.25$dB} \\
+			\includegraphics[width=0.32\linewidth]{./fig/lovett_r4_m_6000_s_800.pdf}  \\
+			& \small{(a) Original image} & \small{(b) SNR $=8.25$dB} & %\small{(c) $R=4.25$, SNR $=82.88$dB}& 
+			\small{(c) SNR $=81.50$dB} \\
 		\end{tabular}
 	\end{center}
-	\caption{{(a) Successful sparse reconstructions ($s=800$) of original Lovett Hall image ($n=16,384$); with $m=4000$ and $m=6000$ measurements for (b) $R=4$, (c) $R=4.5$.}}
+	\caption{{Sparse reconstructions ($s=800$) of original Lovett Hall image ($n=16,384$); with $m=4000$ and $m=6000$ measurements (b) using basis pursuit for observations from a conventional sensor with dynamic range $[0,4]$; (c) using MoRAM for modulo observations obtained with modulo sensor with dynamic range $[0,4]$.}}
 	\label{fig:lovett}
 \end{figure}
-
-Further, for experiments on real image, we obtain sparse representation of the $128 \times 128~(n=16384)$ Lovett Hall image (fig.~\ref{fig:lovett}(a)) using the thresholded wavelet transform (with Haar wavelet). We keep sparsity $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=6000$ compressed modulo measurements, for two different values of $R =\{4,4.5\}$. The reconstruction performance is measured in PSNR. We observe that the reconstruction performance improves with increasing value of $R$. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=6000$, The algorithm produces perfect recovery for both the values of $R$ with high PSNR.
+Further, for experiments on real image, we obtain sparse representation of the $128 \times 128~(n=16384)$ Lovett Hall image (fig.~\ref{fig:lovett}(a)) using the thresholded wavelet transform (with Haar wavelet). We keep sparsity $s = 800$. We reconstruct the image with MoRAM using $m = 4000$ and $m=6000$ compressed modulo measurements, for $R =4$. In comparison, in Fig.~\ref{fig:lovett}(b) we depict the images reconstructed same $m$ using basis pursuit~\cite{chen2001atomic,spgl1:2007,BergFriedlander:2008} from the observations obtained by a conventional (non-modulo) sensor with same dynamic range $[0,R]$. In absence of the modulo operation, much of the information in the signal get clipped, yielding poor reconstruction. Images reconstructed with modulo sensor using MoRAM exhibit superior performance compared to the conventional setup. As shown in Fig.~\ref{fig:lovett}(bottom), for $m=6000$, our algorithm produces perfect recovery with high PSNR.
 %
 
 
