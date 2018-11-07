@@ -10,3 +10,23 @@ as phase unwrapping. The algorithm proposed in \cite{bioucas2007phase} is specia
 
 In recent literature, there have been several attempts to come up with strong theoretical foundation pertaining to modulo sampling and recovery. Given the modulo samples of a bandlimited function, \cite{Bhandari} provides a stable algorithm for perfect recovery of the signal and also proves sufficiency conditions that guarantees the perfect recovery. \cite{Cucuringu2017} formulates and solves an QCQP problem with non-convex constraints for recovering the correct samples of the unknown function from its modulo 1 ($R =1$) samples. However, both these methods relay on the smoothness of the bandlimited function as a prior structure on the signal, and are restricted to be used for recovering samples of a time-continuous or smooth bandlimited function, not the signal or image.
 
+For a qualitative comparison of our MoRAM method with existing approaches, refer Table~\ref{tab:comp}. The table suggests that the previous approaches varied from the Nyquist-Shannon sampling setup only along the amplitude dimension, as they rely on bandlimitedness of the signal and uniform sampling grid. We vary the sampling setup along both the amplitude and time dimensions by incorporating sparsity in our model, which enables us to work with non-uniform sampling grid (random measurements) and achieve a provable sub-Nyquist sampling complexity.
+
+\begin{table*}[t]
+	\centering
+	\caption{Comparison of MoRAM with existing modulo recovery methods. \label{tab:comp}}
+
+	\begin{tabular}{|p{4.7cm}|p{3cm}|p{2.2cm}|p{2.7cm}|p{3.22cm}|}
+		\cline{1-5}
+		& Unlimited Sampling~\cite{Bhandari}& OLS Method~\cite{Cucuringu2017} & multishot UHDR~\cite{ICCP15_Zhao}  & MoRAM (our approach) \\ \cline{1-5}
+		
+		Assumption on structure of signal  & Bandlimited   & Bandlimited &  No assumptions & Sparsity     \\ \cline{1-5}
+		Sampling scheme  & uniform grid &  uniform grid  & (carefully chosen) linear measurements   & 
+		random linear measurements \\ \cline{1-5}
+		Sample complexity & oversampled, $\mathcal{O}(n)$    & --    & oversampled, $\mathcal{O}(n)$   & undersampled,~$\mathcal{O}(s\log(n))$ \\ \cline{1-5}
+		Provides sample complexity bounds?  & Yes  & --  & No & Yes \\ \cline{1-5}
+		Leverages Sparsity?  & No & No   & No    & Yes \\ \cline{1-5}
+		(Theoretical) bound on dynamic range    & Unbounded   & Unbounded     & Unbounded   & $2R$  \\ \cline{1-5}                 
+	\end{tabular}	
+	\label{tab:compare}
+\end{table*}

@@ -30,32 +30,30 @@ In Fig.~\ref{fig:hist2}, we can see the density plots after modulo operation giv
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$, $\rho$
 		\State\textbf{Output:}  $\mb{x^0}$
-		\State $T \leftarrow \emptyset$, $t_l \leftarrow (R-\rho)$, $t_u \leftarrow R$
+		\State $U \leftarrow \emptyset$%, $t_l \leftarrow (R-\rho)$, $t_u \leftarrow R$
 		\For {$i= 0:m$}
-%		\If {$y_l<0$}
-%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
-%		\ElsIf {$0\leq y_l < t_l$}
-%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
-%		\ElsIf {$t_l\leq y_l < t_u$}
-%		\State {$p^{rcm}_l = 0$}
-%		\ElsIf {$t_u \leq y_l < R$}
-%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
-%		\ElsIf {$R  \leq y_l$}
-%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
-%		
-%		\EndIf
+		%		\If {$y_l<0$}
+		%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
+		%		\ElsIf {$0\leq y_l < t_l$}
+		%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
+		%		\ElsIf {$t_l\leq y_l < t_u$}
+		%		\State {$p^{rcm}_l = 0$}
+		%		\ElsIf {$t_u \leq y_l < R$}
+		%		\State {$p^{rcm}_l = 1$, $T \leftarrow T \cup {l}$}
+		%		\ElsIf {$R  \leq y_l$}
+		%		\State {$p^{rcm}_l = 0$, $T \leftarrow T \cup {l}$}
+		%		
+		%		\EndIf
 		
-		\If {$t_l > y_i$ or $ y_i \geq t_u$}
-		\State {$T \leftarrow T \cup \{i\}$}
+		\If {$(R-\rho) > y_i$ or $ y_i \geq \rho$}
+		\State {$U \leftarrow U \cup \{i\}$}
 		\EndIf
-		\State Calculate $p^{init}_i$ according to Eq. ~\ref{eq:rcm}.
+		\State Calculate $p^{init}_i$ according to Eq.~\ref{eq:rcm}.
 		\EndFor
-		\State $N \leftarrow |T|$
-		\State $\mb{x^0} \leftarrow H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)$
+		\State $N \leftarrow |U|$, calculate $\mb{y^{init}_c}$ according to Eq.~\ref{eq:init}
+		\State $\mb{x^0} \leftarrow H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,U,i}a_{U,i}\right)$
 	\end{algorithmic}
 \end{algorithm}
-
-
 
 
 \begin{figure}[h]
@@ -191,7 +189,7 @@ We divide the number line in the following $3$ intervals, and assign the bin-ind
 \end{cases}
 \label{eq:rcm}
 \end{equation}
-Thus, we can identify the correct bin-index for part of the measurements just by observing their magnitude. We define set $T$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(T)$.
+Thus, we can identify the correct bin-index for part of the measurements just by observing their magnitude. We define set $U$ as the set of measurements for which we can identify the bin-index correctly. We introduce $N=: \card(U)$.
 \begin{align*}
 \implies N & =  m - \card(\textnormal{region of uncertainity}).
 \end{align*}
@@ -203,33 +201,31 @@ $$
 $$
 We use these corrected measurements $\mathbf{y_{init}}$ to calculate the initial estimate $\mathbf{{x}^0}$ using the estimation step described in the upcoming section.
 \subsubsection{Calculating the initial estimate from the corrected measurements}
-In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected measurements using first order unbiased estimator. For that, we use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $T$:
+In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected measurements using first order unbiased estimator. For that, we use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $U$:
 \begin{equation}
-\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y_{T,i}a_{T,i}\right)
+\mb{x^0} = H_s\left( \frac{1}{N}\sum_{i=1}^{N}y^{init}_{c,U,i}a_{U,i}\right),
 \label{eq:init}
 \end{equation}
 where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest absolute entries of a vector and sets the other entries to zero.
 \subsection{Alternating Minimization}
 \label{sec:altmin}
-\begin{algorithm}[H]
+\begin{algorithm}[t]
 	\caption{\textsc{MoRAM-descent}}
 	\label{alg:MoRAM}
 	\begin{algorithmic}
 		\State\textbf{Inputs:} $\mathbf{y}$, $\mathbf{A}$, $s$, $R$
-		\State\textbf{Output:}  $\widehat{x}$
+		\State\textbf{Output:}  $\mb{x^T}$
 		\State $m,n \leftarrow \mathrm{size}(\mathbf{A})$ 
 		\State \textbf{Initialization}
 		\State $\mathbf{x^0} \leftarrow \textrm{MoRAM-initialization}(\mathbf{y, A})$ 
 		\State \textbf{Alternating Minimization}
-		\For {$l =0:L$}
+		\For {$t =0:T$}
 		\State $\mathbf{{p}^{t}} \leftarrow \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}$
 		\State $\mathbf{y^t_c} \leftarrow \mathbf{y} - \mathbf{p^t}R$
-		\State $\mathbf{{x}^{t+1}}\leftarrow \argmin_{\mb{u}=[\mathbf{x~d}]^\t}\norm{u}_1  s.t.~ \begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix}\mb{u} = \mathbf{y}$ 
-		\State $\implies \mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y},[\mathbf{x^t~~p^t}]^\t)}$.
+		\State $\mathbf{{x}^{t+1}}\leftarrow \small{JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t)}$.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
-
 
 Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we  calculate the estimates of $\mathbf{p}$ and $\mathbf{x}$ in alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of our Alternating Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
 \begin{equation}
@@ -254,19 +250,19 @@ $$
 %\end{equation}
 
 
-However, it should be noted that even the small error $\mathbf{d^t} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{y^t_c}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the typical sparse recovery algorithms are not robust enough to cope up with such large errors in $\mathbf{y^t_c}$ \cite{Laska2009}. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t}$ is sparse; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$.
+However, it should be noted that even the small error $\mathbf{d^t} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{y^t_c}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Experiments suggest that the typical sparse recovery algorithms are not robust enough to cope up with such large errors in $\mathbf{y^t_c}$ \cite{Laska2009}. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t}$ is sparse with sparsity $s_{dt}=\norm{\mb{d^t}}_0$; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$.
 
 The augmented optimization problem becomes,
 
 $$
-\mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^\t \in \mathcal{M}_{s+s_p}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
+\mathbf{{x}^{t+1}}=\argmin_{[\mathbf{x~d}]^\t \in \mathcal{M}_{s+s_{dt}}}\norm{\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix} \begin{bmatrix} \mathbf{x} \\ \mathbf{d} \end{bmatrix} - \mathbf{y^t_c}}_2^2, %~~\mathrm{s.to}~~x^* \in \mathcal{M}_s,
 $$
 %\begin{equation}
 %= \cosamp(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y_c^t},s+s_p,[\mathbf{x^t~~p^t}]^\t).
 %\label{eq:robcosamp}
 %\end{equation}
 
- However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009} in the literature, specified in Eq.~\ref{eq:jp}.
+ However, the sparsity of $\mathbf{d^t}(s_{dt})$ is unknown, suggesting that the sparse recovery algorithms taking sparsity as a parameter cannot be used here. Thus, as we employ basis pursuit, which doesn't rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009} in the literature, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
 \implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
 \label{eq:jp}
