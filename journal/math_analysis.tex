@@ -3,11 +3,11 @@
 
 Before presenting experimental validation of our proposed MoRAM algorithm, we now perform a theoretical analysis of both the initialization and the descent stages, and provide an upper bound on the number of samples required for accurate sparse signal recovery under the Gaussian observation model.
 
-\subsection{Analysis of the initialization}
+\subsection{Analysis of initialization stage}
 Recall that we perform the initialization in two steps:
 (i) measurement correction step, and (ii) estimation step. We analyze them separately.
 
-\subsubsection{Measurement correction step}\label{meascorr} In this step, based on the magnitude of the modulo measurements, we identify the measurements for which we can undo the effect of modulo transfer function by guessing the correct value of bin-index $\mathbf{p}$. We define the set $U$ as set of indices of all such measurements that can be corrected. We determine the measurements to be corrected based on the method described in section~\ref{sec:init}. 
+\subsubsection{Measurement correction step}\label{meascorr} In this step, based on the magnitude of the modulo measurements, we identify the measurements for which we can undo the effect of modulo transfer function by guessing the correct value of the bin-indices $\mathbf{p}$. We define the set $U$ as set of indices of all such measurements that can be corrected. %We determine the measurements to be corrected based on the method described in Section~\ref{sec:init}. 
 
 In this analysis, our goal is to estimate the number of measurements ($N=\card(U)$) that can be corrected. Only these $N$ measurements would be used in the estimation step. Each element of $\mb{A}$ is chosen i.i.d. from a standard normal distribution. Therefore, $\mu_{\mb{A}_{ij}} = 0$ and $\sigma_{\mb{A}_{ij}}=1$. 
 
@@ -111,59 +111,61 @@ Given $N \geq C\left(\frac{t}{\kappa}\right)^2s$, we invoke Corollary 5.50 of~\c
 \norm{\frac{1}{N} \mb{A}_{\scriptscriptstyle{U\times S}}^\t \mb{A}_{\scriptscriptstyle{U\times S}} - I_s}_2 &\leq \kappa \\
 \end{align*}
 
-We now use a standard covering number argument. Let us fix the $s$_sparse vector $\mb{x^*}$ within the unit norm ball. We can evaluate the operator norm in above equation over the set of $s-$sparse vectors in the unit norm ball.
+We now use a standard covering number argument. Let us fix the $s$-sparse vector $\mb{x^*}$ within the unit norm ball. We can evaluate the operator norm in above equation over the set of $s-$sparse vectors in the unit norm ball.
 \begin{align*}
 \implies \sup_{\mb{x} \in S} \frac{\norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{U\times S}}^\t \mb{A}_{\scriptscriptstyle{U\times S}} - I_n\right)\mb{x}}_2}{\norm{\mb{x}}_2} &\leq \kappa \\
 \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{U\times S}}^\t \mb{A}_{\scriptscriptstyle{U\times S}} - I_n\right)\mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
  \norm{\left(\frac{1}{N} \mb{A}_{\scriptscriptstyle{U\times S}}^\t \mb{A}_{\scriptscriptstyle{U\times S}}\mb{x^*} - \mb{x^*}\right)}_2 &\leq \kappa \norm{\mb{x^*}_2} \\
  \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 &\leq \kappa \norm{\mb{x^*}}_2 
 \end{align*}
-with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$. Taking an union bound over all $n \choose s$ such $s-$sparse vectors,
+with probability at least $1 - 2\exp\left(-t^2s\right)$ given the fixed $s-$sparse vector $\mb{x^*}$. Taking an union bound over $C \left(\frac{12}{\delta}\right)^s \binom{n}{s}$ such $s-$sparse vectors,
 \begin{align*}
-\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \kappa \norm{\mb{x^*}}_2\right) & \geq 1 - 2{n \choose s}\exp\left(-t^2s\right) \\ 
-& \geq 1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)
+\mathbb{P}\left(\norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \leq \kappa \norm{\mb{x^*}}_2\right) & \geq 1 - 2 C \left(\frac{12}{\delta}\right)^s {n \choose s}\exp\left(-t^2s\right) \\ 
+& \geq 1 - 2\left(\frac{Cn}{s}\right)^s\exp\left(-t^2s\right)
 \end{align*}
 
-The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. We consider,
+The initial estimate $\mb{x^0}$ is the best $s-$sparse estimate of $\mb{\tilde{x}^0}$. Therefore,
 \begin{align*}
 \norm{\mb{{x}^0} - \mb{x^*}}_2 &=  \norm{\mb{\tilde{x}^0} -\mb{\tilde{x}^0} +\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
 & \leq \norm{\mb{{x}^0} -\mb{\tilde{x}^0}}_2 +  \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
 & \leq 2 \norm{\mb{\tilde{x}^0} - \mb{x^*}}_2 \\
 & \leq 2 \kappa \norm{\mb{x^*}}_2 = \delta \norm{\mb{x^*}}_2
 \end{align*}
-with probability at least $1 - 2\left(\frac{en}{s}\right)^s\exp\left(-t^2s\right)$.
-Last inequality follows from the fact that $\mb{\tilde{x}^0}$ is closer to $\mb{x^0}$ compared to $\mb{x^*}$, because $\mb{x^0}$ is the best $s-$sparse approximation of $\mb{\tilde{x}^0}$. $\qed$}
+with probability at least $1 - 2\left(\frac{Cn}{s}\right)^s\exp\left(-t^2s\right)$.
+The last inequality follows from the fact that $\mb{\tilde{x}^0}$ is closer to $\mb{x^0}$ compared to $\mb{x^*}$, because $\mb{x^0}$ is the best $s-$sparse approximation of $\mb{\tilde{x}^0}$. $\qed$}
 
-\subsection{Analysis of descent}
-We perform the Alternative Minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one iteration of our Alternative Minimization based algorithm. In fact, as proven in our analysis, theoretically only one iteration of JP is required for exact signal recovery. Contrast to that, in practice we observe that our algorithm requires more than one alternative minimization iterations to converge to the optimum solution.
+\subsection{Analysis of descent stage}
+We perform alternating minimization as described in~\ref{alg:MoRAM}, starting with $\mb{x^0}$ calculated as above. However, for simplicity, we limit our analysis of the convergence to only one AltMin iteration. In fact, according to our theoretical analysis, if initialized closely enough, one iteration of AltMin suffices for exact signal recovery with sufficiently many measurements. However, in practice this level of close initialization is not often available and we have observed that our algorithm requires more than one AltMin iterations. % to converge to the optimum solution.
 
-The first step is to obtain the initial estimate for bin-index vector, $\mb{p^0}$ using $\mb{x^0}$.
+The first step is to obtain the initial guess of the bin-index vector (say $\mb{p^0}$) using $\mb{x^0}$.
 $$
 \mathbf{{p}^{0}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^0} \rangle)}{2}.
 $$
-If we try to undo the effect of modulo operation by adding back $R$ for the affected measurements based on the bin-index vector $\mb{p^0}$, it would introduce the error equaling $R$ corresponding to the incorrect bin-index values in $\mb{p^0}$.
+If we try to undo the effect of modulo operation by adding back $R$ for the affected measurements based on the bin-index vector $\mb{p^0}$, it would introduce an additive error equal to $R$ corresponding to each of the incorrect bin-indices in $\mb{p^0}$.
 $$
 \mathbf{y^0_c} = \langle \mathbf{A}\mathbf{x^{0}} \rangle = \mathbf{y} - \mathbf{p^0}R,
 $$
 
-In the following theorem, we claim the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction.
-For the next lemma, we first introduce the concept of binary $\epsilon$-stable embedding as appeared in~\cite{Jacques2013}. We note that $\mathcal{B}^m$ is a Boolean cube defined as $\mathcal{B}^m := \{-1,1\}^m$; and $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ is the unit hyper-sphere of dimension $n$.
-\definition[Binary $\epsilon$-Stable Embedding]{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
+We show the guaranteed recovery of the true signal as the corruption in the first set of corrected measurements $\mb{y_c^0}$ can be modeled as sparse vector with sparsity less than or equal to $cm$, with $c$ being a fraction that can be explicitly bounded.
+
+To prove this, we first introduce the concept of \emph{binary $\epsilon$-stable embedding} as proposed by~\cite{Jacques2013}. Let $\mathcal{B}^m$ be a Boolean cube defined as $\mathcal{B}^m := \{-1,1\}^m$ and let $S^{n-1}:=\{\mb{x}\in \R^n : \norm{\mb{x}}_2 = 1\}$ be the unit hyper-sphere of dimension $n$.
+
+\definition[Binary $\epsilon$-Stable Embedding]
+{A mapping $F: \R^n \rightarrow \mathcal{B}^m$ is a binary $\epsilon$-stable embedding (B$\epsilon$SE) of order $s$ for sparse vectors if:
 	$$
 	d_S(\mb{x,y}) - \epsilon \leq d_H(F\mb{(x)},F\mb{(y)}) \leq d_S(\mb{x,y}) + \epsilon;
 	$$
 	for all $\mb{x,y} \in S^{n-1}$ with $|supp(x) \cup supp(y)|\leq s$.
 }
 
-In our case, let's define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
+In our case, let us define the mapping $F: \R^n \rightarrow \mathcal{B}^m$ as:
 $$
 F(\mb{x}):= \sgn(\mb{Ax});
 $$
-with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$.
+with $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$. We obtain:
 
-
-\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. Given the number of measurements \\
-	$m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, following is true with probability exceeding $1 - \eta$:
+\lemma{Let $\mb{A}$ be the matrix generated as $\mb{A} \sim \mathcal{N}^{m \times n}(0,1)$ and suppose $\mb{x^*, x^0} \in \R^n$ are $s-$sparse vectors satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$. Let $\eta \in [0,1],~\eps > 0$. If the number of measurements \\
+	$m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, then, the following is true with probability exceeding $1 - \eta$:
 	
 	$$
 	d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps;
@@ -174,7 +176,8 @@ d_H(\mb{a,b}) := \frac{1}{n}\sum_{i=1}^{n}a_i \oplus b_i,
 $$
 for $n-$ dimensional binary vectors $\mb{a,b}$.
 \label{lemma1} 
-} \\
+} 
+
 \proof{ 
 Given $m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)$, using Theorem 3 from~\cite{Jacques2013} we conclude that $F(\cdot)$ is a B$\eps$SE for $s$-sparse vectors.
 Thus for sparse vectors $\mb{x^*, x^0}$:
@@ -185,7 +188,7 @@ d_H(F\mb{(x^*)},F\mb{(x^0)}) \leq d_S(\mb{x^*,x^0}) + \eps.
 
 Here, $d_S(\cdot)$ is defined as the natural angle formed by two vectors. Specifically, for $\mb{p,q}$ in unit norm ball,
 $$
-d_s(\mb{p},\mb{q}) := \frac{1}{\pi}arccos\langle\mb{p},\mb{q}\rangle = \frac{1}{\pi}\theta,
+d_s(\mb{p},\mb{q}) := \frac{1}{\pi}\textrm{arccos}\langle\mb{p},\mb{q}\rangle = \frac{1}{\pi}\theta,
 $$
 where $\theta$ is the angle between two unit norm vectors $\mb{p}$ and $\mb{q}$.
 
@@ -200,17 +203,14 @@ Thus,
 \end{align}
 Combining eq.~\ref{eq:th3} and eq.~\ref{eq:dhds}, we conclude,
 
-$$
-d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{1}{2}\norm{\mb{x^*-x^0}} + \eps.
-$$
-
 \begin{align}
-\label{eq:hd}
-\implies d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) \leq \frac{\delta}{2} + \eps.
-\qed
+d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) &\leq \frac{1}{2}\norm{\mb{x^*-x^0}} + \eps,~~\text{i.e.,}  \nonumber \\
+d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) &\leq \frac{\delta}{2} + \eps. \label{eq:hd}
 \end{align}
+
 }
 
+We use this to obtain:
 
 \theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-Kexp(-cm)$, with $K$ and $c$ being numerical constants.
 }
