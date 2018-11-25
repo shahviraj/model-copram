@@ -212,10 +212,10 @@ d_H(\sgn({\mb{Ax^*}}), \sgn({\mb{Ax^0}})) &\leq \frac{\delta}{2} + \eps. \label{
 
 We use this to obtain:
 
-\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if we have number of (Gaussian) measurements satisfying $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-Kexp(-cm)$, with $K$ and $c$ being numerical constants.
+\theorem{Given an initialization $\mb{x^0}$ satisfying $\norm{\mb{x^* - x^0}}_2 \leq \delta\norm{\mb{x^*}}_2$, for $0 < \delta < 1$, if the number of (Gaussian) measurements, $m$, satisfies $s \leq \gamma m/\left(\log\left(n/m\right)+1\right)$, then the estimate after the first iteration $\mb{x^1}$ of Algorithm \ref{alg:MoRAM} is exactly equal to the true signal $\mathbf{x^*}$ with probability at least $1-Kexp(-cm)$, with $K$ and $c$ being numerical constants.
 }
 
-\proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements. As we discussed in section \ref{sec:modeff}, the presence of modulo operation modify the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However,once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as structured (specifically, 'sparse') corruption $\mb{d}$ in the formulation:
+\proof{In the estimation step, Algorithm \ref{alg:MoRAM} dubs the problem of recovering the true signal $\mb{x^*}$ from the modulo measurements as the special case of signal recovery from sparsely corrupted compressive measurements. As we discussed in Section \ref{sec:modeff}, the presence of modulo operation modifies the compressive measurements by adding a constant noise of the value $R$ in fraction of total measurements. However, once we identify correct bin-index for some of the measurements using $\mb{x^0}$, the remaining noise can be modeled as sparse corruptions $\mb{d}$ according to the formulation:
 
 $$
 \mb{y} = \mb{Ax} + \mb{I_nR(p^0-p^*)} = \mb{Ax} + \mb{d}.
@@ -243,38 +243,38 @@ expanding further,
 & \leq \frac{\delta}{2} + \epsilon = \gamma m.
 \end{align*}
 
-Algorithm \ref{alg:MoRAM} is essentially a JP formulation based on basis pursuit as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\mathit{l1}-$minimization even if a positive fraction of the measurements are arbitrarily corrupted. With $\norm{\mb{d}}_0 \leq \gamma m$, we invoke the Theorem $1.1$ from \cite{li2013compressed} to complete the proof.
+Algorithm \ref{alg:MoRAM} is essentially the Justice Pursuit (JP) formulation as described in \cite{Laska2009}. Exact signal recovery from sparsely corrupted measurements is a well-studied domain with uniform recovery guarantees available in the existing literature. We use the guarantee proved in \cite{li2013compressed} for Gaussian random measurement matrix, which states that one can recover a sparse signal exactly by tractable $\ell_1$-minimization even if a positive fraction of the measurements are arbitrarily corrupted. With $\norm{\mb{d}}_0 \leq \gamma m$, we invoke Theorem $1.1$ from \cite{li2013compressed} to complete the proof.
 $\qed$}
 
 \subsection{Minimum number of measurements required}
-In this section, we combine the various inequalities involving number of measurements $m$ from above sections to determine the minimum value of $m$ required for successful recovery of the true signal.
+In this section, we combine the various inequalities involving the number of measurements $m$ from the above derivations to determine the minimum value of $m$ required for successful recovery of the true signal.
 
-The condition on $N$ comes from theorem \ref{th:1},
+First, from theorem \ref{th:1}, we have:
 \begin{align}
 N \geq C\left(\frac{t}{\kappa}\right)^2s.
 \label{eq:ineq1}
 \end{align}
 
-Also from lemma \ref{lemma1},
+Next, from Lemma \ref{lemma1}, we get:
 \begin{align}
 m \geq \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right).
 \label{eq:ineq2}
 \end{align}
 
-Now for $R> \rho$, we have following from the analysis in section~\ref{meascorr},
+Now for $R> \rho$, from the analysis in Section~\ref{meascorr}, we have:
 \begin{align}
 N \geq m \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right).
 \label{eq:ineq3}
 \end{align}
 
-Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3} we get the minimum number of measurements required as,
+Combining eqs.~\ref{eq:ineq1},\ref{eq:ineq2} \& \ref{eq:ineq3}, we get the minimum number of measurements required as,
 
 \begin{align}
 m \geq \max & \Bigg[ C\left(\frac{t}{\kappa}\right)^2s \left(1-2\frac{\phi(R-\rho)}{(R-\rho)} \right)^{-1}, \nonumber \\ 
 & \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg].
 \label{eq:ineq4}
 \end{align}
-For $R=4$ and $\rho =3$, the above inequality approximates to,
+For $R=4$ and $\rho =3$, the above inequality approximates to:
 \begin{align*}
 m \geq \max & \Bigg[ 2C\left(\frac{t}{\kappa}\right)^2s, \nonumber \\ 
 & \frac{2}{\eps^2}\left(s\log{(n)} + 2s\log{\left(\frac{35}{\eps}\right)}+\log{\left(\frac{2}{\eta}\right)}\right)\Bigg].
