@@ -216,7 +216,7 @@ In the descent step, starting with $\mathbf{{x}^0}$, we calculate the estimates 
 \label{step1}
 \end{equation}
 
-Given $\mathbf{x^0}$ is close to $\mathbf{x^*}$, $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideal way is to calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}_{t+1}}$. 
+Given $\mathbf{x^0}$ is close to $\mathbf{x^*}$, $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideal way is to calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}^{t+1}}$. 
 
 However, even the small error $\mathbf{d^t} = \mathbf{p^t - p^*}$ would reflect heavily in the calculation of $\mathbf{x^t}$, as each incorrect bin-index would add a noise of the magnitude $R$ in $\mathbf{y^t_c}$. The typical sparse recovery algorithms are not robust enough to cope up with such gross errors in $\mathbf{y^t_c}$ \cite{Laska2009}. To tackle this issue, we employ the justice pursuit based formulation which is specifically robust towards grossly corrupted measurements. We consider the fact that the nature of error $\mathbf{d^t}$ is sparse with sparsity $s_{dt}=\norm{\mb{d^t}}_0$; and each erroneous element of $\mathbf{p}$ adds a noise of the magnitude $R$ in $\mathbf{y^t_c}$. Thus we solve the augmented optimization problem:
 $$

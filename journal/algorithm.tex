@@ -1,6 +1,6 @@
 \section{Sparse signal recovery}
 \label{sec:algo}
-Of course, the major challenge is that we do \emph{not} know the bin-index vector. In this section, we describe our algorithm to recover both $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A, s, R}$.  We call our algorithm \emph{MoRAM}, short for \emph{Modulo Reconstruction with Alternating Minimization}. Our approach comprises of two stages: (i) an initialization stage, and (ii) descent stage via alternating minimization.
+Of course, the major challenge is that we do \emph{not} know the bin-index vector. In this section, we describe our algorithm to recover both $\mathbf{x^*}$ and $\mathbf{p^*}$, given $\mathbf{y, A, s, R}$.  Our algorithm \emph{MoRAM (Modulo Reconstruction with Alternating Minimization)} comprises of two stages: (i) an initialization stage, and (ii) descent stage via alternating minimization.
 
 \subsection{Initialization by re-calculating the measurements}
 \label{sec:init}
@@ -21,10 +21,10 @@ In Fig.~\ref{fig:hist2}, we observe the density plots after passing the linear m
 	\item Only those measurement values lying on the negative side of the x-axis are going to be affected.
 	\item Measurement values lying very close to the origin on the negative side of the x-axis in the first density plot would now shift rightwards by $R$, and would occupy values very close to $R$ in the second plot. For $R>\rho$, this region is shaded in green in Fig.~\ref{fig:hist2}. The correct bin-index for the elements in $\mathbf{y}$ with value lying between $\rho$ and $R$ is given by $p^{init}_{i} = 1$.
 	\item For $R>\rho$, the density plot of the positive region very close to the origin would remain unaffected. This region is shaded with orange color in Fig.~\ref{fig:hist2}. The correct bin-index for all the elements in $\mathbf{y}$ with value lying between $0$ and $R-\rho$ is given by $p^{init}_{i} = 0$.
-	\item Nothing can be immediately concluded for measurements lying in between the above mentioned ranges. This region is shaded in gray in Fig.~\ref{fig:hist2}. Correct bin-index cannot be identified for this region, so we assign all the elements in $\mathbf{y}$ with value lying between $0$ and $(R-\rho)$ as $p^{init}_{i} = 0$. The lower and upper bounds ($t_l$~\&$~t_u$) of this region of uncertainty can be obtained as:
+	\item Nothing can be immediately concluded for measurements lying in between $(R-\rho)$ to $\rho$. This region is shaded in gray in Fig.~\ref{fig:hist2}. Correct bin-index cannot be identified for this region, so we assign all the elements in $\mathbf{y}$ with value lying between $(R-\rho)$ and $\rho$ as $p^{init}_{i} = 0$. The lower and upper bounds ($t_l$~\&$~t_u$) of this region of uncertainty can be obtained as:
 	\begin{align*}
 	t_l & = R-\rho, \\
-	t_u & = R.
+	t_u & = \rho.
 	\end{align*}
 	%\item Irrespective of relationship between $\rho$ and $R$, all the values lying in the negative half of the real line have the bin-index equal to $1$, and all the values greater than $R$ have the bin-index equal to $0$.
 \end{itemize}
@@ -91,7 +91,7 @@ In Fig.~\ref{fig:hist2}, we observe the density plots after passing the linear m
 		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
-	\caption{\emph{Histogram of $\mathbf{Ax^*}$}}
+	\caption{\emph{Density plot of $\mathbf{Ax^*}$}}
 	\label{fig:hist1}
 \end{figure}
 
@@ -135,7 +135,7 @@ In Fig.~\ref{fig:hist2}, we observe the density plots after passing the linear m
 		%		\draw[scale=0.5,domain=0:7,smooth,variable=\x,blue, ultra thick]  plot ({\x},{\x});
 		\end{tikzpicture}
 	\end{center}
-	\caption{\emph{Histogram of $\mod(\mathbf{Ax^*})$, $R>\rho$}. Best viewed in color.}
+	\caption{\emph{Density plot of $\mod(\mathbf{Ax^*})$, $R>\rho$}. Best viewed in color.}
 	\label{fig:hist2}
 \end{figure}
 %
@@ -203,9 +203,9 @@ The value of $N$ largely depends on the difference between $\rho$ and $R$.
 
 Once we identify the correct bin-index for a portion of the measurements, we can undo the modulo operation by introducing a measurement \emph{correction} step as:
 $$
-\mathbf{y_{c} = y + p^{init}R}.
+\mathbf{y^{init}_{c} = y + p^{init}R}.
 $$
-We use these corrected measurements $\mathbf{y_{init}}$ to calculate the initial estimate $\mathbf{{x}^0}$ as follows.
+We use these corrected measurements $\mathbf{y^{init}_c}$ to calculate the initial estimate $\mathbf{{x}^0}$ as follows.
 
 \subsubsection{Calculating the initial estimate from the corrected measurements}
 In the estimation step, $\mb{x^0}$ is calculated only from the $N$ corrected measurements using a simple first-order unbiased estimator. For that, we use the versions of $\mb{y}$ and $A$ truncated to the indices belong to set $U$:
@@ -236,16 +236,16 @@ where $H_s$ denotes the hard thresholding operator that keeps the $s$ largest ab
 	\end{algorithmic}
 \end{algorithm}
 
-Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we calculate the estimates of $\mathbf{p}$ and $\mathbf{x}$ in analternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of Alternating Minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
+Using Eq.~\ref{eq:init}, we calculate the initial estimate of the signal $\mathbf{{x}^0}$ which is relatively close to the true vector $\mathbf{x^*}$. Starting with $\mathbf{{x}^0}$, we calculate the estimates of $\mathbf{p}$ and $\mathbf{x}$ in an alternating fashion to converge to the original signal $\mathbf{x^*}$. At each iteration of alternating-minimization, we use the current estimate of the signal ${\mathbf{x^t}}$ to get the value of the bin-index vector $\mathbf{{p}^t}$ as following:
 \begin{equation}
 \mathbf{{p}^{t}} = \frac{\mathbf{1}-\sgn(\langle \mathbf{A} \cdot \mathbf{x^t} \rangle)}{2}.
 \label{step1}
 \end{equation}
 
-Given that $\mathbf{x^0}$ is close to $\mathbf{x^*}$, we expect that $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideally, we would calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}_{t+1}}$. Thus,
+Given that $\mathbf{x^0}$ is close to $\mathbf{x^*}$, we expect that $\mathbf{p^0}$ would also be close to $\mathbf{p^*}$. Ideally, we would calculate the correct compressed measurements $\mathbf{y^t_c}$ using $\mathbf{p^t}$, and use $\mathbf{y^t_c}$ with any popular compressive recovery algorithms such as CoSaMP or basis pursuit to calculate the next estimate $\mathbf{{x}^{t+1}}$. Thus,
 
 $$
-\mathbf{y^t_c} = \langle \mathbf{A}\mathbf{x^{t}} \rangle = \mathbf{y} - \mathbf{p^t}R,
+\mathbf{y^t_c} = \langle \mathbf{A}\mathbf{x^{t+1}} \rangle = \mathbf{y} - \mathbf{p^t}R,
 $$
 
 $$
@@ -269,12 +269,12 @@ $$
 %\label{eq:robcosamp}
 %\end{equation}
 
- However, the number of non-zeros of $\mathbf{d^t}$ is unknown, suggesting that greedy sparse recovery methods cannot be directly used without an additional hyper-parameter. Thus, we employ basis pursuit~\cite{candes2006compressive} which does not rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009}, specified in Eq.~\ref{eq:jp}.
+ However, the sparsity of $\mathbf{d^t}$ is unknown, suggesting that greedy sparse recovery methods cannot be directly used without an additional hyper-parameter. Thus, we employ basis pursuit~\cite{candes2006compressive} which does not rely on sparsity. The robust formulation of basis pursuit is referred as Justice Pursuit (JP) \cite{Laska2009}, specified in Eq.~\ref{eq:jp}.
 \begin{equation}
 \implies \mathbf{{x^{t+1}}} = JP(\frac{1}{\sqrt{m}}\begin{bmatrix} \mathbf{A} & \mathbf{I} \end{bmatrix},\frac{1}{\sqrt{m}}\mathbf{y^t_c},[\mathbf{x^t~~p^t}]^\t).
 \label{eq:jp}
 \end{equation}
-Proceeding this way, we repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) altenatively for $\mathrm{N}$ iterations. Our algorithm is able to achieve convergence to the true underlying signal, as supported by the results in the experiments section.
+Proceeding this way, we repeat the steps of bin-index calculation (as in Eq.~\ref{step1}) and sparse recovery (Eq.~\ref{eq:jp}) altenatingly for $\mathrm{T}$ iterations. Our algorithm is able to achieve convergence to the true underlying signal, as supported by the results in the experiments section.
 
 %Thus, we can have two variants of the MoRAM algorithm: (i) MoRAM with CoSaMP, (ii) MoRAM with robust CoSaMP, and (iii) MoRAM with Justice Pursuit. 
 
