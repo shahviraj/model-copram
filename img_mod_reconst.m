@@ -54,7 +54,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 4.25; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
@@ -63,13 +63,13 @@ pr.spgl_opts = spgSetParms('verbosity',0);
 %pr.mspan2 = [600:100:1000];
 %pr.mspan=[pr.mspan1,pr.mspan2];
 %pr.mspan=100:100:1000;
-pr.mspan = 6000;
+pr.mspan = 4000;
 pr.num_trials = 1;
 pr.s_span = 800:800:800; % sparsity
 pr.amp = 1; %amplification factor 
 pr.del_p = 0.005; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'justice-pursuit';
-pr.init_method = 'true-rcm';
+pr.init_method = 'simple-rcm';
 pr.svd_opt = 'svd';
 pr.plot_method = 'mean-error';
 
@@ -110,6 +110,10 @@ for j = 1:length(pr.mspan)
                     [x_0,p_refined,idx] = rcm_init(A,y_mod,s,pr);
                 case 'true-rcm'
                     [x_0,p_refined] = true_rcm_init(A,y_mod,s,pr);
+                    %extra line added to make x_0 sparse
+                    x_0 = make_sparse(x_0,s);
+                case 'simple-rcm'
+                    [x_0,p_refined] = simple_rcm_init(A,y_mod,s,pr);
                     %extra line added to make x_0 sparse
                     x_0 = make_sparse(x_0,s);
             end
@@ -184,7 +188,6 @@ psnr_err = psnr(im3,im2);
 save(['./lovett/rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
 num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials),num2str(psnr_err)],'im2','im3','psnr_err');
-
 
 
 % p_err = y_p - p;

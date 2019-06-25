@@ -9,7 +9,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 5; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
@@ -19,15 +19,16 @@ pr.spgl_opts = spgSetParms('verbosity',0);
 %pr.mspan=[pr.mspan1,pr.mspan2];
 pr.mspan=100:100:1000;
 pr.num_trials = 10;
-pr.s_span = 3:3:12; % sparsity
+pr.s_span = 5:5:15; % sparsity
 pr.amp = 1; %amplification factor 
 pr.del_p = 0.005; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'justice-pursuit';
-pr.init_method = 'true-rcm';
+pr.init_method = 'simple-rcm';
 pr.svd_opt = 'svd';
-pr.plot_method = 'mean-error';
+pr.plot_method = 'confidence';
 
-err = zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
+mod_err = zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
+
 supp_recvr=zeros(length(pr.mspan),length(pr.s_span));
 init_err=zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
 reconst_err=zeros(length(pr.mspan),length(pr.s_span));
@@ -44,7 +45,10 @@ for j = 1:length(pr.mspan)
 
             %Generate the measurements: y=mod(Ax,R)
             [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R);
-
+            
+            % Generate multishot modulo measurements
+            [y_m1, y_m2, y_mp, A_m] = multishot_frwrd(m,z, pr.R); 
+            
             switch pr.init_method
                 case 'copram'
                     x_0 = copram_init(y_mod,A,s);
@@ -56,6 +60,10 @@ for j = 1:length(pr.mspan)
                     [x_0,p_refined,idx] = rcm_init(A,y_mod,s,pr);
                 case 'true-rcm'
                     [x_0,p_refined] = true_rcm_init(A,y_mod,s,pr);
+                    %extra line added to make x_0 sparse
+                    x_0 = make_sparse(x_0,s);
+                case 'simple-rcm'
+                    [x_0,p_refined] = simple_rcm_init(A,y_mod,s,pr);
                     %extra line added to make x_0 sparse
                     x_0 = make_sparse(x_0,s);
             end
@@ -93,14 +101,19 @@ for j = 1:length(pr.mspan)
                         %[x,delta_p] = mod_l1_bp(y_mod,p,A,x,pr.R); % l1 -magic implementation -- slow
                         
                         [x,delta_p] = mod_spgl1_bp(y_mod,p,A,x,pr.R, pr.spgl_opts); % SPGL1 implementation -- faster
-                        
+       
+                      
                     case 'basis-pursuit'
                         x = l1eq_pd(x,A/sqrt(m), [], (y_mod-pr.R*p)/sqrt(m)); % l1-magic implementation -- slow
                         
 
                     case 'robust-cosamp'
                         [x,delta_p] = mod_cosamp(y_mod,p,A,x,pr.R,s,ps);
+                        
+                    case 'multishot'
+                        [x,delta_p] = multishot_reconst(y_m1,y_m2,A_m,pr.R,pr.spgl_opts);
                 end
+    
                 %p = (-sign(A*x)+1)/2;
                 %err_hist(t+1,1) = norm(y_mod-mod(A*x,R))/norm(y_mod);
                 err_hist(t+1,1) = norm((y_mod-y_p*pr.R)-(A*x))/norm(y_mod-y_p*pr.R);
@@ -111,8 +124,16 @@ for j = 1:length(pr.mspan)
                     break;
                 end
             end
+            
+             x_m = multishot_reconst(y_m1,y_m2,A_m,pr.R,pr.spgl_opts);
+                disp('moram error')
+                norm(x - z)
+                disp('mulshot ettor')
+                norm(x_m - z)
             % Relative reconstruction error
             reconst_err(j,k,l) = norm(x-z)/norm(z);
+            
+            mod_err(j,k,l) = norm(x_m-z)/norm(z);
         end
         
     end
@@ -128,13 +149,17 @@ toc
 % 
 % y_sorted = sort(y_true, 'ComparisonMethod','abs');
 % y_sorted(1:length(p_err_idx))
-
+% 
+% 
+% pr.mspan1 = 100:100:1000;
+% construct_subplots(reconst_err,pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
+%     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
+%     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
 
 pr.mspan1 = 100:100:1000;
-construct_subplots(reconst_err,pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
+construct_subplots_m(reconst_err,mod_err, pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
-
 % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
 %     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 %     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);

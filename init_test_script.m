@@ -5,7 +5,7 @@ pr = struct;
 %Fixed parameters
 pr.n = 1000; %length of the input signal
 pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
-pr.R = 2; %period of the modulo function
+pr.R = 4; %period of the modulo function
 pr.rho = 3; %spread of the true measurements,y=A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.l_pos = 1;
@@ -16,7 +16,7 @@ pr.mspan=100:100:1000;
 pr.s_span = 9:9:9; % sparsity
 pr.amp =1; %amplification factor 
 pr.method = 'cosamp';
-pr.init_method = 'true-rcm';
+pr.init_method = 'simple-rcm';
 pr.svd_opt = 'svd';
 
 err = zeros(length(pr.mspan),length(pr.s_span));
@@ -52,6 +52,10 @@ for j = 1:length(pr.mspan)
                 x_0 = rcm_init(A,y_mod,s,pr);
             case 'true-rcm'
                 x_0 = true_rcm_init(A,y_mod,s,pr);
+                %Making the x_0 sparse by Hard thresholding
+                x_0 = make_sparse(x_0,s);
+            case 'simple-rcm'
+                x_0 = simple_rcm_init(A,y_mod,s,pr);
                 %Making the x_0 sparse by Hard thresholding
                 x_0 = make_sparse(x_0,s);
         end
