@@ -9,7 +9,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 4; %period of the modulo function
+pr.R = 4.25; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
@@ -18,15 +18,16 @@ pr.spgl_opts = spgSetParms('verbosity',0);
 %pr.mspan2 = [600:100:1000];
 %pr.mspan=[pr.mspan1,pr.mspan2];
 pr.mspan=100:100:1000;
+pr.mspan1 = pr.mspan;
 pr.num_trials = 10;
-pr.s_span = 5:5:15; % sparsity
+pr.s_span = 3:3:12; % sparsity
 pr.amp = 1; %amplification factor 
 pr.del_p = 0.005; % ps = del*m (sparsity pertaining to error in p)
 pr.method = 'justice-pursuit';
 pr.init_method = 'simple-rcm';
 pr.svd_opt = 'svd';
-pr.plot_method = 'confidence';
-
+pr.plot_method = 'mean-error';
+pr.std = 0.0000;
 mod_err = zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
 
 supp_recvr=zeros(length(pr.mspan),length(pr.s_span));
@@ -40,14 +41,15 @@ for j = 1:length(pr.mspan)
         s = pr.s_span(k);
         
         for l = 1:pr.num_trials
+            pr.noise = pr.std*randn(m,1);
             %Generate the ground truth signal
             [z,z_ind] =  generate_signal(pr.n,s,pr.b, pr.amp);
 
             %Generate the measurements: y=mod(Ax,R)
-            [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R);
+            [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R, pr.noise);
             
             % Generate multishot modulo measurements
-            [y_m1, y_m2, y_mp, A_m] = multishot_frwrd(m,z, pr.R); 
+            %[y_m1, y_m2, y_mp, A_m] = multishot_frwrd(m,z, pr.R, pr.noise); 
             
             switch pr.init_method
                 case 'copram'
@@ -125,15 +127,15 @@ for j = 1:length(pr.mspan)
                 end
             end
             
-             x_m = multishot_reconst(y_m1,y_m2,A_m,pr.R,pr.spgl_opts);
+             %x_m = multishot_reconst(y_m1,y_m2,A_m,pr.R,pr.spgl_opts);
                 disp('moram error')
                 norm(x - z)
-                disp('mulshot ettor')
-                norm(x_m - z)
+%                 disp('mulshot ettor')
+%                 norm(x_m - z)
             % Relative reconstruction error
             reconst_err(j,k,l) = norm(x-z)/norm(z);
             
-            mod_err(j,k,l) = norm(x_m-z)/norm(z);
+          %  mod_err(j,k,l) = norm(x_m-z)/norm(z);
         end
         
     end
@@ -156,10 +158,14 @@ toc
 %     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 %     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
 
-pr.mspan1 = 100:100:1000;
 construct_subplots_m(reconst_err,mod_err, pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],pr.plot_method,1);
-% construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
+% 
+% 
+% construct_subplots_m(reconst_err,mod_err, pr,['rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
+%     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
+%     '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials)],'median-error',1);
+% % construct_plot(init_err,pr,['init_','r_',num2str(pr.R),'_s_',...
 %     num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 %     '_',num2str(pr.mspan(end)),'_',pr.method],pr.method);

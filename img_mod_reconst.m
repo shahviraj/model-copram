@@ -54,7 +54,7 @@ pr.b = 1; %number of blocks if signal is block-sparse; otherwise keep 1
 pr.tol1 = 1e-5; %error tolerance for measurements
 pr.tol2 = 1e-7;
 pr.max_iter = 15;
-pr.R = 4; %period of the modulo function
+pr.R = 4.25; %period of the modulo function
 pr.rho = 3;%spread of the true measurements, y =A*z
 pr.del = 1; %truncation factor for supp estimation
 pr.spgl_opts = spgSetParms('verbosity',0);
@@ -63,7 +63,7 @@ pr.spgl_opts = spgSetParms('verbosity',0);
 %pr.mspan2 = [600:100:1000];
 %pr.mspan=[pr.mspan1,pr.mspan2];
 %pr.mspan=100:100:1000;
-pr.mspan = 4000;
+pr.mspan = 6000;
 pr.num_trials = 1;
 pr.s_span = 800:800:800; % sparsity
 pr.amp = 1; %amplification factor 
@@ -72,6 +72,7 @@ pr.method = 'justice-pursuit';
 pr.init_method = 'simple-rcm';
 pr.svd_opt = 'svd';
 pr.plot_method = 'mean-error';
+
 
 err = zeros(length(pr.mspan),length(pr.s_span),pr.num_trials);
 supp_recvr=zeros(length(pr.mspan),length(pr.s_span));
@@ -87,7 +88,7 @@ for j = 1:length(pr.mspan)
         for l = 1:pr.num_trials
             %Generate the ground truth signal
             %[z,z_ind] =  generate_signal(pr.n,s,pr.b, pr.amp);
-
+            pr.noise = 0.0*randn(m,1);
             abs_c = abs(c');
             [sorted_c, indx_c] = sort(abs_c,'descend');
 
@@ -97,8 +98,11 @@ for j = 1:length(pr.mspan)
             norm_z = norm(z);
             z = z/norm(z);
              %Generate the measurements: y=mod(Ax,R)
-            [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R);
-
+            [y_mod, y_p, A] = modulo_measure_signal(m,z,pr.R, pr.noise);
+            
+            % Generate multishot modulo measurements
+            %[y_m1, y_m2, y_mp, A_m] = multishot_frwrd(m,z, pr.R, pr.noise); 
+            
             switch pr.init_method
                 case 'copram'
                     x_0 = copram_init(y_mod,A,s);
@@ -122,9 +126,9 @@ for j = 1:length(pr.mspan)
             init_err(j,k,l) = norm(z-x_0)/norm(z);
             disp('Initialization error')
             norm(z-x_0)/norm(z)
-            %Alt-Min
+           % Alt-Min
             x= x_0;
-            ps = floor(pr.del_p*m);
+            %ps = floor(pr.del_p*m);
             %p = p_refined;
             %y = A*x;
 
@@ -137,7 +141,7 @@ for j = 1:length(pr.mspan)
             fprintf('\n#iter\t\t|y-Ax|\t\t|x-z|\trecovery_prob\n')
 
             for t=1:pr.max_iter
-                p = (-sign(A*x)+1)/2;
+               p = (-sign(A*x)+1)/2;
                 switch pr.method
                     case 'cosamp'
                         x = cosamp((y_mod-pr.R*p)/sqrt(m), A/sqrt(m),s,100,x); %Its = 100
@@ -159,7 +163,7 @@ for j = 1:length(pr.mspan)
                     case 'robust-cosamp'
                         [x,delta_p] = mod_cosamp(y_mod,p,A,x,pr.R,s,ps);
                 end
-                %p = (-sign(A*x)+1)/2;
+                p = (-sign(A*x)+1)/2;
                 %err_hist(t+1,1) = norm(y_mod-mod(A*x,R))/norm(y_mod);
                 err_hist(t+1,1) = norm((y_mod-y_p*pr.R)-(A*x))/norm(y_mod-y_p*pr.R);
                 err_hist(t+1,2) = norm(x-z)/norm(z);
@@ -170,7 +174,12 @@ for j = 1:length(pr.mspan)
                 end
             end
             % Relative reconstruction error
+            
+           % x = multishot_reconst(y_m1,y_m2,A_m,pr.R,pr.spgl_opts);
+            
             reconst_err(j,k,l) = norm(x-z)/norm(z);
+            
+            
         end
         
     end
@@ -184,10 +193,12 @@ im2 = waverec2(z, c_ind, wavname);
 im3 = waverec2(x,c_ind, wavname);
 figure, imshow([im1 im2 im3]), axis image;
 title('Actual v/s Sparse v/s Reconstructed');
-psnr_err = psnr(im3,im2);
-save(['./lovett/rconst_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
+psnr_err = psnr(im3,im2)
+
+save(['./lovett/rconst_mulshot_',pr.init_method,'_amp_',num2str(pr.amp),'_r_',num2str(pr.R),'_s_',...
 num2str(pr.s_span(1)),'_',num2str(pr.s_span(end)),'_m_',num2str(pr.mspan(1)),...
 '_',num2str(pr.mspan(end)),'_',pr.method,'_num_trials_',num2str(pr.num_trials),num2str(psnr_err)],'im2','im3','psnr_err');
+
 
 
 % p_err = y_p - p;

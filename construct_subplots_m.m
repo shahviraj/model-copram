@@ -7,12 +7,14 @@ switch plot_method
        Y2 = squeeze(mean(err_data_m,3));
     case 'median-error'
        Y1 = squeeze(median(err_data,3));
+       Y2 = squeeze(median(err_data_m,3));
     case 'max-error'
         Y1 = squeeze(max(err_data,3));
+        Y2 = squeeze(max(err_data_m,3));
     case 'confidence'
-        binary_err = (err_data < 0.001);
+        binary_err = (err_data < 0.01);
         Y1 = squeeze(sum(binary_err,3))/pr.num_trials;
-        binary_err_m = (err_data_m < 0.01);
+        binary_err_m = (err_data_m < 0.0105);
         Y2 = squeeze(sum(binary_err_m,3))/pr.num_trials;
         
 end
@@ -54,8 +56,11 @@ xlabel({'\textbf{Number of measurements} $\mathbf{(m)}$'},...
 % end
 
 % Create ylabel
-ylabel({'\textbf{Reconstruction Error}; $\mathbf{\frac{||x^*-x||}{||x^*||}}$'},...
+
+ ylabel({'\textbf{Confidence for perfect recovery}'},...
     'Interpreter','latex');
+% ylabel({'\textbf{Confidence for perfect recovery}; $\mathbf{\frac{||x^*-x||}{||x^*||}}$'},...
+  %  'Interpreter','latex');
 
 box(axes1,'on');
 % Set the remaining axes properties
